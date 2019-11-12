@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
+ 
+
+
+    <ImageView
+        android:id="@+id/company_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="90dp"
+        android:maxHeight="90dp"
+        android:layout_gravity="center"
+        android:src = "@drawable/apple"
+        android:scaleType="fitXY"
+        android:adjustViewBounds = "true"
+        android:foreground="@drawable/rounded_fg"/>
+
+
+    <TextView
+        android:id="@+id/company_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sheng Siong LLC"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_gravity="center"
+        android:paddingTop="5dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:textStyle="bold"
+            android:layout_marginStart="20dp"
+            android:text="Item name"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentLeft="true" />
+
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="quantity"
+            android:layout_alignParentEnd="true"
+            android:textStyle="bold"
+            android:paddingRight="80dp"
+            android:layout_alignParentRight="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cost"
+            android:textStyle="bold"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true" />
+
+
+    </RelativeLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_itemslist"
+        android:layout_width="match_parent"
+        android:layout_height= "300dp"
+        tools:listitem="@layout/table_of_items" />
+
+
+</LinearLayout>

@@ -6,4 +6,9 @@
     <string name="camera">Camera</string>
     <string name="finance">Finance</string>
     <string name="receipts">Receipts</string>
+    <string name="finance_test">This is the finance fragment screen</string>
+    <string name="total_cost">$50</string>
+    <string name="index_number">1</string>
+    <string name="receipt_id">1003235</string>
+    <string name="company_info">Sheng Shiong</string>
 </resources>

@@ -5,8 +5,8 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".finance"
-    android:background="@android:color/holo_blue_light">
+    tools:context=".receiptFragment"
+    android:background="@color/bgcolor">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_receipts"

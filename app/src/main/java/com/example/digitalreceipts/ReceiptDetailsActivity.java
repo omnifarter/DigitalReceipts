@@ -7,12 +7,14 @@ import android.content.Intent;
 import java.util.ArrayList;
 import java.util.List;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.WindowManager;
 
 import java.util.List;
 
 public class ReceiptDetailsActivity extends AppCompatActivity {
 
-    public static String currentReceipt;
 
 
 
@@ -22,22 +24,19 @@ public class ReceiptDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt_details);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        /* loads the intent upon creation. Make sure that parceable items are processed AT oncreate
-         i spent so much time debugging, turns out this is the issue */
-        Intent i = this.getIntent();
-        ArrayList<ReceiptItem> listofitems = i.getParcelableArrayListExtra("listofitems");
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
 
+        getWindow().setLayout((int)(width*0.8),(int)(height*0.8));
 
-        // For items recyclerview
+        WindowManager.LayoutParams param = getWindow().getAttributes();
+        param.gravity = Gravity.CENTER;
+        param.x=0;
+        param.y =-20;
 
-        RecyclerView recyclerViewitemlist = findViewById(R.id.recycler_view_itemslist);
-        recyclerViewitemlist.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewitemlist.setHasFixedSize(true);
-
-        final ItemlistAdapter adapter = new ItemlistAdapter(listofitems);
-        recyclerViewitemlist.setAdapter(adapter);
-
-
+        getWindow().setAttributes(param);
     }
 }

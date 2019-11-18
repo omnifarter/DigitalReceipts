@@ -1,8 +1,11 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.Contacts;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ListView;
+
+import com.example.digitalreceipts.R;
 
 public class ContactsActivity extends AppCompatActivity {
 
@@ -11,4 +14,5 @@ public class ContactsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
     }
+\
 }

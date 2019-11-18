@@ -43,7 +43,7 @@ public class receiptFragment extends Fragment {
     private ReceiptsManager receiptsManager;
     View rootView;
     public final static String BILL_KEY = "BILL_SPLIT";
-
+    private int STORAGE_PERMISSION_CODE = 1;
 
     public receiptFragment() {
         // Required empty public constructor
@@ -115,13 +115,15 @@ public class receiptFragment extends Fragment {
                 split_bill.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
                             Log.i("receipt fragment", "bill is splitted");
                             Toast.makeText(getContext(), "bill spitting", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getActivity(), ContactsActivity.class);
                             intent.putExtra(BILL_KEY, receipts);
                             startActivity(intent);
-
+                        }else{
+                            requestStoragePermission();
+                        }
                     }
                 });
                 int width = (int) (rootView.getMeasuredWidth() * 0.8);
@@ -162,4 +164,36 @@ public class receiptFragment extends Fragment {
 
     }
 
+    private void requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_CONTACTS)) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Permission needed")
+                    .setMessage("I need permission")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_CONTACTS}, STORAGE_PERMISSION_CODE);
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            })
+                    .create().show();
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_CONTACTS}, STORAGE_PERMISSION_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            if(requestCode==STORAGE_PERMISSION_CODE){
+                if(grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(getActivity(),"Permission GRANTED",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getActivity(),"Permission DENIED",Toast.LENGTH_SHORT).show();
+                }
+            }
+    }
 }

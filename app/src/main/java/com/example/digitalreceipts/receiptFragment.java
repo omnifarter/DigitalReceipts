@@ -1,10 +1,16 @@
 package com.example.digitalreceipts;
 
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -20,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,10 +44,10 @@ public class receiptFragment extends Fragment {
     View rootView;
     public final static String BILL_KEY = "BILL_SPLIT";
 
+
     public receiptFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -100,37 +107,38 @@ public class receiptFragment extends Fragment {
                 add_finance.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.i("receipt fragment","receiptFragment is added");
-                        Toast.makeText(getContext(),"receiptFragment is added",Toast.LENGTH_LONG).show();
+                        Log.i("receipt fragment", "receiptFragment is added");
+                        Toast.makeText(getContext(), "receiptFragment is added", Toast.LENGTH_LONG).show();
 
                     }
                 });
                 split_bill.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.i("receipt fragment","bill is splitted");
-                        Toast.makeText(getContext(),"bill spitting",Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getActivity(), ContactsActivity.class);
-                        intent.putExtra(BILL_KEY,receipts);
-                        startActivity(intent);
+
+                            Log.i("receipt fragment", "bill is splitted");
+                            Toast.makeText(getContext(), "bill spitting", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getActivity(), ContactsActivity.class);
+                            intent.putExtra(BILL_KEY, receipts);
+                            startActivity(intent);
 
                     }
                 });
-                int width = (int)(rootView.getMeasuredWidth()*0.8);
+                int width = (int) (rootView.getMeasuredWidth() * 0.8);
                 String width_value = "width: " + Integer.toString(width);
-                Log.i("receipt fragment",width_value);
-                int height = (int)(rootView.getMeasuredHeight()*0.8);
+                Log.i("receipt fragment", width_value);
+                int height = (int) (rootView.getMeasuredHeight() * 0.8);
                 String height_value = "height: " + Integer.toString(height);
-                Log.i("receipt fragment",height_value);
+                Log.i("receipt fragment", height_value);
 
 
-                PopupWindow popupWindow = new PopupWindow(popupView, 0 , 0,true);
+                PopupWindow popupWindow = new PopupWindow(popupView, 0, 0, true);
                 //define view items here
                 Log.i("receipt fragment", "popupview runs");
                 popupWindow.setAnimationStyle(1);
                 popupWindow.setWidth(width);
                 popupWindow.setHeight(height);
-                popupWindow.showAtLocation(popupView,Gravity.CENTER, 0, 0);
+                popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
             }
         });
@@ -153,4 +161,5 @@ public class receiptFragment extends Fragment {
         return rootView;
 
     }
+
 }

@@ -82,7 +82,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_itemslist"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         tools:listitem="@layout/table_of_items" />
@@ -91,16 +91,16 @@
         android:id="@+id/add_finance"
         android:layout_width="120dp"
         android:layout_height="40dp"
-        android:text="Add to Finance"
-        android:textSize="12sp"
-        android:textAllCaps="false"
         android:background="@drawable/button_background"
+        android:text="Add to Finance"
+        android:textAllCaps="false"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.136"
+        app:layout_constraintHorizontal_bias="0.171"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recycler_view_itemslist"
-        app:layout_constraintVertical_bias="0.494" />
+        app:layout_constraintVertical_bias="0.088" />
 
     <Button
         android:id="@+id/split_bill"
@@ -112,10 +112,10 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.862"
+        app:layout_constraintHorizontal_bias="0.848"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recycler_view_itemslist"
-        app:layout_constraintVertical_bias="0.495" />
+        app:layout_constraintVertical_bias="0.088" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

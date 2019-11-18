@@ -3,18 +3,24 @@ package com.example.digitalreceipts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+
+import com.example.digitalreceipts.Contacts.ContactsActivity;
 
 import java.util.List;
 
 public class ReceiptDetailsActivity extends AppCompatActivity {
-
 
 
 
@@ -30,13 +36,17 @@ public class ReceiptDetailsActivity extends AppCompatActivity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int)(width*0.8),(int)(height*0.8));
+        getWindow().setLayout((int) (width * 0.8), (int) (height * 0.8));
 
         WindowManager.LayoutParams param = getWindow().getAttributes();
         param.gravity = Gravity.CENTER;
-        param.x=0;
-        param.y =-20;
+        param.x = 0;
+        param.y = -20;
+
+        ;
 
         getWindow().setAttributes(param);
     }
+
+
 }

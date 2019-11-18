@@ -1,6 +1,7 @@
 package com.example.digitalreceipts;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.digitalreceipts.Contacts.ContactsActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,7 @@ import java.util.List;
 public class receiptFragment extends Fragment {
     private ReceiptsManager receiptsManager;
     View rootView;
+    public final static String BILL_KEY = "BILL_SPLIT";
 
     public receiptFragment() {
         // Required empty public constructor
@@ -78,7 +82,7 @@ public class receiptFragment extends Fragment {
         adapter.setOnItemClickListener(new ReceiptAdapter.OnItemClickListener() {
             @Override
             // Hands over only the array. Nothing else
-            public void onItemClick(ReceiptsRoom receipts) {
+            public void onItemClick(final ReceiptsRoom receipts) {
                 LinearLayout viewGroup = getActivity().findViewById(R.id.linear_layout_receipt_details);
 
                 View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.activity_receipt_details, viewGroup);
@@ -106,6 +110,9 @@ public class receiptFragment extends Fragment {
                     public void onClick(View view) {
                         Log.i("receipt fragment","bill is splitted");
                         Toast.makeText(getContext(),"bill spitting",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getActivity(), ContactsActivity.class);
+                        intent.putExtra(BILL_KEY,receipts);
+                        startActivity(intent);
 
                     }
                 });

@@ -17,12 +17,15 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Transition;
 
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -56,6 +59,9 @@ public class receiptFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_receipts, container, false);
 
+        // initialise animations
+        final Animation fadein = AnimationUtils.loadAnimation(getContext(),R.anim.fadein);
+        Animation fadeout = AnimationUtils.loadAnimation(getContext(),R.anim.fadeout);
         // For recycler view
 
         RecyclerView recyclerViewReceipts = rootView.findViewById(R.id.recycler_view_receipts);
@@ -137,7 +143,7 @@ public class receiptFragment extends Fragment {
                 PopupWindow popupWindow = new PopupWindow(popupView, 0, 0, true);
                 //define view items here
                 Log.i("receipt fragment", "popupview runs");
-                popupWindow.setAnimationStyle(1);
+                popupWindow.setAnimationStyle(R.style.Animation);
                 popupWindow.setWidth(width);
                 popupWindow.setHeight(height);
                 popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);

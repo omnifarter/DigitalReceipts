@@ -1,14 +1,13 @@
 <resources>
-    <string name="app_name">DigitalReceipts</string>
-    <string name="button">Button</string>
+    <string name="app_name">CloudVision</string>
+    <string name="action_settings">Settings</string>
+    <string name="image_details_header">Details:</string>
+    <string name="image_preview_header">Preview:</string>
+    <string name="loading_message">Uploading image. Please wait.</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="camera">Camera</string>
-    <string name="finance">Finance</string>
-    <string name="receipts">Receipts</string>
-    <string name="finance_test">This is the finance fragment screen</string>
-    <string name="total_cost">$50</string>
-    <string name="index_number">1</string>
-    <string name="receipt_id">1003235</string>
-    <string name="company_info">Sheng Shiong</string>
+    <string name="dialog_select_prompt">Choose a picture</string>
+    <string name="dialog_select_camera">Camera</string>
+    <string name="dialog_select_gallery">Gallery</string>
+
+    <string name="image_picker_error">Something is wrong with that image. Pick a different one please.</string>
 </resources>

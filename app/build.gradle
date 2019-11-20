@@ -30,6 +30,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        customDebugType {
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -69,5 +76,6 @@ dependencies {
     //RecyclerView
 //    implementationn 'androidx.recyclerview:recyclerview:1.1.0-rc01'
 
-
+    implementation 'com.jakewharton:butterknife:10.2.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
 }

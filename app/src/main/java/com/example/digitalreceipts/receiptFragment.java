@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.digitalreceipts.Contacts.ContactsActivity;
+import com.example.digitalreceipts.DragListener.BillSplitting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,13 +128,14 @@ public class receiptFragment extends Fragment {
                     public void onClick(View view) {
 
                         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+
                             Toast.makeText(getContext(), "bill spitting", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getActivity(), ContactsActivity.class);
                             intent.putExtra(BILL_KEY, receipts);
                             startActivity(intent);
                         } else {
 
-                            requestStoragePermission();
+                            Log.i("recieptfragment","oermission requested");
                         }
                     }
                 });

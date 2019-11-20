@@ -3,13 +3,16 @@ package com.example.digitalreceipts;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -24,6 +27,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -56,15 +60,12 @@ public class receiptFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_receipts, container, false);
-
-        // initialise animations
-        final Animation fadein = AnimationUtils.loadAnimation(getContext(),R.anim.fadein);
-        Animation fadeout = AnimationUtils.loadAnimation(getContext(),R.anim.fadeout);
         // For recycler view
 
         RecyclerView recyclerViewReceipts = rootView.findViewById(R.id.recycler_view_receipts);
@@ -96,6 +97,7 @@ public class receiptFragment extends Fragment {
         });
         // This handles click on the cards
         adapter.setOnItemClickListener(new ReceiptAdapter.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             // Hands over only the array. Nothing else
             public void onItemClick(final ReceiptsRoom receipts) {
@@ -116,7 +118,6 @@ public class receiptFragment extends Fragment {
                 add_finance.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.i("receipt fragment", "receiptFragment is added");
                         Toast.makeText(getContext(), "receiptFragment is added", Toast.LENGTH_LONG).show();
 
                     }
@@ -126,7 +127,6 @@ public class receiptFragment extends Fragment {
                     public void onClick(View view) {
 
                         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-                            Log.i("receipt fragment", "bill is splitTed");
                             Toast.makeText(getContext(), "bill spitting", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getActivity(), ContactsActivity.class);
                             intent.putExtra(BILL_KEY, receipts);
@@ -134,26 +134,20 @@ public class receiptFragment extends Fragment {
                         } else {
 
                             requestStoragePermission();
-                            Log.i("recieptfragment","oermission requested");
                         }
                     }
                 });
                 int width = (int) (rootView.getMeasuredWidth() * 0.8);
                 String width_value = "width: " + Integer.toString(width);
-                Log.i("receipt fragment", width_value);
                 int height = (int) (rootView.getMeasuredHeight() * 0.8);
                 String height_value = "height: " + Integer.toString(height);
-                Log.i("receipt fragment", height_value);
-
-
                 PopupWindow popupWindow = new PopupWindow(popupView, 0, 0, true);
                 //define view items here
-                Log.i("receipt fragment", "popupview runs");
                 popupWindow.setAnimationStyle(R.style.Animation);
                 popupWindow.setWidth(width);
                 popupWindow.setHeight(height);
-                popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-
+                popupWindow.showAtLocation(rootView,  Gravity.CENTER, 0,0);
+                fadeBackground(popupWindow);
             }
         });
 
@@ -216,5 +210,15 @@ public class receiptFragment extends Fragment {
             }
         }
     }
+    public void fadeBackground(PopupWindow pop){
+        View container = (View) pop.getContentView().getParent();
+        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
+        p.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        p.dimAmount = 0.3f;
+        wm.updateViewLayout(container, p);
+
+    }
+
 }
 

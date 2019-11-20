@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".receiptFragment"
-    android:background="@color/bgcolor">
+    android:background="@color/bgcolor"
+    >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_receipts"

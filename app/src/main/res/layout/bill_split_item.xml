@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bill_split_item"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="vertical"
+    tools:context="com.example.digitalreceipts.Billsplit.BIllSplitActivity">
+
+    <TextView
+        android:id="@+id/bill_split_item_name"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|left"
+        android:layout_marginLeft="10dp"
+        android:text="TextView" />
+
+    <com.travijuu.numberpicker.library.NumberPicker
+        android:id="@+id/number_picker"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center|right"
+        android:layout_marginRight="10dp"
+        numberpicker:custom_layout="@layout/number_picker_layout">
+
+    </com.travijuu.numberpicker.library.NumberPicker>
+
+</androidx.cardview.widget.CardView>

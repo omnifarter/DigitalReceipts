@@ -3,6 +3,7 @@ package com.example.digitalreceipts.Contacts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.digitalreceipts.Billsplit.BIllSplitActivity;
 import com.example.digitalreceipts.R;
 
 import java.util.ArrayList;
@@ -51,7 +53,11 @@ public class ContactsActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"next screen",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), BIllSplitActivity.class);
+                Intent current = getIntent();
+                intent.putParcelableArrayListExtra("BILL_SPLIT",current.getParcelableArrayListExtra("BILL_SPLIT"));
+                intent.putExtra("NAMES",names);
+                startActivity(intent);
             }
         });
         simpleCursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {

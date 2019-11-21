@@ -30,6 +30,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        customDebugType {
+            debuggable true
+        }
     }
 }
 
@@ -73,5 +76,6 @@ dependencies {
     // this is for the DB demo!
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
-
+    implementation 'com.jakewharton:butterknife:10.2.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
 }

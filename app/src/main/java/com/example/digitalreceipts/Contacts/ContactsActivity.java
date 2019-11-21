@@ -2,12 +2,14 @@ package com.example.digitalreceipts.Contacts;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +19,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.example.digitalreceipts.Billsplit.BIllSplitActivity;
@@ -33,6 +36,7 @@ public class ContactsActivity extends AppCompatActivity {
     SearchView search_name;
     ArrayList<String> names;
     @RequiresApi(api = Build.VERSION_CODES.O)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         names = new ArrayList<String>();
@@ -50,6 +54,7 @@ public class ContactsActivity extends AppCompatActivity {
         simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.contact_item_list, cursor, from, to);
         l1.setAdapter(simpleCursorAdapter);
         l1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

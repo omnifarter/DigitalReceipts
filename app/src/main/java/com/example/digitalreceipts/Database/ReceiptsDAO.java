@@ -1,4 +1,4 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.Database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

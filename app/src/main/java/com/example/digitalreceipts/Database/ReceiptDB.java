@@ -1,4 +1,4 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.Database;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -8,6 +8,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import com.example.digitalreceipts.ReceiptsRoom;
 
 // IN SQL, migration strategy has to be present. Thats why got the version thing. No need worry tho
 // cos we wont be doing migrations for our project

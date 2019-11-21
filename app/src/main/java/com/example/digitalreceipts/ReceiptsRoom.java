@@ -7,6 +7,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.example.digitalreceipts.Database.ReceiptTypeConverters;
+
 import java.util.List;
 
 /* This data structure I feel is best for our project. It helps with lookup

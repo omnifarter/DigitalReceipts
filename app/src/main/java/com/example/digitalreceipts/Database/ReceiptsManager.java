@@ -1,10 +1,12 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.Database;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.digitalreceipts.ReceiptsRoom;
 
 import java.util.List;
 

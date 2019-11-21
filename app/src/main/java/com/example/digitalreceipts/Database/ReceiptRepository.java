@@ -1,9 +1,13 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.Database;
 
 import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+
+import com.example.digitalreceipts.Database.ReceiptDB;
+import com.example.digitalreceipts.Database.ReceiptsDAO;
+import com.example.digitalreceipts.ReceiptsRoom;
 
 import java.util.List;
 

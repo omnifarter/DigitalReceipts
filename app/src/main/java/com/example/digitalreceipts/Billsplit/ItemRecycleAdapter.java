@@ -1,10 +1,15 @@
 package com.example.digitalreceipts.Billsplit;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.travijuu.numberpicker.library.Enums.ActionEnum;
+import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
 import com.travijuu.numberpicker.library.NumberPicker;
 
 import androidx.annotation.NonNull;
@@ -15,23 +20,28 @@ import com.example.digitalreceipts.R;
 import java.util.ArrayList;
 
 public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.ItemlistHolder> {
+    Context context;
     private ArrayList<String> listofNames = new ArrayList<>();
     @NonNull
     @Override
     public ItemlistHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.i("look","is item list holder returned");
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bill_split_item, parent, false);
+        context=parent.getContext();
         return new ItemlistHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(ItemlistHolder holder, int position) {
-        Log.i("look",listofNames.get(position));
         holder.itemName.setText(listofNames.get(position));
         holder.numberPicker.setMin(0);
         holder.numberPicker.setMax(100);
-        holder.numberPicker.getValueChangedListener();
+        holder.numberPicker.setValueChangedListener(new ValueChangedListener() {
+            @Override
+            public void valueChanged(int value, ActionEnum action) {
+                Toast.makeText(context,Integer.toString(value), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -39,7 +49,6 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
 
     public ItemRecycleAdapter(ArrayList<String> items)
     {
-        Log.i("look","item recycle adapter runs");
 
         this.listofNames = items;
 
@@ -57,7 +66,6 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
 
         public ItemlistHolder(@NonNull View itemView) {
             super(itemView);
-            Log.i("look","itemlistholder runs");
             this.itemName = itemView.findViewById(R.id.bill_split_item_name);
             this.numberPicker = itemView.findViewById(R.id.number_picker);
 

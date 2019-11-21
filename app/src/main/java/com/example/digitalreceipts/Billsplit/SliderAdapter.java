@@ -62,10 +62,8 @@ public class SliderAdapter extends PagerAdapter {
         for (ReceiptItem i: receiptItems) {
             item_names.add(i.getItemName());
         }
-        Log.i("look","adapter unassigned");
         final ItemRecycleAdapter adapter = new ItemRecycleAdapter(item_names);
         displayitems.setAdapter(adapter);
-        Log.i("look","adapter assigned");
 
         container.addView(view);
         return view;

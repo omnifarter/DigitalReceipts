@@ -38,7 +38,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.digitalreceipts.Contacts.ContactsActivity;
-import com.example.digitalreceipts.DragListener.BillSplitting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,7 +134,6 @@ public class receiptFragment extends Fragment {
                             startActivity(intent);
                         } else {
 
-                            Log.i("recieptfragment","oermission requested");
                         }
                     }
                 });

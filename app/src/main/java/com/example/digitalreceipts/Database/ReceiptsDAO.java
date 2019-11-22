@@ -5,8 +5,11 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 import androidx.room.Update;
 
+import com.example.digitalreceipts.ReceiptItem;
 import com.example.digitalreceipts.ReceiptsRoom;
 
 import java.util.List;
@@ -27,6 +30,13 @@ public interface ReceiptsDAO {
     void delete(ReceiptsRoom receipt);
 
     // Query means you are specifying a certain SQL command verbatim. Its good for custom commands
+
+    @Query("SELECT * FROM receipt_table WHERE _receiptNumber LIKE :receiptNumber ")
+    ReceiptsRoom searchReceiptFromNumber(String receiptNumber);
+
+    @TypeConverters(ReceiptTypeConverters.class)
+    @Query("UPDATE receipt_table SET _listOfItems = :listOfItems WHERE _receiptNumber LIKE :receiptNumber")
+    void updateItemList(List<ReceiptItem> listOfItems, String receiptNumber);
 
     @Query("DELETE FROM receipt_table")
     void deleteAllReceipts();

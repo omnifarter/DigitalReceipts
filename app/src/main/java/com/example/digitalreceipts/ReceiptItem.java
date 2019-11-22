@@ -7,30 +7,22 @@ package com.example.digitalreceipts;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ReceiptItem implements Parcelable{
+import java.util.HashMap;
+
+public class ReceiptItem implements Parcelable {
     private String itemName;
     private double unitCost;
     private int quantity;
+    private HashMap<String, Integer> ownershipTable = new HashMap<String, Integer>();
 
-
-    // Owner part may raise a problem. Splitting will update the database later on
-    // hence owner will have its own setter
-    //private String Owner;
-
-    public ReceiptItem(String itemName, double unitCost, int quantity) {
-        this.itemName = itemName;
-        this.unitCost = unitCost;
-        this.quantity = quantity;
-    }
-
-    // these get methods serve to make our life easier when creating adapters :)
-
+    // for ownership update
 
     protected ReceiptItem(Parcel in) {
         itemName = in.readString();
         unitCost = in.readDouble();
         quantity = in.readInt();
-        //Owner = in.readString();
+        // TODO: Observe DB behaviour
+        //ownershipTable = in.readHashMap(ClassLoader.getSystemClassLoader());
     }
 
     public static final Creator<ReceiptItem> CREATOR = new Creator<ReceiptItem>() {
@@ -44,6 +36,26 @@ public class ReceiptItem implements Parcelable{
             return new ReceiptItem[size];
         }
     };
+
+    public void setOwnershipTable(HashMap<String, Integer> ownershipTable) {
+        this.ownershipTable = ownershipTable;
+    }
+
+    public HashMap<String, Integer> getOwnershipTable() {
+        return ownershipTable;
+    }
+// Owner part may raise a problem. Splitting will update the database later on
+    // hence owner will have its own setter
+    //private String Owner;
+
+    public ReceiptItem(String itemName, double unitCost, int quantity) {
+        this.itemName = itemName;
+        this.unitCost = unitCost;
+        this.quantity = quantity;
+    }
+
+    // these get methods serve to make our life easier when creating adapters :)
+
 
     public String getItemName() {
         return itemName;
@@ -65,6 +77,6 @@ public class ReceiptItem implements Parcelable{
         dest.writeString(itemName);
         dest.writeDouble(unitCost);
         dest.writeInt(quantity);
-        //dest.writeString(Owner);
+        dest.writeMap(ownershipTable);
     }
 }

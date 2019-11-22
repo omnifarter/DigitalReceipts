@@ -3,12 +3,14 @@ package com.example.digitalreceipts;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.example.digitalreceipts.Database.ReceiptTypeConverters;
 
+import java.util.HashMap;
 import java.util.List;
 
 /* This data structure I feel is best for our project. It helps with lookup
@@ -43,6 +45,7 @@ public class ReceiptsRoom implements Parcelable {
     //TODO: Deteremine whether we stick to string or use proper datatype
     private double _totalCost;
 
+
     @TypeConverters(ReceiptTypeConverters.class)
     private List<ReceiptItem> _listOfItems;
 
@@ -50,6 +53,7 @@ public class ReceiptsRoom implements Parcelable {
         this._receiptNumber = receiptNumber;
         this._receiptUri = receiptUri;
         this._company = company;
+
         this._listOfItems = listOfItems;
         this._totalCost = totalCost;
     }
@@ -61,6 +65,7 @@ public class ReceiptsRoom implements Parcelable {
         _company = in.readString();
         _receiptUri = in.readString();
         _totalCost = in.readDouble();
+        // in.readParcelableList(_listOfItems, ClassLoader.getSystemClassLoader());
     }
 
     public static final Creator<ReceiptsRoom> CREATOR = new Creator<ReceiptsRoom>() {

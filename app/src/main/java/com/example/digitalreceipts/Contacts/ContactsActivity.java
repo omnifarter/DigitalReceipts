@@ -3,6 +3,7 @@ package com.example.digitalreceipts.Contacts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
+import androidx.loader.content.CursorLoader;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,6 +13,8 @@ import android.provider.ContactsContract;
 
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FilterQueryProvider;
@@ -30,8 +33,8 @@ import java.util.ArrayList;
 public class ContactsActivity extends AppCompatActivity {
     final String[] from = {ContactsContract.Contacts.DISPLAY_NAME};
     SimpleCursorAdapter simpleCursorAdapter;
+    TextView textView;
     ListView l1;
-    ListView l2;
     Button next;
     SearchView search_name;
     ArrayList<String> names;
@@ -43,16 +46,20 @@ public class ContactsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         l1 = findViewById(R.id.list_of_contacts);
+        textView = findViewById(R.id.freq_contacted);
+        final int height = textView.getHeight();
+        //TODO fix thise
+        Log.i("look",Integer.toString(height));
         l1.setTextFilterEnabled(true);
         search_name = findViewById(R.id.searchView);
-        Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        final Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
         final int[] to = {R.id.contact_name};
-        l1.setAlpha(0);
         l1.setDivider(null);
         next = findViewById(R.id.next);
-
-        simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.contact_item_list, cursor, from, to);
+        final Cursor cursor_freq = getContentResolver().query(ContactsContract.Contacts.CONTENT_STREQUENT_URI,null,null,null);
+        simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.contact_item_list, cursor_freq, from, to);
         l1.setAdapter(simpleCursorAdapter);
+
         l1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         next.setOnClickListener(new View.OnClickListener() {
@@ -84,10 +91,16 @@ public class ContactsActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 if(search_name.getQuery().length()==0){
-                    l1.setAlpha(0);
+                    textView.setText(R.string.freq_contacted);
+                    textView.setHeight(height);
+                    simpleCursorAdapter.swapCursor(cursor_freq);
                 }
                 else{
-                    l1.setAlpha(1);
+                    if(simpleCursorAdapter.getCursor() == cursor_freq){
+                        textView.setText("");
+                        textView.setHeight(0);
+                        final Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+                        simpleCursorAdapter.swapCursor(cursor);}
                     simpleCursorAdapter.getFilter().filter(s);
 
                     simpleCursorAdapter.notifyDataSetChanged();

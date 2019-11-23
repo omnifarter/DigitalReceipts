@@ -40,6 +40,7 @@ import android.widget.Toast;
 import com.example.digitalreceipts.Contacts.ContactsActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -53,7 +54,6 @@ public class receiptFragment extends Fragment {
     private int STORAGE_PERMISSION_CODE = 1;
     Button split_bill;
     Button add_finance;
-
 
     public receiptFragment() {
         // Required empty public constructor
@@ -115,6 +115,7 @@ public class receiptFragment extends Fragment {
                 company_name.setText(receipts.get_company());
                 add_finance = popupView.findViewById(R.id.add_finance);
                 split_bill = popupView.findViewById(R.id.split_bill);
+                //TODO modify this to update database of values.
                 add_finance.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

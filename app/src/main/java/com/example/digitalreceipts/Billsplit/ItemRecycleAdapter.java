@@ -1,6 +1,7 @@
 package com.example.digitalreceipts.Billsplit;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +14,22 @@ import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
 import com.travijuu.numberpicker.library.NumberPicker;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.digitalreceipts.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ScheduledFuture;
 
 public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.ItemlistHolder> {
     Context context;
     private ArrayList<String> listofNames = new ArrayList<>();
+    String name;
+    //key is person name, value is a hashmap of items to number
+//    HashMap<String, HashMap<String,Integer>> splitteditems = new HashMap<String,HashMap<String, Integer>>();
+
     @NonNull
     @Override
     public ItemlistHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,14 +40,18 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ItemlistHolder holder, int position) {
+    public void onBindViewHolder(final ItemlistHolder holder, final int position) {
         holder.itemName.setText(listofNames.get(position));
+        holder.itemnumber.setText(Integer.toString(0));
         holder.numberPicker.setMin(0);
         holder.numberPicker.setMax(100);
+        holder.numberPicker.setValue(0);
         holder.numberPicker.setValueChangedListener(new ValueChangedListener() {
+            //TODO ADD BILL SPLIT FUNCTIONALITY HERE
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void valueChanged(int value, ActionEnum action) {
-                Toast.makeText(context,Integer.toString(value), Toast.LENGTH_LONG).show();
+                holder.itemnumber.setText(Integer.toString(value));
             }
         });
     }
@@ -47,9 +59,9 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
     @Override
     public int getItemCount() {return listofNames.size();}
 
-    public ItemRecycleAdapter(ArrayList<String> items)
+    public ItemRecycleAdapter(ArrayList<String> items,String name)
     {
-
+        this.name = name;
         this.listofNames = items;
 
     }
@@ -63,12 +75,12 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
     class ItemlistHolder extends RecyclerView.ViewHolder {
         private TextView itemName;
         private NumberPicker numberPicker;
-
+        private TextView itemnumber;
         public ItemlistHolder(@NonNull View itemView) {
             super(itemView);
             this.itemName = itemView.findViewById(R.id.bill_split_item_name);
             this.numberPicker = itemView.findViewById(R.id.number_picker);
-
+            this.itemnumber = itemView.findViewById(R.id.number_reflected);
 
             // No listener attached. All quiet on the Western Front
 

@@ -16,6 +16,7 @@ public class BIllSplitActivity extends AppCompatActivity {
     private LinearLayout mDotLayout;
     SliderAdapter sliderAdapter;
     private TextView[] mDots;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,12 +25,14 @@ public class BIllSplitActivity extends AppCompatActivity {
         mDotLayout = findViewById(R.id.dotsLayout);
         sliderAdapter = new SliderAdapter(this);
         mSlideViewPager.setAdapter(sliderAdapter);
-        addDotsIndictator();
+        addDotsIndictator(0);
+        mSlideViewPager.setOnPageChangeListener(viewListener);
     }
 
-    public void addDotsIndictator(){
+    public void addDotsIndictator(int position) {
         mDots = new TextView[sliderAdapter.getCount()];
-        for (int i = 0; i <mDots.length; i++) {
+        mDotLayout.removeAllViews();
+        for (int i = 0; i < mDots.length; i++) {
             mDots[i] = new TextView(this);
             mDots[i].setText(Html.fromHtml("&#8226;"));
             mDots[i].setTextSize(35);
@@ -37,5 +40,27 @@ public class BIllSplitActivity extends AppCompatActivity {
             mDotLayout.addView(mDots[i]);
         }
 
+        if (mDots.length > 0) {
+            mDots[position].setTextColor(getResources().getColor(R.color.colorPrimary));
+        }
+
     }
+
+    ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            addDotsIndictator(position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
+
 }

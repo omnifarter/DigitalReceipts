@@ -15,7 +15,6 @@ import java.util.List;
 
 public class ItemlistAdapter extends RecyclerView.Adapter<ItemlistAdapter.ItemlistHolder> {
     private List<ReceiptItem> listOfItems = new ArrayList<>();
-
     @NonNull
     @Override
     public ItemlistHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

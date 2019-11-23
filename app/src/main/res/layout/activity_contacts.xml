@@ -8,6 +8,18 @@
     android:layout_gravity="center"
     tools:context=".Contacts.ContactsActivity">
 
+    <TextView
+        android:id="@+id/freq_contacted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Frequently Contacted"
+        android:textColor="@android:color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
@@ -23,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="500dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/freq_contacted" />
 
     <Button
         android:id="@+id/next"

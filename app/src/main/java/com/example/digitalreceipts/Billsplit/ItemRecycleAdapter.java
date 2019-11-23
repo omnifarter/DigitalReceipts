@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.digitalreceipts.ReceiptItem;
 import com.travijuu.numberpicker.library.Enums.ActionEnum;
 import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
 import com.travijuu.numberpicker.library.NumberPicker;
@@ -21,11 +22,12 @@ import com.example.digitalreceipts.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
 public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.ItemlistHolder> {
     Context context;
-    private ArrayList<String> listofNames = new ArrayList<>();
+    private List<ReceiptItem> listofNames = new ArrayList<>();
     String name;
     //key is person name, value is a hashmap of items to number
 //    HashMap<String, HashMap<String,Integer>> splitteditems = new HashMap<String,HashMap<String, Integer>>();
@@ -41,7 +43,7 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
 
     @Override
     public void onBindViewHolder(final ItemlistHolder holder, final int position) {
-        holder.itemName.setText(listofNames.get(position));
+        holder.itemName.setText(listofNames.get(position).getItemName());
         holder.itemnumber.setText(Integer.toString(0));
         holder.numberPicker.setMin(0);
         holder.numberPicker.setMax(100);
@@ -59,14 +61,14 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
     @Override
     public int getItemCount() {return listofNames.size();}
 
-    public ItemRecycleAdapter(ArrayList<String> items,String name)
+    public ItemRecycleAdapter(List<ReceiptItem> items, String name)
     {
         this.name = name;
         this.listofNames = items;
 
     }
 
-    public void setListOfItems(ArrayList<String> items){
+    public void setListOfItems(List<ReceiptItem> items){
         this.listofNames = items;
         notifyDataSetChanged();
     }

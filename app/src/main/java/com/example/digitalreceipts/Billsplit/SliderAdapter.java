@@ -57,12 +57,8 @@ public class SliderAdapter extends PagerAdapter {
         TextView name = view.findViewById(R.id.name_display);
         RecyclerView displayitems = view.findViewById(R.id.bill_split_recycler);
         displayitems.setLayoutManager(new LinearLayoutManager(context));
-        item_names = new ArrayList<String>();
         name.setText(names.get(position));
-        for (ReceiptItem i: receiptItems) {
-            item_names.add(i.getItemName());
-        }
-        final ItemRecycleAdapter adapter = new ItemRecycleAdapter(item_names,names.get(position));
+        final ItemRecycleAdapter adapter = new ItemRecycleAdapter(receiptItems,names.get(position));
         displayitems.setAdapter(adapter);
 
         container.addView(view);

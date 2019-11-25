@@ -1,9 +1,13 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.Database;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.text.PrecomputedText;
 
 import androidx.lifecycle.LiveData;
+
+import com.example.digitalreceipts.ReceiptItem;
+import com.example.digitalreceipts.ReceiptsRoom;
 
 import java.util.List;
 
@@ -37,6 +41,16 @@ public class ReceiptRepository {
     public void deleteAllReceipts()
     {
         new DelAllReceiptsAsyncTask(receiptsDAO).execute();
+    }
+    // TODO: Figure out how to return object via async
+//    public ReceiptsRoom searchReceiptFromNumber(String receiptID)
+//    {
+//        new SearchReceiptFromNumberAsyncTask(receiptsDAO).execute(receiptID);
+//    }
+
+    public void updateItemList(List<ReceiptItem> listOfItems, String receiptNumber){
+
+        new UpdateItemListAsyncTask(receiptsDAO, listOfItems, receiptNumber).execute();
     }
     // this is just a getter for a private var
     public LiveData<List<ReceiptsRoom>> getAllReceipts()
@@ -102,6 +116,39 @@ public class ReceiptRepository {
         @Override
         protected Void doInBackground(ReceiptsRoom ... receiptsRooms){
             receiptsDAO.deleteAllReceipts();
+            return null;
+        }
+    }
+
+    private static class SearchReceiptFromNumberAsyncTask extends AsyncTask<String, ReceiptsRoom, ReceiptsRoom>
+    {
+        private ReceiptsDAO receiptsDAO;
+        private SearchReceiptFromNumberAsyncTask(ReceiptsDAO receiptsDAO ){
+            this.receiptsDAO = receiptsDAO;
+        }
+
+        @Override
+        protected ReceiptsRoom doInBackground(String ... strings) {
+            return receiptsDAO.searchReceiptFromNumber(strings[0]);
+
+        }
+    }
+
+    private static class UpdateItemListAsyncTask extends AsyncTask<String, Void, Void>
+    {
+        List<ReceiptItem> listofitems;
+        String receiptNumber;
+        private ReceiptsDAO receiptsDAO;
+
+        private UpdateItemListAsyncTask(ReceiptsDAO receiptsDAO, List<ReceiptItem> listofitems, String receiptNumber){
+            this.listofitems = listofitems;
+            this.receiptNumber = receiptNumber;
+            this.receiptsDAO = receiptsDAO;
+        }
+
+        @Override
+        protected Void doInBackground(String ... strings) {
+            receiptsDAO.updateItemList(listofitems,  receiptNumber);
             return null;
         }
     }

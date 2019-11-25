@@ -1,13 +1,20 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.Database;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import com.example.digitalreceipts.ReceiptItem;
+import com.example.digitalreceipts.ReceiptsRoom;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // IN SQL, migration strategy has to be present. Thats why got the version thing. No need worry tho
 // cos we wont be doing migrations for our project
@@ -52,10 +59,29 @@ public abstract class ReceiptDB extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            ReceiptItem dms = new ReceiptItem("Pokka",99.90, 34);
+            List<ReceiptItem> test = new ArrayList<ReceiptItem>();
+            test.add(dms);
+            Log.i("DBAsync", "Running1");
+            receiptsDAO.insert(new ReceiptsRoom("DEF363637", "fjfi", "wfurw", test, 55.50));
+            Log.i("DBAsync", "Inserted");
+//            ReceiptItem dms1 = new ReceiptItem("Walgred",12.02, 3);
+//            List<ReceiptItem> test1 = new ArrayList<ReceiptItem>();
+//            test1.add(dms1);
+//            test1.add(dms1);
+//            test1.add(dms1);
+//            test1.add(dms1);
+//            test1.add(dms1);
+//            test1.add(dms1);
+//            test1.add(dms1);
+//            test1.add(dms1);
+//            receiptsDAO.insert(new ReceiptsRoom("DEF363638", "fjfifo", "Sheng Siong", test1, 5.50));
+
+            return null;
 //            receiptsDAO.insert(new ReceiptsRoom("XTEST4938","null"));
 //            receiptsDAO.insert(new ReceiptsRoom("XTEST74938", "null"));
 //            receiptsDAO.insert(new ReceiptsRoom("XTEST7494453", "null"));
-            return null;
+
         }
     }
 }

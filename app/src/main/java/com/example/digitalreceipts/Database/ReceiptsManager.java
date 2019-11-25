@@ -1,10 +1,13 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.Database;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.digitalreceipts.ReceiptItem;
+import com.example.digitalreceipts.ReceiptsRoom;
 
 import java.util.List;
 
@@ -27,6 +30,11 @@ public class ReceiptsManager extends AndroidViewModel {
 
     public void delete(ReceiptsRoom receipt){
         receiptRepo.delete(receipt);
+    }
+
+
+    public void updateItemList(List<ReceiptItem> listOfItems, String receiptNumber){
+        receiptRepo.updateItemList(listOfItems, receiptNumber);
     }
 
     public void update(ReceiptsRoom receipt){

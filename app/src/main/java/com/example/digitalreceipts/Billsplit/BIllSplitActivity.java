@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.example.digitalreceipts.BillSplit;
 import com.example.digitalreceipts.R;
 
 public class BIllSplitActivity extends AppCompatActivity {
@@ -16,10 +17,12 @@ public class BIllSplitActivity extends AppCompatActivity {
     private LinearLayout mDotLayout;
     SliderAdapter sliderAdapter;
     private TextView[] mDots;
+    private BillSplit ledger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ledger = new BillSplit(this);   //creates an instance of billsplitting
         setContentView(R.layout.billsplitactivity);
         mSlideViewPager = findViewById(R.id.slideViewPager);
         mDotLayout = findViewById(R.id.dotsLayout);

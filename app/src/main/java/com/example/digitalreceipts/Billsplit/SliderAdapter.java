@@ -60,6 +60,7 @@ public class SliderAdapter extends PagerAdapter {
         name.setText(names.get(position));
         final ItemRecycleAdapter adapter = new ItemRecycleAdapter(receiptItems,names.get(position));
         displayitems.setAdapter(adapter);
+        //test to change the gabriel,lexuan
 
         container.addView(view);
         return view;

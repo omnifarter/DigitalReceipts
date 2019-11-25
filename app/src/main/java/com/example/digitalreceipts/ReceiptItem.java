@@ -7,10 +7,13 @@ package com.example.digitalreceipts;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
+
 public class ReceiptItem implements Parcelable{
     private String itemName;
     private double unitCost;
     private int quantity;
+    private HashMap<String,Integer> billPeople;
 
 
     // Owner part may raise a problem. Splitting will update the database later on
@@ -21,6 +24,7 @@ public class ReceiptItem implements Parcelable{
         this.itemName = itemName;
         this.unitCost = unitCost;
         this.quantity = quantity;
+        this.billPeople=new HashMap<String,Integer>();
     }
 
     // these get methods serve to make our life easier when creating adapters :)
@@ -44,6 +48,22 @@ public class ReceiptItem implements Parcelable{
             return new ReceiptItem[size];
         }
     };
+
+    public HashMap<String, Integer> getBillPeople() {
+        return billPeople;
+    }
+
+    public void setBillPeople(HashMap<String, Integer> billPeople) {
+        this.billPeople = billPeople;
+    }
+//    public HashMap<String,Integer> addPersonRatio(String name, int ratio){
+//        this.billPeople.put(name,ratio);
+//        return this.billPeople;
+//    }
+    public void addPersonRatio(String name, int ratio){
+        this.billPeople.put(name,ratio);
+
+    }
 
     public String getItemName() {
         return itemName;

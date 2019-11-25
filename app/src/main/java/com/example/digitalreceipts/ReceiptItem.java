@@ -13,7 +13,7 @@ public class ReceiptItem implements Parcelable {
     private String itemName;
     private double unitCost;
     private int quantity;
-    private HashMap<String, Integer> ownershipTable = new HashMap<String, Integer>();
+    //private HashMap<String, Integer> ownershipTable = new HashMap<String, Integer>();
 
     // for ownership update
 
@@ -37,16 +37,13 @@ public class ReceiptItem implements Parcelable {
         }
     };
 
-    public void setOwnershipTable(HashMap<String, Integer> ownershipTable) {
-        this.ownershipTable = ownershipTable;
-    }
+//    public void setOwnershipTable(HashMap<String, Integer> ownershipTable) {
+//        this.ownershipTable = ownershipTable;
+//    }
 
-    public HashMap<String, Integer> getOwnershipTable() {
-        return ownershipTable;
-    }
-// Owner part may raise a problem. Splitting will update the database later on
-    // hence owner will have its own setter
-    //private String Owner;
+//    public HashMap<String, Integer> getOwnershipTable() {
+//        return ownershipTable;
+//    }
 
     public ReceiptItem(String itemName, double unitCost, int quantity) {
         this.itemName = itemName;
@@ -58,7 +55,7 @@ public class ReceiptItem implements Parcelable {
 
 
     public String getItemName() {
-        return itemName;
+        return this.itemName;
     }
 
     public double getUnitCost() {
@@ -66,6 +63,7 @@ public class ReceiptItem implements Parcelable {
     }
 
     public int getQuantity() { return quantity; }
+
 
     @Override
     public int describeContents() {
@@ -77,6 +75,6 @@ public class ReceiptItem implements Parcelable {
         dest.writeString(itemName);
         dest.writeDouble(unitCost);
         dest.writeInt(quantity);
-        dest.writeMap(ownershipTable);
+//        dest.writeMap(ownershipTable);
     }
 }

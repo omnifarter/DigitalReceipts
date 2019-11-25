@@ -13,7 +13,7 @@ public class ReceiptItem implements Parcelable {
     private String itemName;
     private double unitCost;
     private int quantity;
-    //private HashMap<String, Integer> ownershipTable = new HashMap<String, Integer>();
+    private HashMap<String, Integer> ownershipTable;
 
     // for ownership update
 
@@ -49,6 +49,7 @@ public class ReceiptItem implements Parcelable {
         this.itemName = itemName;
         this.unitCost = unitCost;
         this.quantity = quantity;
+        ownershipTable = new HashMap<String, Integer>();
     }
 
     // these get methods serve to make our life easier when creating adapters :)

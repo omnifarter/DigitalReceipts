@@ -37,7 +37,7 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
     public ItemlistHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bill_split_item, parent, false);
-        context=parent.getContext();
+        context = parent.getContext();
         return new ItemlistHolder(itemView);
     }
 
@@ -59,16 +59,17 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
     }
 
     @Override
-    public int getItemCount() {return listofNames.size();}
+    public int getItemCount() {
+        return listofNames.size();
+    }
 
-    public ItemRecycleAdapter(List<ReceiptItem> items, String name)
-    {
+    public ItemRecycleAdapter(List<ReceiptItem> items, String name) {
         this.name = name;
         this.listofNames = items;
 
     }
 
-    public void setListOfItems(List<ReceiptItem> items){
+    public void setListOfItems(List<ReceiptItem> items) {
         this.listofNames = items;
         notifyDataSetChanged();
     }
@@ -78,6 +79,7 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
         private TextView itemName;
         private NumberPicker numberPicker;
         private TextView itemnumber;
+
         public ItemlistHolder(@NonNull View itemView) {
             super(itemView);
             this.itemName = itemView.findViewById(R.id.bill_split_item_name);
@@ -92,9 +94,6 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
 
     // This is the constructor for accepting the list of objects. IDK how optimal the
     // performance for this will be for big db
-
-
-
 
 
 }

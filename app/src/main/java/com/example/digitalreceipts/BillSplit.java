@@ -15,19 +15,7 @@ public class BillSplit {
     private HashMap<String,Double> ledger = new HashMap<String,Double>();
     Context context;
     ArrayList<String> names = new ArrayList<>();
-//    private List<ReceiptItem> testRI= new ArrayList<ReceiptItem>();
-//    private ReceiptItem greentea = new ReceiptItem("greentea",(double)2,2);
-//    private ReceiptItem chocolate = new ReceiptItem("chocolate",(double)2,2);
 
-    //test function BillSplit
-//    public void test(){
-//        greentea.addPersonRatio("crystal",1);
-//        greentea.addPersonRatio("gabriel",1);
-//
-//    }
-
-
-    ////////////////
     public BillSplit(){
         System.out.println("error! no names are selected for billsplitting");
     }
@@ -54,11 +42,11 @@ public class BillSplit {
     public void updateLedgerItem(ReceiptItem testRI){
         double itemTotalCost =testRI.getUnitCost();
         int itemTotalUnit =0;
-        for(Map.Entry<String,Integer> entry: testRI.getBillPeople().entrySet()){
+        for(Map.Entry<String,Integer> entry: testRI.getOwnershipTable().entrySet()){
             Integer ratioQty = entry.getValue();
             itemTotalUnit+=ratioQty;
         }
-        for(Map.Entry<String,Integer> entry: testRI.getBillPeople().entrySet()){
+        for(Map.Entry<String,Integer> entry: testRI.getOwnershipTable().entrySet()){
             String personName = entry.getKey();
             Integer ratioQty = entry.getValue();
             Double itemPay =  itemTotalCost/(double)(itemTotalUnit)*(double)(ratioQty);
@@ -73,11 +61,11 @@ public class BillSplit {
         for(ReceiptItem rc: testRI){
             double itemTotalCost =rc.getUnitCost();
             int itemTotalUnit =0;
-            for(Map.Entry<String,Integer> entry: rc.getBillPeople().entrySet()){
+            for(Map.Entry<String,Integer> entry: rc.getOwnershipTable().entrySet()){
                 Integer ratioQty = entry.getValue();
                 itemTotalUnit+=ratioQty;
             }
-            for(Map.Entry<String,Integer> entry: rc.getBillPeople().entrySet()){
+            for(Map.Entry<String,Integer> entry: rc.getOwnershipTable().entrySet()){
                 String personName = entry.getKey();
                 Integer ratioQty = entry.getValue();
                 Double itemPay =  itemTotalCost/(double)(itemTotalUnit)*(double)(ratioQty);

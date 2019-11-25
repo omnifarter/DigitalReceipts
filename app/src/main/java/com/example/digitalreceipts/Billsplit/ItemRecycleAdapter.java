@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.digitalreceipts.BillSplit;
 import com.example.digitalreceipts.ReceiptItem;
 import com.travijuu.numberpicker.library.Enums.ActionEnum;
 import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
@@ -28,7 +29,9 @@ import java.util.concurrent.ScheduledFuture;
 public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.ItemlistHolder> {
     Context context;
     private List<ReceiptItem> listofNames = new ArrayList<>();
-    String name;
+    List<String> name;
+    BillSplit ledger;
+    int position_name;
     //key is person name, value is a hashmap of items to number
 //    HashMap<String, HashMap<String,Integer>> splitteditems = new HashMap<String,HashMap<String, Integer>>();
 
@@ -38,11 +41,13 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bill_split_item, parent, false);
         context = parent.getContext();
+
         return new ItemlistHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final ItemlistHolder holder, final int position) {
+
         holder.itemName.setText(listofNames.get(position).getItemName());
         holder.itemnumber.setText(Integer.toString(0));
         holder.numberPicker.setMin(0);
@@ -63,10 +68,10 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
         return listofNames.size();
     }
 
-    public ItemRecycleAdapter(List<ReceiptItem> items, String name) {
+    public ItemRecycleAdapter(List<ReceiptItem> items, List<String> name,int position) {
         this.name = name;
         this.listofNames = items;
-
+        this.position_name = position;
     }
 
     public void setListOfItems(List<ReceiptItem> items) {

@@ -58,7 +58,7 @@ public class SliderAdapter extends PagerAdapter {
         RecyclerView displayitems = view.findViewById(R.id.bill_split_recycler);
         displayitems.setLayoutManager(new LinearLayoutManager(context));
         name.setText(names.get(position));
-        final ItemRecycleAdapter adapter = new ItemRecycleAdapter(receiptItems,names.get(position));
+        final ItemRecycleAdapter adapter = new ItemRecycleAdapter(receiptItems,names,position);
         displayitems.setAdapter(adapter);
         //test to change the gabriel,lexuan
 

@@ -32,7 +32,7 @@ public class ReceiptsManager extends AndroidViewModel {
         receiptRepo.delete(receipt);
     }
 
-    // TODO: Implememnt updateItemList and searchReceiptFromNumber  after doing Async (
+
     public void updateItemList(List<ReceiptItem> listOfItems, String receiptNumber){
         receiptRepo.updateItemList(listOfItems, receiptNumber);
     }

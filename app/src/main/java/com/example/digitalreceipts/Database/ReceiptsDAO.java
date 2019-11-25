@@ -29,7 +29,7 @@ public interface ReceiptsDAO {
     @Delete
     void delete(ReceiptsRoom receipt);
 
-    // Query means you are specifying a certain SQL command verbatim. Its good for custom commands
+    // Query means you are specifying a certain SQL command verbatim. Its good for custom commands!
 
     @Query("SELECT * FROM receipt_table WHERE _receiptNumber LIKE :receiptNumber ")
     ReceiptsRoom searchReceiptFromNumber(String receiptNumber);

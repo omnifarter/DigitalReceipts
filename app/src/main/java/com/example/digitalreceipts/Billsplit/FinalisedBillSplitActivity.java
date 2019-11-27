@@ -1,6 +1,7 @@
 package com.example.digitalreceipts.Billsplit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -32,6 +33,7 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
         textView = findViewById(R.id.final_bill);
         button = findViewById(R.id.confirm);
         recyclerView = findViewById(R.id.final_bill_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         FinalBillSplitAdapter finalBillSplitAdapter = new FinalBillSplitAdapter(final_map,personNames);
         recyclerView.setAdapter(finalBillSplitAdapter);
         button.setOnClickListener(new View.OnClickListener() {

@@ -20,6 +20,8 @@ import com.example.digitalreceipts.ReceiptsRoom;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BIllSplitActivity extends AppCompatActivity {
     private ViewPager mSlideViewPager;
@@ -32,6 +34,8 @@ public class BIllSplitActivity extends AppCompatActivity {
     ArrayList<String> names;
     int position_prev = 0;
     HashMap<String,HashMap<String,Integer>> final_map = new HashMap<String,HashMap<String, Integer>>();
+    HashMap<String,HashMap<String,Double>> to_send = new HashMap<String,HashMap<String, Double>>();
+    ArrayList<ReceiptItem> receiptItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,9 @@ public class BIllSplitActivity extends AppCompatActivity {
         addDotsIndictator(0);
         Intent intent = getIntent();
         names = intent.getStringArrayListExtra("NAMES");
+        receiptItems =(intent.getParcelableArrayListExtra("BILL_SPLIT"));
+        receiptNumber = intent.getParcelableExtra("RECEIPT_NUMBER");
+
         mSlideViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -77,11 +84,15 @@ public class BIllSplitActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                to_send=updateLedgerItem(final_map,receiptItems);
+                Intent next = new Intent(getApplicationContext(),FinalisedBillSplitActivity.class);
+                next.putExtra("FINAL_MAP",to_send);
+                next.putStringArrayListExtra("NAMES",names);
+                startActivity(next);
 
             }
         });
 
-        receiptNumber = intent.getParcelableExtra("RECEIPT_NUMBER");
     }
 
     public void addDotsIndictator(int position) {
@@ -100,6 +111,49 @@ public class BIllSplitActivity extends AppCompatActivity {
         }
 
     }
+    public HashMap<String, HashMap<String,Double>> updateLedgerItem(HashMap<String,HashMap<String,Integer>> personLedger, List<ReceiptItem> receiptTable){
+        // itemLedger is item:<name:qty>
+        Map<String,Map<String,Integer>> itemLedger = new HashMap<String,Map<String,Integer>>();
+        HashMap<String,HashMap<String,Double>> convertedLedger = new HashMap<String,HashMap<String,Double>>();
+        for (HashMap.Entry<String,HashMap<String,Integer>> personName : personLedger.entrySet()){
+            String name = personName.getKey();
+            Map<String,Integer> foodEntry = personName.getValue();
+            for (Map.Entry<String,Integer> food : foodEntry.entrySet()){
+                if (itemLedger.containsKey(food)){
+                    //item:<name:food quantity>
+                    Map<String,Integer> tmpItemLedger = itemLedger.get(food);
+                    tmpItemLedger.put(name,food.getValue());
+                    itemLedger.put(food.getKey(),tmpItemLedger);
+                }
+            }
+        }
+
+        for(Map.Entry<String,Map<String,Integer>> itemName : itemLedger.entrySet()){
+            for (ReceiptItem receiptItem: receiptTable){
+                if (receiptItem.getItemName()==itemName.getKey()){
+                    int itemTotalUnit =0;
+                    double itemTotalCost=receiptItem.getUnitCost();
+                    HashMap<String, Double> tmpLedger = new HashMap<String,Double>();
+                    for(Map.Entry<String,Integer> entry : itemName.getValue().entrySet()){
+                        Integer ratioQty = entry.getValue();
+                        itemTotalUnit+=ratioQty;
+                    }
+                    for(Map.Entry<String,Integer> entry: itemName.getValue().entrySet()){
+                        String personName = entry.getKey();
+                        Integer ratioQty = entry.getValue();
+                        Double itemPay =  itemTotalCost/(double)(itemTotalUnit)*(double)(ratioQty);
+                        tmpLedger.put(personName,itemPay);
+                    }
+                    convertedLedger.put(receiptItem.getItemName(),tmpLedger);
+                }
+            }
+
+        }
+        return convertedLedger;
+
+
+    }
+
 
 
 }

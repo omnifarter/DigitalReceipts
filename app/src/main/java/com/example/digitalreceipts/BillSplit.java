@@ -75,6 +75,50 @@ public class BillSplit {
             }
         }
     }
+    //Step 3c:iterate through receiptItem to update value owed by each person for each item
+    //personName =<item1:2,item2:3,...>
+    public Map<String,Map<String,Double>> updateLedgerItem(Map<String,Map<String,Integer>> personLedger, List<ReceiptItem> receiptTable){
+        // itemLedger is item:<name:qty>
+        Map<String,Map<String,Integer>> itemLedger = new HashMap<String,Map<String,Integer>>();
+        Map<String,Map<String,Double>> convertedLedger = new HashMap<String,Map<String,Double>>();
+        for (Map.Entry<String,Map<String,Integer>> personName : personLedger.entrySet()){
+            String name = personName.getKey();
+            Map<String,Integer> foodEntry = personName.getValue();
+            for (Map.Entry<String,Integer> food : foodEntry.entrySet()){
+                if (itemLedger.containsKey(food)){
+                    //item:<name:food quantity>
+                    Map<String,Integer> tmpItemLedger = itemLedger.get(food);
+                    tmpItemLedger.put(name,food.getValue());
+                    itemLedger.put(food.getKey(),tmpItemLedger);
+                }
+            }
+        }
+
+        for(Map.Entry<String,Map<String,Integer>> itemName : itemLedger.entrySet()){
+            for (ReceiptItem receiptItem: receiptTable){
+                if (receiptItem.getItemName()==itemName.getKey()){
+                    int itemTotalUnit =0;
+                    double itemTotalCost=receiptItem.getUnitCost();
+                    Map<String, Double> tmpLedger = new HashMap<String,Double>();
+                    for(Map.Entry<String,Integer> entry : itemName.getValue().entrySet()){
+                        Integer ratioQty = entry.getValue();
+                        itemTotalUnit+=ratioQty;
+                    }
+                    for(Map.Entry<String,Integer> entry: itemName.getValue().entrySet()){
+                        String personName = entry.getKey();
+                        Integer ratioQty = entry.getValue();
+                        Double itemPay =  itemTotalCost/(double)(itemTotalUnit)*(double)(ratioQty);
+                        tmpLedger.put(personName,itemPay);
+                    }
+                    convertedLedger.put(receiptItem.getItemName(),tmpLedger);
+                    }
+                }
+
+            }
+        return convertedLedger;
+
+
+    }
     //Step 4: display sum owed by each person
     public void displaySumOwed(){
         for(Map.Entry<String,Double> entry: ledger.entrySet()){

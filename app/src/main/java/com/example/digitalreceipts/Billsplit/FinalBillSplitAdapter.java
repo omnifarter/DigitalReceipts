@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.digitalreceipts.R;
@@ -32,6 +33,7 @@ public class FinalBillSplitAdapter extends RecyclerView.Adapter<FinalBillSplitAd
     @Override
     public void onBindViewHolder(@NonNull FinalBillSplitAdapter.ItemListHolder holder, int position) {
         holder.personName.setText(personNames.get(position));
+        holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         FinalBillSplitPersonAdapter finalBillSplitPersonAdapter = new FinalBillSplitPersonAdapter(final_map,personNames.get(position));
         holder.recyclerView.setAdapter(finalBillSplitPersonAdapter);
 

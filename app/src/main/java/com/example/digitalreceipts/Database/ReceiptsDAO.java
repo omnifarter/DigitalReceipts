@@ -23,6 +23,9 @@ public interface ReceiptsDAO {
     @Insert
     void insert(ReceiptsRoom receipt);
 
+    /**
+     * @param receipt
+     */
     @Update
     void update(ReceiptsRoom receipt);
 

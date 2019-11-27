@@ -27,6 +27,8 @@ import android.widget.Toast;
 
 import com.example.digitalreceipts.Billsplit.BIllSplitActivity;
 import com.example.digitalreceipts.R;
+import com.example.digitalreceipts.ReceiptItem;
+import com.example.digitalreceipts.ReceiptsRoom;
 
 import java.util.ArrayList;
 
@@ -59,7 +61,6 @@ public class ContactsActivity extends AppCompatActivity {
         final Cursor cursor_freq = getContentResolver().query(ContactsContract.Contacts.CONTENT_STREQUENT_URI,null,null,null);
         simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.contact_item_list, cursor_freq, from, to);
         l1.setAdapter(simpleCursorAdapter);
-
         l1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         next.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +69,8 @@ public class ContactsActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), BIllSplitActivity.class);
                 Intent current = getIntent();
                 intent.putParcelableArrayListExtra("BILL_SPLIT",current.getParcelableArrayListExtra("BILL_SPLIT"));
-                intent.putExtra("NAMES",names);
+                intent.putExtra("RECEIPT_NUMBER",current.getStringExtra("RECEIPT_NUMBER"));
+                intent.putStringArrayListExtra("NAMES",names);
                 startActivity(intent);
             }
         });

@@ -3,70 +3,48 @@ package com.example.digitalreceipts.Billsplit;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-import com.example.digitalreceipts.R;
-import com.example.digitalreceipts.ReceiptDetailsActivity;
 import com.example.digitalreceipts.ReceiptItem;
-import com.example.digitalreceipts.ReceiptsRoom;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class SliderAdapter extends PagerAdapter {
+public class SliderAdapter extends SmartFragmentStatePagerAdapter {
     Context context;
-    LayoutInflater layoutInflater;
     ArrayList<String> names = new ArrayList<>();
     ArrayList<String> item_names = new ArrayList<>();
-    ArrayList<ReceiptItem> receiptItems;
+    List<ReceiptItem> receiptItems;
+    String receiptNumber;
+    HashMap<String,Integer> temp_map= new HashMap<String,Integer>();
     @Override
     public int getCount() {
         return this.names.size();
     }
 
-    public SliderAdapter(Context context){
-        this.context = context;
+    public SliderAdapter(FragmentManager fm, Context c){
+        super(fm);
+        this.context = c;
         Intent intent = ((Activity) context).getIntent();
         receiptItems = intent.getParcelableArrayListExtra("BILL_SPLIT");
         this.names = intent.getStringArrayListExtra("NAMES");
+        receiptNumber = intent.getStringExtra("RECEIPT_NUMBER");
     }
 
 
+    @NonNull
     @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view==(ConstraintLayout)object;
+    public Fragment getItem(int position) {
+        return BillSplitFragment.newInstance(position,names.get(position));
+
     }
 
-    @Override
-    public Object instantiateItem(ViewGroup container, int position){
-        layoutInflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.bill_split_layout,container,false);
-        TextView name = view.findViewById(R.id.name_display);
-        RecyclerView displayitems = view.findViewById(R.id.bill_split_recycler);
-        displayitems.setLayoutManager(new LinearLayoutManager(context));
-        name.setText(names.get(position));
-        final ItemRecycleAdapter adapter = new ItemRecycleAdapter(receiptItems,names,position);
-        displayitems.setAdapter(adapter);
-        //test to change the gabriel,lexuan
-
-        container.addView(view);
-        return view;
-    }
-
-    public void destroyItem(ViewGroup container,int position,Object object){
-        container.removeView((ConstraintLayout)object);
+    public HashMap<String, Integer> getTemp_map() {
+        return temp_map;
     }
 }

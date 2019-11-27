@@ -1,6 +1,7 @@
 package com.example.digitalreceipts.Billsplit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
     List<String> name;
     BillSplit ledger;
     int position_name;
+    HashMap<String,Integer> item_quantity = new HashMap<String,Integer>();
     //key is person name, value is a hashmap of items to number
 //    HashMap<String, HashMap<String,Integer>> splitteditems = new HashMap<String,HashMap<String, Integer>>();
 
@@ -47,11 +49,8 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
 
     @Override
     public void onBindViewHolder(final ItemlistHolder holder, final int position) {
-
         holder.itemName.setText(listofNames.get(position).getItemName());
         holder.itemnumber.setText(Integer.toString(0));
-        holder.numberPicker.setMin(0);
-        holder.numberPicker.setMax(100);
         holder.numberPicker.setValue(0);
         holder.numberPicker.setValueChangedListener(new ValueChangedListener() {
             //TODO ADD BILL SPLIT FUNCTIONALITY HERE
@@ -59,6 +58,9 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
             @Override
             public void valueChanged(int value, ActionEnum action) {
                 holder.itemnumber.setText(Integer.toString(value));
+                Toast.makeText(context, name.get(position_name), Toast.LENGTH_LONG).show();
+                item_quantity.put(listofNames.get(position).getItemName(),value);
+                System.out.println(item_quantity.toString());
             }
         });
     }
@@ -67,6 +69,7 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
     public int getItemCount() {
         return listofNames.size();
     }
+
 
     public ItemRecycleAdapter(List<ReceiptItem> items, List<String> name,int position) {
         this.name = name;
@@ -79,6 +82,9 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
         notifyDataSetChanged();
     }
 
+    public HashMap<String,Integer> getItem_quantity() {
+        return item_quantity;
+    }
 
     class ItemlistHolder extends RecyclerView.ViewHolder {
         private TextView itemName;

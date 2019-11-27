@@ -58,7 +58,7 @@ public class receiptFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_receipts, container, false);
@@ -128,6 +128,7 @@ public class receiptFragment extends Fragment {
                             Toast.makeText(getContext(), "bill spitting", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getActivity(), ContactsActivity.class);
                             intent.putParcelableArrayListExtra(BILL_KEY, (ArrayList<ReceiptItem>)receipts.get_listOfItems());
+                            intent.putExtra("RECEIPT_NUMBER",receipts.get_receiptNumber());
                             startActivity(intent);
                         } else {
 

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ public class BIllSplitActivity extends AppCompatActivity {
     private ViewPager mSlideViewPager;
     private LinearLayout mDotLayout;
     SliderAdapter sliderAdapter;
+    Button button;
     private TextView[] mDots;
     private BillSplit ledger;
     String receiptNumber;
@@ -35,6 +38,7 @@ public class BIllSplitActivity extends AppCompatActivity {
         ledger = new BillSplit(this);   //creates an instance of billsplitting
         setContentView(R.layout.billsplitactivity);
         mSlideViewPager = findViewById(R.id.slideViewPager);
+        button = findViewById(R.id.button3);
         mDotLayout = findViewById(R.id.dotsLayout);
         sliderAdapter = new SliderAdapter(getSupportFragmentManager(),this);
         mSlideViewPager.setAdapter(sliderAdapter);
@@ -69,6 +73,14 @@ public class BIllSplitActivity extends AppCompatActivity {
 
             }
         });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         receiptNumber = intent.getParcelableExtra("RECEIPT_NUMBER");
     }
 

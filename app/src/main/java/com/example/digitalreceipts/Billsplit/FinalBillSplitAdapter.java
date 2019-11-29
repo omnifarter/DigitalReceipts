@@ -34,6 +34,7 @@ public class FinalBillSplitAdapter extends RecyclerView.Adapter<FinalBillSplitAd
     public void onBindViewHolder(@NonNull FinalBillSplitAdapter.ItemListHolder holder, int position) {
         holder.personName.setText(personNames.get(position));
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        System.out.println("BEFORE FINAL BILL SPLIT PERSON ADAPTER: final_map = " + final_map.toString() + ", personName = " + personNames.get(position));
         FinalBillSplitPersonAdapter finalBillSplitPersonAdapter = new FinalBillSplitPersonAdapter(final_map,personNames.get(position));
         holder.recyclerView.setAdapter(finalBillSplitPersonAdapter);
 
@@ -41,7 +42,7 @@ public class FinalBillSplitAdapter extends RecyclerView.Adapter<FinalBillSplitAd
 
     @Override
     public int getItemCount() {
-        return 0;
+        return personNames.size();
     }
 
     public FinalBillSplitAdapter(HashMap<String,HashMap<String,Double>> final_map,ArrayList<String> personNames){
@@ -58,7 +59,6 @@ public class FinalBillSplitAdapter extends RecyclerView.Adapter<FinalBillSplitAd
             this.personName = itemView.findViewById(R.id.person_name);
             this.recyclerView = itemView.findViewById(R.id.final_bill_split_person_recycle);
 
-            // No listener attached. All quiet on the Western Front
 
         }
 

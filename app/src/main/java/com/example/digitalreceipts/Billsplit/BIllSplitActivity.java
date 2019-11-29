@@ -3,6 +3,7 @@ package com.example.digitalreceipts.Billsplit;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Person;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -57,12 +58,8 @@ public class BIllSplitActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position_prev!=position) {
-                    System.out.println("position offset: " + positionOffset);
-                    System.out.println("position offset pixels: " + positionOffsetPixels);
                     BillSplitFragment billSplitFragment = (BillSplitFragment)sliderAdapter.getRegisteredFragment(position_prev);
                     HashMap<String,Integer> temp_map = billSplitFragment.getTemp_map();
-                    System.out.println("this is temp map: " + temp_map.toString());
-                    System.out.println("this is current position: " + Integer.toString(position));
                     final_map.put(names.get(position_prev), temp_map);
                     System.out.println(final_map.toString());
                     position_prev=position;
@@ -84,7 +81,7 @@ public class BIllSplitActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                to_send=updateLedgerItem(final_map,receiptItems);
+                to_send=updateLedgerPerson(updateLedgerItem(final_map,receiptItems));
                 Intent next = new Intent(getApplicationContext(),FinalisedBillSplitActivity.class);
                 next.putExtra("FINAL_MAP",to_send);
                 next.putStringArrayListExtra("NAMES",names);
@@ -112,21 +109,28 @@ public class BIllSplitActivity extends AppCompatActivity {
 
     }
     public HashMap<String, HashMap<String,Double>> updateLedgerItem(HashMap<String,HashMap<String,Integer>> personLedger, List<ReceiptItem> receiptTable){
-        // itemLedger is item:<name:qty>
+        // itemLedger is name:<item:qty>
         Map<String,Map<String,Integer>> itemLedger = new HashMap<String,Map<String,Integer>>();
         HashMap<String,HashMap<String,Double>> convertedLedger = new HashMap<String,HashMap<String,Double>>();
         for (HashMap.Entry<String,HashMap<String,Integer>> personName : personLedger.entrySet()){
             String name = personName.getKey();
             Map<String,Integer> foodEntry = personName.getValue();
             for (Map.Entry<String,Integer> food : foodEntry.entrySet()){
-                if (itemLedger.containsKey(food)){
+                Map<String,Integer> tmpItemLedger = new HashMap<String,Integer>();
+                if (itemLedger.containsKey(food.getKey())){
                     //item:<name:food quantity>
-                    Map<String,Integer> tmpItemLedger = itemLedger.get(food);
+                    tmpItemLedger = itemLedger.get(food.getKey());
+                    tmpItemLedger.put(name,food.getValue());
+                    itemLedger.put(food.getKey(),tmpItemLedger);
+                }else{
+
                     tmpItemLedger.put(name,food.getValue());
                     itemLedger.put(food.getKey(),tmpItemLedger);
                 }
             }
         }
+
+        System.out.println("THIS IS ITEM LEDGER" + itemLedger.toString());
 
         for(Map.Entry<String,Map<String,Integer>> itemName : itemLedger.entrySet()){
             for (ReceiptItem receiptItem: receiptTable){
@@ -141,7 +145,7 @@ public class BIllSplitActivity extends AppCompatActivity {
                     for(Map.Entry<String,Integer> entry: itemName.getValue().entrySet()){
                         String personName = entry.getKey();
                         Integer ratioQty = entry.getValue();
-                        Double itemPay =  itemTotalCost/(double)(itemTotalUnit)*(double)(ratioQty);
+                        Double itemPay =  round(itemTotalCost/(double)(itemTotalUnit)*(double)(ratioQty),2);
                         tmpLedger.put(personName,itemPay);
                     }
                     convertedLedger.put(receiptItem.getItemName(),tmpLedger);
@@ -153,6 +157,37 @@ public class BIllSplitActivity extends AppCompatActivity {
 
 
     }
+    public HashMap<String, HashMap<String,Double>> updateLedgerPerson(HashMap<String,HashMap<String,Double>> convertedLedger){
+        HashMap<String, HashMap<String,Double>> PersonLedger= new HashMap<String, HashMap<String,Double>>();
+
+        for(HashMap.Entry<String,HashMap<String,Double> >item: convertedLedger.entrySet()){
+            for(HashMap.Entry<String,Double> item2: item.getValue().entrySet()){
+                HashMap<String,Double> tmpItemLedger = new HashMap<String, Double>();
+                if (PersonLedger.containsKey(item2.getKey())){
+                    //item:<name:food quantity>
+                    tmpItemLedger = PersonLedger.get(item2.getKey());
+                    tmpItemLedger.put(item.getKey(),item2.getValue());
+                    PersonLedger.put(item2.getKey(),tmpItemLedger);
+                }else{
+
+                    tmpItemLedger.put(item.getKey(),item2.getValue());
+                    PersonLedger.put(item2.getKey(),tmpItemLedger);
+                }
+
+            }
+        }
+        return PersonLedger;
+
+    }
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
 
 
 

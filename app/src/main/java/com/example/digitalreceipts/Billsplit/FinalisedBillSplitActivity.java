@@ -30,16 +30,20 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
         intent = getIntent();
         personNames = intent.getStringArrayListExtra("NAMES");
         final_map = (HashMap<String,HashMap<String,Double>>)intent.getSerializableExtra("FINAL_MAP");
+        System.out.println("This is final map" + final_map.toString());
+        System.out.println(personNames);
         textView = findViewById(R.id.final_bill);
         button = findViewById(R.id.confirm);
         recyclerView = findViewById(R.id.final_bill_recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this) {
+        });
         FinalBillSplitAdapter finalBillSplitAdapter = new FinalBillSplitAdapter(final_map,personNames);
         recyclerView.setAdapter(finalBillSplitAdapter);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(FinalisedBillSplitActivity.this, "confirmed.", Toast.LENGTH_SHORT).show();
+
             }
         });
     }

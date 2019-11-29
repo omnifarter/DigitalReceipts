@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 public class FinalBillSplitPersonAdapter extends RecyclerView.Adapter<FinalBillSplitPersonAdapter.ItemViewHolder> {
-    ArrayList<Double> receiptCosts;
-    ArrayList<String> receiptItems;
+    ArrayList<Double> receiptCosts = new ArrayList<Double>();
+    ArrayList<String> receiptItems = new ArrayList<String>();
     Context context;
-    String position_name;
+    String position_name = "";
     @NonNull
     @Override
 
@@ -37,7 +37,7 @@ public class FinalBillSplitPersonAdapter extends RecyclerView.Adapter<FinalBillS
 
     @Override
     public void onBindViewHolder(@NonNull FinalBillSplitPersonAdapter.ItemViewHolder holder, int position) {
-        holder.itemCost.setText(Double.toString(receiptCosts.get(position)));
+        holder.itemCost.setText("$"+ Double.toString(receiptCosts.get(position)));
         holder.itemName.setText(receiptItems.get(position));
     }
 
@@ -47,11 +47,12 @@ public class FinalBillSplitPersonAdapter extends RecyclerView.Adapter<FinalBillS
     }
 
     public FinalBillSplitPersonAdapter(HashMap<String,HashMap<String,Double>> receiptItems,String position_name){
-        for (Map.Entry<String,Double> map_element:receiptItems.get(position_name).entrySet()) {
+        this.position_name=position_name;
+        HashMap<String,Double> receiptthings = receiptItems.get(position_name);
+        for (Map.Entry<String,Double> map_element:receiptthings.entrySet()) {
             this.receiptItems.add(map_element.getKey());
             this.receiptCosts.add(map_element.getValue());
         }
-        this.position_name=position_name;
     }
     class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView itemName;

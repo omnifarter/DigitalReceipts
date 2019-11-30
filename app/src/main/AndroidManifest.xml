@@ -3,6 +3,9 @@
     package="com.example.digitalreceipts">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -11,6 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".CameraOCR.CameraActivity" />
         <activity android:name=".Billsplit.FinalisedBillSplitActivity"></activity>
         <activity android:name=".Billsplit.BIllSplitActivity" />
         <activity android:name=".Contacts.ContactsActivity" />

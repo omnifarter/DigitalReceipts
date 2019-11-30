@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CameraOCR.CameraActivity">
+
+    <TextView
+        android:id="@+id/receiptDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="300dp"
+        android:text="Hello World"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/galleryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload Receipt"
+        app:layout_constraintTop_toBottomOf="@+id/receiptDisplay"
+        app:layout_constraintLeft_toLeftOf="@id/receiptDisplay"
+        app:layout_constraintRight_toRightOf="@id/receiptDisplay"
+        tools:layout_editor_absoluteX="160dp" />
+
+    <Button
+        android:id="@+id/cameraButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Take Photo"
+        app:layout_constraintRight_toRightOf="@id/receiptDisplay"
+        app:layout_constraintLeft_toLeftOf="@id/receiptDisplay"
+        app:layout_constraintTop_toBottomOf="@+id/galleryButton"
+        tools:layout_editor_absoluteY="631dp" />
+
+    <Button
+        android:id="@+id/retrieveAPI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Retrieve API"
+        app:layout_constraintTop_toBottomOf="@+id/cameraButton"
+        app:layout_constraintLeft_toLeftOf="@id/receiptDisplay"
+        app:layout_constraintRight_toRightOf="@id/receiptDisplay"
+        tools:layout_editor_absoluteX="160dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

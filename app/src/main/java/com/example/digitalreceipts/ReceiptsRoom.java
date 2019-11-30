@@ -122,6 +122,7 @@ public class ReceiptsRoom implements Parcelable {
         dest.writeString(_company);
         dest.writeString(_receiptUri);
         dest.writeDouble(_totalCost);
+        dest.writeList(_listOfItems);
     }
 }
 

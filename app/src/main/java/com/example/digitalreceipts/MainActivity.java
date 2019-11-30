@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.digitalreceipts.CameraOCR.CameraActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 //test push from desktop
 
@@ -39,14 +41,17 @@ public class MainActivity extends FragmentActivity {
                 switch(menuItem.getItemId()){
                     case R.id.receipts:
                         selectedfragment = new receiptFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedfragment).commit();
                         break;
 
+
                     case R.id.Camera:
-                        selectedfragment = new BlankFragment();
+                        Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+                        startActivity(intent);
                         break;
 
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedfragment).commit();
+                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedfragment).commit();
                 return true;
             }
         });

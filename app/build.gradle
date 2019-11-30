@@ -11,6 +11,7 @@ allprojects {
         // maven {
         //     url 'https://maven.google.com'
         // }
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -79,4 +80,10 @@ dependencies {
     implementation 'com.github.travijuu:numberpicker:1.0.7'
     // this is for the DB demo!
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+    // The following is added for Retrofit API fetching nonsenses
+    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
+    // this is for delay handling
+    implementation 'com.github.pawel-schmidt:okhttp-delay-interceptor:master-SNAPSHOT'
 }

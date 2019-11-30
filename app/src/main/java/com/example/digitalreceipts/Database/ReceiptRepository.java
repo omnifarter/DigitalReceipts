@@ -48,7 +48,7 @@ public class ReceiptRepository {
 //        new SearchReceiptFromNumberAsyncTask(receiptsDAO).execute(receiptID);
 //    }
 
-    public void updateItemList(List<ReceiptItem> listOfItems, String receiptNumber){
+    public void updateItemList(List<ReceiptItem> listOfItems, int receiptNumber){
 
         new UpdateItemListAsyncTask(receiptsDAO, listOfItems, receiptNumber).execute();
     }
@@ -134,21 +134,21 @@ public class ReceiptRepository {
         }
     }
 
-    private static class UpdateItemListAsyncTask extends AsyncTask<String, Void, Void>
+    private static class UpdateItemListAsyncTask extends AsyncTask<Integer, Void, Void>
     {
         List<ReceiptItem> listofitems;
-        String receiptNumber;
+        int receiptNumber;
         private ReceiptsDAO receiptsDAO;
 
-        private UpdateItemListAsyncTask(ReceiptsDAO receiptsDAO, List<ReceiptItem> listofitems, String receiptNumber){
+        private UpdateItemListAsyncTask(ReceiptsDAO receiptsDAO, List<ReceiptItem> listofitems, Integer receiptNumber){
             this.listofitems = listofitems;
             this.receiptNumber = receiptNumber;
             this.receiptsDAO = receiptsDAO;
         }
 
         @Override
-        protected Void doInBackground(String ... strings) {
-            receiptsDAO.updateItemList(listofitems,  receiptNumber);
+        protected Void doInBackground(Integer ... integers) {
+            receiptsDAO.updateItemList(listofitems, receiptNumber);
             return null;
         }
     }

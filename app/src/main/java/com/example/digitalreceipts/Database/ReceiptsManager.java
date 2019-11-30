@@ -33,7 +33,7 @@ public class ReceiptsManager extends AndroidViewModel {
     }
 
 
-    public void updateItemList(List<ReceiptItem> listOfItems, String receiptNumber){
+    public void updateItemList(List<ReceiptItem> listOfItems, int receiptNumber){
         receiptRepo.updateItemList(listOfItems, receiptNumber);
     }
 

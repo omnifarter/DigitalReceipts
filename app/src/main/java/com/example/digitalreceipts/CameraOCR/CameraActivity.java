@@ -10,12 +10,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.example.digitalreceipts.Database.ReceiptsManager;
 import com.example.digitalreceipts.R;
+import com.example.digitalreceipts.ReceiptsRoom;
 
 import java.io.File;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -24,6 +31,7 @@ import okhttp3.RequestBody;
 public class CameraActivity extends AppCompatActivity {
     private static final int GALLERY_REQUEST = 2888;
     private static final int CAMERA_REQUEST = 1888;
+    public ReceiptsManager receiptsManager;
     private static final int MY_CAMERA_PERMISSION_CODE = 6604;
 
     TextView receiptDisplay;
@@ -38,12 +46,22 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        // added receipt manager here:
+        receiptsManager = ViewModelProviders.of(this).get(ReceiptsManager.class);
+        receiptsManager.getAllReceipts().observe(this, new Observer<List<ReceiptsRoom>>() {
+            @Override
+            public void onChanged(List<ReceiptsRoom> receiptsRooms) {
+                // for recycleview when we want to display data. currently only showing data
+                Toast.makeText(CameraActivity.this, "DB manipulated", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
 
         receiptDisplay = findViewById(R.id.receiptDisplay);
         galleryButton = findViewById(R.id.galleryButton);
         cameraButton = findViewById(R.id.cameraButton);
-        tabscannerapi = TBApi.getInstance(receiptDisplay);
+        tabscannerapi = TBApi.getInstance(receiptDisplay, receiptsManager);
 
         galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override

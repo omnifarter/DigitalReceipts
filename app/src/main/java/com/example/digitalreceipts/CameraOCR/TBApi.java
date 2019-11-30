@@ -4,11 +4,14 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.digitalreceipts.Database.ReceiptsManager;
+import com.example.digitalreceipts.ReceiptItem;
+import com.example.digitalreceipts.ReceiptsRoom;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.simplemented.okdelay.DelayInterceptor;
 import com.simplemented.okdelay.SimpleDelayProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -34,15 +37,16 @@ public class TBApi {
     static TextView receiptDisplay;
     static String queryToken;
     static String result;
+    private ReceiptsManager receiptsManager;
     SimpleDelayProvider simpleDelayProvider = new SimpleDelayProvider(0, TimeUnit.MILLISECONDS);
 
 
-    private TBApi(TextView receiptDisplay) {
+    private TBApi(TextView receiptDisplay, ReceiptsManager receiptsManager) {
 
         this.receiptDisplay = receiptDisplay;
 
         // Creates new database insatnce
-
+        this.receiptsManager = receiptsManager;
 
         // Handles all forms of initialisation for RETROFIT
         Gson gson = new GsonBuilder().serializeNulls().create();
@@ -63,9 +67,9 @@ public class TBApi {
     }
 
     //Singleton Design Pattern!
-    public static synchronized TBApi getInstance(TextView receiptDisplay) {
+    public static synchronized TBApi getInstance(TextView receiptDisplay, ReceiptsManager receiptsManager) {
         if (instance == null)
-            instance = new TBApi(receiptDisplay);
+            instance = new TBApi(receiptDisplay, receiptsManager);
 
         return instance;
     }
@@ -121,6 +125,22 @@ public class TBApi {
                 String company = receiptProcessed.getData().getEstablishment();
                 String total_cost = receiptProcessed.getData().getTotal();
                 List<OCRReceipt.Result.LineItem> itemised = receiptProcessed.getData().getLineItems();
+                List<ReceiptItem> listOfReceiptItems = new ArrayList<ReceiptItem>();
+
+                // Scans across each item in ItemList
+                for (OCRReceipt.Result.LineItem items : itemised)
+                {
+                    // Creates new Receipt Item
+                    ReceiptItem receiptItem = new ReceiptItem(items.getDescClean(), Double.valueOf(items.getLineTotal()), items.getQty());
+                    listOfReceiptItems.add(receiptItem);
+                }
+                ReceiptsRoom receiptRoom = new ReceiptsRoom(receiptProcessed.getData().getDate(),
+                        "NULL",receiptProcessed.getData().getEstablishment(),
+                        listOfReceiptItems,
+                        Double.valueOf(receiptProcessed.getData().getTotal()),
+                        receiptProcessed.getData().getExpenseType());
+                receiptsManager.insert(receiptRoom);
+
                 String obj1_name = itemised.get(0).getDescClean();
                 String obj1_price = itemised.get(0).getLineTotal();
                 String obj1_qty = String.valueOf(itemised.get(0).getQty());

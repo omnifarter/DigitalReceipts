@@ -63,7 +63,7 @@ public abstract class ReceiptDB extends RoomDatabase {
             List<ReceiptItem> test = new ArrayList<ReceiptItem>();
             test.add(dms);
             Log.i("DBAsync", "Running1");
-            receiptsDAO.insert(new ReceiptsRoom("DEF363637", "fjfi", "wfurw", test, 55.50));
+            receiptsDAO.insert(new ReceiptsRoom("DEF363637", "fjfi", "wfurw", test, 55.50, "testing"));
             Log.i("DBAsync", "Inserted");
 //            ReceiptItem dms1 = new ReceiptItem("Walgred",12.02, 3);
 //            List<ReceiptItem> test1 = new ArrayList<ReceiptItem>();

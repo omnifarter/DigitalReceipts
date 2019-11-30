@@ -128,7 +128,7 @@ public class receiptFragment extends Fragment {
                             Toast.makeText(getContext(), "bill spitting", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getActivity(), ContactsActivity.class);
                             intent.putParcelableArrayListExtra(BILL_KEY, (ArrayList<ReceiptItem>)receipts.get_listOfItems());
-                            intent.putExtra("RECEIPT_NUMBER",receipts.get_receiptNumber());
+                            intent.putExtra("RECEIPT_NUMBER",String.valueOf(receipts.getId()));
                             startActivity(intent);
                         } else {
 

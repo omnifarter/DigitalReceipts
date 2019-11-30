@@ -53,6 +53,11 @@ public class BIllSplitActivity extends AppCompatActivity {
         names = intent.getStringArrayListExtra("NAMES");
         receiptItems =(intent.getParcelableArrayListExtra("BILL_SPLIT"));
         receiptNumber = intent.getParcelableExtra("RECEIPT_NUMBER");
+        Log.i("Finding string", "value of string (unloaded) is: " + intent.getParcelableExtra("RECEIPT_NUMBER"));
+        Log.i("Finding string", "value of string (loaded) is: " + receiptNumber);
+
+
+
 
         mSlideViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -83,7 +88,12 @@ public class BIllSplitActivity extends AppCompatActivity {
             public void onClick(View view) {
                 to_send=updateLedgerPerson(updateLedgerItem(final_map,receiptItems));
                 Intent next = new Intent(getApplicationContext(),FinalisedBillSplitActivity.class);
-                next.putExtra("FINAL_MAP",to_send);
+                //TODO @Gabriel: This is the sending end of the bundle... U can find receiving end at FinalisedBillSplitActivity.class
+
+                Bundle extras = new Bundle();
+                extras.putSerializable("FINAL_MAP",to_send);
+                extras.putString("RECEIPT_NUMBER",receiptNumber);
+                next.putExtras(extras);
                 next.putStringArrayListExtra("NAMES",names);
                 startActivity(next);
 

@@ -107,6 +107,12 @@ public class CameraActivity extends AppCompatActivity {
             MultipartBody.Part filePart = MultipartBody.Part.createFormData("file",
                     imageFile.getName(), RequestBody.create(MediaType.parse("image/*"), imageFile));
             //receiptDisplay.setImageURI(imageUri);
+            /** The next line is actually running  asynchronously in the background thread. Hence, will
+             * be great if we can run some form of animation directly after the next line to play
+             * animations
+             */
+
+            //TODO @Crystal : Add aniamtion in the form of gif/whatever works here
             tabscannerapi.postRequest(filePart);
 
         }

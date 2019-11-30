@@ -70,6 +70,7 @@ public class ContactsActivity extends AppCompatActivity {
                 Intent current = getIntent();
                 intent.putParcelableArrayListExtra("BILL_SPLIT",current.getParcelableArrayListExtra("BILL_SPLIT"));
                 intent.putExtra("RECEIPT_NUMBER",current.getStringExtra("RECEIPT_NUMBER"));
+                Log.i("Finding string", "value of string is: " + current.getStringExtra("RECEIPT_NUMBER"));
                 intent.putStringArrayListExtra("NAMES",names);
                 startActivity(intent);
             }

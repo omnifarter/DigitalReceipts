@@ -23,15 +23,22 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Button button;
     TextView textView;
+    String receiptNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finalised_bill_split);
+        //TODO @Gabriel: This is the receiving end of the bundle... The reason need bundle is because need to transfer over the receiptID throughout as well
+
         intent = getIntent();
+        Bundle extras = intent.getExtras();
         personNames = intent.getStringArrayListExtra("NAMES");
-        final_map = (HashMap<String,HashMap<String,Double>>)intent.getSerializableExtra("FINAL_MAP");
+        final_map = (HashMap<String,HashMap<String,Double>>)extras.getSerializable("FINAL_MAP");
+        receiptNumber =extras.getString("RECEIPT_NUMBER");
         System.out.println("This is final map" + final_map.toString());
+        System.out.println("Index Value is at : " + receiptNumber);
         System.out.println(personNames);
+
         textView = findViewById(R.id.final_bill);
         button = findViewById(R.id.confirm);
         recyclerView = findViewById(R.id.final_bill_recycler);
@@ -43,6 +50,13 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(FinalisedBillSplitActivity.this, "confirmed.", Toast.LENGTH_SHORT).show();
+                /** Because our DB is async, I plan to run both DB update and Payment code here. Hence, will need a
+                 * ReceiptItem object ready, with all the ownershipTable info updated.
+                 */
+
+                //TODO: @ShiYing/@Gabriel get the _listofitems (List of receipt items) updated with the ownershipTable at this point so that I can do the DB command. See ReceiptItem, under setOwnershipTable for more info
+                //TODO: @ShiYing/@Gabriel  prepare contact numbers of the people selected. Raised in issue #2 on github. Can close issue when completed
+
 
             }
         });

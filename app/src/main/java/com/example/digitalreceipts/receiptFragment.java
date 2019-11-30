@@ -86,7 +86,7 @@ public class receiptFragment extends Fragment {
                     rubbish.add(burger1);
                     rubbish.add(burger2);
                     rubbish.add(burger3);
-                    receiptsManager.insert(new ReceiptsRoom("nonsense", " more nonsense", "ridiculous company", rubbish, 13.50));
+                    receiptsManager.insert(new ReceiptsRoom("nonsense", " more nonsense", "ridiculous company", rubbish, 13.50, "food"));
                 }
                 adapter.setReceipts(receiptsRooms);
             }

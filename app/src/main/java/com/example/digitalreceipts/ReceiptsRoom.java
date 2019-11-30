@@ -28,7 +28,7 @@ https://developer.android.com/reference/android/arch/persistence/room/Embedded
 Edit: Embedded didnt work so i swap to ugly TypeConverter method. My bad
 
 */
-//TODO make ReceiptsRoom NOT parceable. I fked it up
+
 
 @Entity(tableName = "receipt_table")
 public class ReceiptsRoom implements Parcelable {
@@ -42,20 +42,24 @@ public class ReceiptsRoom implements Parcelable {
 
     private String _receiptUri;
 
-    //TODO: Deteremine whether we stick to string or use proper datatype
     private double _totalCost;
+
+    private String _expenseType;
+
+    private boolean _splitStatus;
 
 
     @TypeConverters(ReceiptTypeConverters.class)
     private List<ReceiptItem> _listOfItems;
 
-    public ReceiptsRoom(String receiptNumber, String receiptUri, String company,List<ReceiptItem> listOfItems, double totalCost ) {
+    public ReceiptsRoom(String receiptNumber, String receiptUri, String company,List<ReceiptItem> listOfItems, double totalCost, String expenseType ) {
         this._receiptNumber = receiptNumber;
         this._receiptUri = receiptUri;
         this._company = company;
-
+        this._expenseType = expenseType;
         this._listOfItems = listOfItems;
         this._totalCost = totalCost;
+        this._splitStatus = true;
     }
 
 
@@ -65,6 +69,8 @@ public class ReceiptsRoom implements Parcelable {
         _company = in.readString();
         _receiptUri = in.readString();
         _totalCost = in.readDouble();
+        _expenseType = in.readString();
+        _splitStatus = in.readBoolean();
         // in.readParcelableList(_listOfItems, ClassLoader.getSystemClassLoader());
     }
 
@@ -109,6 +115,17 @@ public class ReceiptsRoom implements Parcelable {
         return _totalCost;
     }
 
+    //TODO: Test out the 3 newly added methods
+
+    public String get_expenseType(){return _expenseType;}
+
+    public boolean is_splitStatus() {
+        return _splitStatus;
+    }
+
+    public void set_splitStatus(boolean _splitStatus) {
+        this._splitStatus = _splitStatus;
+    }
 
     @Override
     public int describeContents() {
@@ -119,10 +136,12 @@ public class ReceiptsRoom implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(_receiptNumber);
+        dest.writeString(_expenseType);
         dest.writeString(_company);
         dest.writeString(_receiptUri);
         dest.writeDouble(_totalCost);
         dest.writeList(_listOfItems);
+        dest.writeBoolean(_splitStatus);
     }
 }
 

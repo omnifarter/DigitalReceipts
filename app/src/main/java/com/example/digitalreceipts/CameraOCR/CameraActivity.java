@@ -14,12 +14,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.digitalreceipts.Database.ReceiptsManager;
 import com.example.digitalreceipts.R;
-import com.example.digitalreceipts.ReceiptsRoom;
+import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
 
 import java.io.File;
 import java.util.List;

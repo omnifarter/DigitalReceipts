@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.digitalreceipts.R;
-import com.example.digitalreceipts.ReceiptItem;
+import com.example.digitalreceipts.MainActivity.ReceiptItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;

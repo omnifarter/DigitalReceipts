@@ -1,5 +1,6 @@
 package com.example.digitalreceipts.Billsplit;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,34 +11,31 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.digitalreceipts.R;
-import com.example.digitalreceipts.ReceiptItem;
-import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FinalBillSplitPersonAdapter extends RecyclerView.Adapter<FinalBillSplitPersonAdapter.ItemViewHolder> {
-    ArrayList<Double> receiptCosts = new ArrayList<Double>();
-    ArrayList<String> receiptItems = new ArrayList<String>();
-    Context context;
-    String position_name = "";
+    private ArrayList<Double> receiptCosts = new ArrayList<Double>();
+    private ArrayList<String> receiptItems = new ArrayList<String>();
+
     @NonNull
     @Override
 
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_final_bill_split_person_item, parent, false);
-        context = parent.getContext();
+        Context context = parent.getContext();
 
         return new ItemViewHolder(itemView);
 
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull FinalBillSplitPersonAdapter.ItemViewHolder holder, int position) {
-        holder.itemCost.setText("$"+ Double.toString(receiptCosts.get(position)));
+        holder.itemCost.setText(String.format("$%.2f", receiptCosts.get(position)));
         holder.itemName.setText(receiptItems.get(position));
     }
 
@@ -47,18 +45,19 @@ public class FinalBillSplitPersonAdapter extends RecyclerView.Adapter<FinalBillS
     }
 
     public FinalBillSplitPersonAdapter(HashMap<String,HashMap<String,Double>> receiptItems,String position_name){
-        this.position_name=position_name;
         HashMap<String,Double> receiptthings = receiptItems.get(position_name);
-        for (Map.Entry<String,Double> map_element:receiptthings.entrySet()) {
-            this.receiptItems.add(map_element.getKey());
-            this.receiptCosts.add(map_element.getValue());
+        if (receiptthings != null) {
+            for (Map.Entry<String,Double> map_element:receiptthings.entrySet()) {
+                this.receiptItems.add(map_element.getKey());
+                this.receiptCosts.add(map_element.getValue());
+            }
         }
     }
     class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView itemName;
         private TextView itemCost;
 
-        public ItemViewHolder(@NonNull View itemView) {
+        ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemName = itemView.findViewById(R.id.final_bill_item_name);
             this.itemCost = itemView.findViewById(R.id.final_bill_item_cost);

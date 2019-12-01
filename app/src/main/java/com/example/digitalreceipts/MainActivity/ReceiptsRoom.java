@@ -1,16 +1,14 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.MainActivity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.example.digitalreceipts.Database.ReceiptTypeConverters;
 
-import java.util.HashMap;
 import java.util.List;
 
 /* This data structure I feel is best for our project. It helps with lookup

@@ -2,12 +2,11 @@ package com.example.digitalreceipts.Database;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.text.PrecomputedText;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.digitalreceipts.ReceiptItem;
-import com.example.digitalreceipts.ReceiptsRoom;
+import com.example.digitalreceipts.MainActivity.ReceiptItem;
+import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
 
 import java.util.List;
 

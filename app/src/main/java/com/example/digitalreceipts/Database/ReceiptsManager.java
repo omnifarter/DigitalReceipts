@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.digitalreceipts.ReceiptItem;
-import com.example.digitalreceipts.ReceiptsRoom;
+import com.example.digitalreceipts.MainActivity.ReceiptItem;
+import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
 
 import java.util.List;
 

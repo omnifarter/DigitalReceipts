@@ -1,39 +1,33 @@
 package com.example.digitalreceipts.Billsplit;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.digitalreceipts.BillSplit;
-import com.example.digitalreceipts.ReceiptItem;
-import com.travijuu.numberpicker.library.Enums.ActionEnum;
-import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
-import com.travijuu.numberpicker.library.NumberPicker;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.digitalreceipts.R;
+import com.example.digitalreceipts.MainActivity.ReceiptItem;
+import com.travijuu.numberpicker.library.Enums.ActionEnum;
+import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
+import com.travijuu.numberpicker.library.NumberPicker;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ScheduledFuture;
 
 public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.ItemlistHolder> {
-    Context context;
-    private List<ReceiptItem> listofNames = new ArrayList<>();
-    List<String> name;
-    BillSplit ledger;
-    int position_name;
-    HashMap<String,Integer> item_quantity = new HashMap<String,Integer>();
+    private Context context;
+    private List<ReceiptItem> listofNames;
+    private List<String> name;
+    private int position_name;
+    private HashMap<String,Integer> item_quantity = new HashMap<String,Integer>();
     //key is person name, value is a hashmap of items to number
 //    HashMap<String, HashMap<String,Integer>> splitteditems = new HashMap<String,HashMap<String, Integer>>();
 
@@ -47,6 +41,7 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
         return new ItemlistHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final ItemlistHolder holder, final int position) {
         holder.itemName.setText(listofNames.get(position).getItemName());
@@ -54,6 +49,7 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
         holder.numberPicker.setValue(0);
         holder.numberPicker.setValueChangedListener(new ValueChangedListener() {
             //TODO ADD BILL SPLIT FUNCTIONALITY HERE
+            @SuppressLint("SetTextI18n")
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void valueChanged(int value, ActionEnum action) {
@@ -71,7 +67,7 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
     }
 
 
-    public ItemRecycleAdapter(List<ReceiptItem> items, List<String> name,int position) {
+    ItemRecycleAdapter(List<ReceiptItem> items, List<String> name, int position) {
         this.name = name;
         this.listofNames = items;
         this.position_name = position;
@@ -82,7 +78,7 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
         notifyDataSetChanged();
     }
 
-    public HashMap<String,Integer> getItem_quantity() {
+    HashMap<String,Integer> getItem_quantity() {
         return item_quantity;
     }
 
@@ -91,7 +87,7 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
         private NumberPicker numberPicker;
         private TextView itemnumber;
 
-        public ItemlistHolder(@NonNull View itemView) {
+        ItemlistHolder(@NonNull View itemView) {
             super(itemView);
             this.itemName = itemView.findViewById(R.id.bill_split_item_name);
             this.numberPicker = itemView.findViewById(R.id.number_picker);

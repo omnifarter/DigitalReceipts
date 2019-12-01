@@ -10,8 +10,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.example.digitalreceipts.ReceiptItem;
-import com.example.digitalreceipts.ReceiptsRoom;
+import com.example.digitalreceipts.MainActivity.ReceiptItem;
+import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
 
 import java.util.ArrayList;
 import java.util.List;

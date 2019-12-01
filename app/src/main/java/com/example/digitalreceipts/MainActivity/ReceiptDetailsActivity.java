@@ -1,4 +1,4 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.MainActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.digitalreceipts.Contacts.ContactsActivity;
+import com.example.digitalreceipts.R;
 
 import java.util.List;
 

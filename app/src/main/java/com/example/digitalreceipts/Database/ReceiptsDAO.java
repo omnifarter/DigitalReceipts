@@ -5,12 +5,11 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 import androidx.room.Update;
 
-import com.example.digitalreceipts.ReceiptItem;
-import com.example.digitalreceipts.ReceiptsRoom;
+import com.example.digitalreceipts.MainActivity.ReceiptItem;
+import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
 
 import java.util.List;
 

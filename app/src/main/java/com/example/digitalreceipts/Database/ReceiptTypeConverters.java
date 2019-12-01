@@ -2,7 +2,7 @@ package com.example.digitalreceipts.Database;
 
 import androidx.room.TypeConverter;
 
-import com.example.digitalreceipts.ReceiptItem;
+import com.example.digitalreceipts.MainActivity.ReceiptItem;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

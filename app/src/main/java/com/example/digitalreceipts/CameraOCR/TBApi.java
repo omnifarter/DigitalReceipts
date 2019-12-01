@@ -4,8 +4,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.digitalreceipts.Database.ReceiptsManager;
-import com.example.digitalreceipts.ReceiptItem;
-import com.example.digitalreceipts.ReceiptsRoom;
+import com.example.digitalreceipts.MainActivity.ReceiptItem;
+import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.simplemented.okdelay.DelayInterceptor;

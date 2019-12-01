@@ -1,23 +1,19 @@
 package com.example.digitalreceipts.Billsplit;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
-import android.app.Person;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.digitalreceipts.BillSplit;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.digitalreceipts.R;
-import com.example.digitalreceipts.ReceiptItem;
-import com.example.digitalreceipts.ReceiptsRoom;
+import com.example.digitalreceipts.MainActivity.ReceiptItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,12 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 public class BIllSplitActivity extends AppCompatActivity {
-    private ViewPager mSlideViewPager;
     private LinearLayout mDotLayout;
     SliderAdapter sliderAdapter;
     Button button;
-    private TextView[] mDots;
-    private BillSplit ledger;
     String receiptNumber;
     ArrayList<String> names;
     int position_prev = 0;
@@ -42,9 +35,8 @@ public class BIllSplitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ledger = new BillSplit(this);   //creates an instance of billsplitting
         setContentView(R.layout.billsplitactivity);
-        mSlideViewPager = findViewById(R.id.slideViewPager);
+        ViewPager mSlideViewPager = findViewById(R.id.slideViewPager);
         button = findViewById(R.id.button3);
         mDotLayout = findViewById(R.id.dotsLayout);
         sliderAdapter = new SliderAdapter(getSupportFragmentManager(),this);
@@ -56,12 +48,6 @@ public class BIllSplitActivity extends AppCompatActivity {
         receiptItems =(intent.getParcelableArrayListExtra("BILL_SPLIT"));
         receiptNumber = intent.getStringExtra("RECEIPT_NUMBER");
         name_to_number = (HashMap<String,String>) (intent.getSerializableExtra("NAME_TO_NUMBER"));
-        Log.i("Finding string", "value of string (unloaded) is: " + intent.getParcelableExtra("RECEIPT_NUMBER"));
-        Log.i("Finding string", "value of string (loaded) is: " + receiptNumber);
-
-
-
-
         mSlideViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -69,7 +55,6 @@ public class BIllSplitActivity extends AppCompatActivity {
                     BillSplitFragment billSplitFragment = (BillSplitFragment)sliderAdapter.getRegisteredFragment(position_prev);
                     HashMap<String,Integer> temp_map = billSplitFragment.getTemp_map();
                     final_map.put(names.get(position_prev), temp_map);
-                    System.out.println(final_map.toString());
                     position_prev=position;
                 }
             }
@@ -89,18 +74,26 @@ public class BIllSplitActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                to_send=updateLedgerPerson(updateLedgerItem(final_map,receiptItems));
-                to_send_2= updateLedgerItem(final_map,receiptItems);
-                Intent next = new Intent(getApplicationContext(),FinalisedBillSplitActivity.class);
-                Bundle extras = new Bundle();
-                extras.putSerializable("FINAL_MAP",to_send);
-                extras.putSerializable("FINAL_MAP_ITEMS",to_send_2);
-                extras.putString("RECEIPT_NUMBER",receiptNumber);
-                extras.putSerializable("NAME_TO_NUMBER",name_to_number);
-                extras.putParcelableArrayList("RECEIPT_ITEMS",receiptItems);
-                next.putExtras(extras);
-                next.putStringArrayListExtra("NAMES",names);
-                startActivity(next);
+                BillSplitFragment billSplitFragment = (BillSplitFragment) sliderAdapter.getRegisteredFragment(sliderAdapter.getCount() - 1);
+                HashMap<String, Integer> temp_map = billSplitFragment.getTemp_map();
+                final_map.put(names.get(position_prev), temp_map);
+                if(final_map.size()!= names.size()){
+                    Toast.makeText(BIllSplitActivity.this, "Someone is not paying anything!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    to_send = updateLedgerPerson(updateLedgerItem(final_map, receiptItems));
+                    to_send_2 = updateLedgerItem(final_map, receiptItems);
+                    Intent next = new Intent(getApplicationContext(), FinalisedBillSplitActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putSerializable("FINAL_MAP", to_send);
+                    extras.putSerializable("FINAL_MAP_ITEMS", to_send_2);
+                    extras.putString("RECEIPT_NUMBER", receiptNumber);
+                    extras.putSerializable("NAME_TO_NUMBER", name_to_number);
+                    extras.putParcelableArrayList("RECEIPT_ITEMS", receiptItems);
+                    next.putExtras(extras);
+                    next.putStringArrayListExtra("NAMES", names);
+                    startActivity(next);
+                }
 
             }
         });
@@ -108,7 +101,7 @@ public class BIllSplitActivity extends AppCompatActivity {
     }
 
     public void addDotsIndictator(int position) {
-        mDots = new TextView[sliderAdapter.getCount()];
+        TextView[] mDots = new TextView[sliderAdapter.getCount()];
         mDotLayout.removeAllViews();
         for (int i = 0; i < mDots.length; i++) {
             mDots[i] = new TextView(this);
@@ -144,8 +137,6 @@ public class BIllSplitActivity extends AppCompatActivity {
                 }
             }
         }
-
-        System.out.println("THIS IS ITEM LEDGER" + itemLedger.toString());
 
         for(Map.Entry<String,Map<String,Integer>> itemName : itemLedger.entrySet()){
             for (ReceiptItem receiptItem: receiptTable){

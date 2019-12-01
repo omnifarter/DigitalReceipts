@@ -1,4 +1,4 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.MainActivity;
 
 // This is the receipt item class. Feel free to change all to String
 // TODO: Swap all to string, consult ML team first!

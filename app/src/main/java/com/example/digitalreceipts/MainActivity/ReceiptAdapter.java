@@ -1,5 +1,6 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.MainActivity;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.digitalreceipts.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptH
         return new ReceiptHolder(itemView);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull ReceiptHolder holder, int position) {
 
@@ -30,7 +34,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptH
         holder.textreceiptNumber.setText(currentReceipt.get_receiptNumber());
         holder.textcompany.setText(currentReceipt.get_company());
         //TODO: May want to change structure of DB to store only STRING
-        holder.texttotalCost.setText(String.valueOf(currentReceipt.get_totalCost()));
+        holder.texttotalCost.setText(String.format("$%.2f",currentReceipt.get_totalCost()));
 
         //TODO: ADD date and time to data structure. Also need to consider minimal reloading of data
         holder.textindex.setText(String.valueOf(currentReceipt.getId()));

@@ -1,22 +1,12 @@
 package com.example.digitalreceipts.Contacts;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
-import androidx.loader.content.CursorLoader;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FilterQueryProvider;
@@ -24,46 +14,41 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.digitalreceipts.Billsplit.BIllSplitActivity;
 import com.example.digitalreceipts.R;
-import com.example.digitalreceipts.ReceiptItem;
-import com.example.digitalreceipts.ReceiptsRoom;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ContactsActivity extends AppCompatActivity {
     final String[] from = {ContactsContract.Contacts.DISPLAY_NAME};
-    final String[] ids = {ContactsContract.CommonDataKinds.Phone.NUMBER};
-    HashMap<String,String> name_to_number = new HashMap<String, String>();
+    HashMap<String,String> name_to_number = new HashMap<>();
     SimpleCursorAdapter simpleCursorAdapter;
     TextView textView;
     ListView l1;
     Button next;
     SearchView search_name;
     ArrayList<String> names;
-    ArrayList<String> numbers = new ArrayList<String>();
+    ArrayList<String> numbers = new ArrayList<>();
     @RequiresApi(api = Build.VERSION_CODES.O)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        names = new ArrayList<String>();
+        names = new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         l1 = findViewById(R.id.list_of_contacts);
         textView = findViewById(R.id.freq_contacted);
-        final int height = textView.getHeight();
-        //TODO fix thise
-        Log.i("look",Integer.toString(height));
-        l1.setTextFilterEnabled(true);
         search_name = findViewById(R.id.searchView);
-        final Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-        final int[] to = {R.id.contact_name};
-        l1.setDivider(null);
         next = findViewById(R.id.next);
+        final int[] to = {R.id.contact_name};
+        l1.setTextFilterEnabled(true);
+        l1.setDivider(null);
         final Cursor cursor_freq = getContentResolver().query(ContactsContract.Contacts.CONTENT_STREQUENT_URI,null,null,null);
         simpleCursorAdapter = new SimpleCursorAdapter(this, R.layout.contact_item_list, cursor_freq, from, to);
         l1.setAdapter(simpleCursorAdapter);
@@ -118,13 +103,11 @@ public class ContactsActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 if(search_name.getQuery().length()==0){
-                    textView.setText(R.string.freq_contacted);
-                    textView.setHeight(height);
+                    textView.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
                     simpleCursorAdapter.swapCursor(cursor_freq);
                 }
                 else{
                     if(simpleCursorAdapter.getCursor() == cursor_freq){
-                        textView.setText("");
                         textView.setHeight(0);
                         final Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
                         simpleCursorAdapter.swapCursor(cursor);}
@@ -138,19 +121,17 @@ public class ContactsActivity extends AppCompatActivity {
         l1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                TextView textView = (TextView) view.findViewById(R.id.contact_name);
+                TextView textView = view.findViewById(R.id.contact_name);
                 String text = textView.getText().toString();
                 if(names.contains(text)){
                     names.remove(text);
-                    Log.i("look","text removed");
-                    Toast.makeText(getApplicationContext(), new String(text + " has been removed"), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), text + " has been removed", Toast.LENGTH_SHORT).show();
 
                 }
                 else {
                     names.add(text);
                     textView.setPressed(true);
-                    Log.i("look","text added");
-                    Toast.makeText(getApplicationContext(), new String(text + " has been added"), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), text + " has been added", Toast.LENGTH_SHORT).show();
                 }
             }
         });

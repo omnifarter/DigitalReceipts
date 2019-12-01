@@ -1,6 +1,6 @@
-package com.example.digitalreceipts;
+package com.example.digitalreceipts.MainActivity;
 
-import android.content.ClipData;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.example.digitalreceipts.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +25,13 @@ public class ItemlistAdapter extends RecyclerView.Adapter<ItemlistAdapter.Itemli
         return new ItemlistHolder(itemView);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull ItemlistHolder holder, int position) {
         ReceiptItem currentItem = listOfItems.get(position);
         holder.itemName.setText(currentItem.getItemName());
         // TODO: Update once datatype swap approved by ML team
-        holder.itemCost.setText(String.valueOf(currentItem.getUnitCost()));
+        holder.itemCost.setText(String.format("$%.2f",currentItem.getUnitCost()));
         holder.itemQuantity.setText(String.valueOf(currentItem.getQuantity()));
 
     }

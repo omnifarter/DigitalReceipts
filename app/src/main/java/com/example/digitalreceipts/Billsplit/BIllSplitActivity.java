@@ -36,6 +36,7 @@ public class BIllSplitActivity extends AppCompatActivity {
     int position_prev = 0;
     HashMap<String,HashMap<String,Integer>> final_map = new HashMap<String,HashMap<String, Integer>>();
     HashMap<String,HashMap<String,Double>> to_send = new HashMap<String,HashMap<String, Double>>();
+    HashMap<String,String> name_to_number = new HashMap<String, String>();
     ArrayList<ReceiptItem> receiptItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,8 @@ public class BIllSplitActivity extends AppCompatActivity {
         Intent intent = getIntent();
         names = intent.getStringArrayListExtra("NAMES");
         receiptItems =(intent.getParcelableArrayListExtra("BILL_SPLIT"));
-        receiptNumber = intent.getParcelableExtra("RECEIPT_NUMBER");
+        receiptNumber = intent.getStringExtra("RECEIPT_NUMBER");
+        name_to_number = (HashMap<String,String>) (intent.getSerializableExtra("NAME_TO_NUMBER"));
         Log.i("Finding string", "value of string (unloaded) is: " + intent.getParcelableExtra("RECEIPT_NUMBER"));
         Log.i("Finding string", "value of string (loaded) is: " + receiptNumber);
 
@@ -88,11 +90,10 @@ public class BIllSplitActivity extends AppCompatActivity {
             public void onClick(View view) {
                 to_send=updateLedgerPerson(updateLedgerItem(final_map,receiptItems));
                 Intent next = new Intent(getApplicationContext(),FinalisedBillSplitActivity.class);
-                //TODO @Gabriel: This is the sending end of the bundle... U can find receiving end at FinalisedBillSplitActivity.class
-
                 Bundle extras = new Bundle();
                 extras.putSerializable("FINAL_MAP",to_send);
                 extras.putString("RECEIPT_NUMBER",receiptNumber);
+                extras.putSerializable("NAME_TO_NUMBER",name_to_number);
                 next.putExtras(extras);
                 next.putStringArrayListExtra("NAMES",names);
                 startActivity(next);

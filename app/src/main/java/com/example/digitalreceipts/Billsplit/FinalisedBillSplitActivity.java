@@ -19,6 +19,7 @@ import java.util.HashMap;
 public class FinalisedBillSplitActivity extends AppCompatActivity {
     Intent intent;
     HashMap<String,HashMap<String,Double>> final_map;
+    HashMap<String,String> name_to_number;
     ArrayList<String> personNames;
     RecyclerView recyclerView;
     Button button;
@@ -35,10 +36,11 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
         personNames = intent.getStringArrayListExtra("NAMES");
         final_map = (HashMap<String,HashMap<String,Double>>)extras.getSerializable("FINAL_MAP");
         receiptNumber =extras.getString("RECEIPT_NUMBER");
+        name_to_number = (HashMap<String,String>)extras.getSerializable("NAME_TO_NUMBER");
         System.out.println("This is final map" + final_map.toString());
         System.out.println("Index Value is at : " + receiptNumber);
         System.out.println(personNames);
-
+        System.out.println("This is name to number pairing" + name_to_number.toString());
         textView = findViewById(R.id.final_bill);
         button = findViewById(R.id.confirm);
         recyclerView = findViewById(R.id.final_bill_recycler);

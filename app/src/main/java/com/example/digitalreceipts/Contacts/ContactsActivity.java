@@ -6,7 +6,9 @@ import androidx.core.view.MenuItemCompat;
 import androidx.loader.content.CursorLoader;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -31,15 +33,19 @@ import com.example.digitalreceipts.ReceiptItem;
 import com.example.digitalreceipts.ReceiptsRoom;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ContactsActivity extends AppCompatActivity {
     final String[] from = {ContactsContract.Contacts.DISPLAY_NAME};
+    final String[] ids = {ContactsContract.CommonDataKinds.Phone.NUMBER};
+    HashMap<String,String> name_to_number = new HashMap<String, String>();
     SimpleCursorAdapter simpleCursorAdapter;
     TextView textView;
     ListView l1;
     Button next;
     SearchView search_name;
     ArrayList<String> names;
+    ArrayList<String> numbers = new ArrayList<String>();
     @RequiresApi(api = Build.VERSION_CODES.O)
 
     @Override
@@ -66,12 +72,30 @@ public class ContactsActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //getting contact numbers
+                Cursor cursors= getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null);
+                if (cursors != null) {
+                    while(cursors.moveToNext()){
+                        String name_temp = cursors.getString(cursors.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                        String number_temp = cursors.getString(cursors.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+                        if(names.contains(name_temp)){
+                            numbers.add(number_temp);
+                        }
+                    }
+                    cursors.close();
+                }
+                //putting them in a hashmap
+                for (int i = 0; i < names.size() ; i++) {
+                    name_to_number.put(names.get(i),numbers.get(i));
+                }
+                System.out.println("THIS IS THE NAME TO NUMBER: " + name_to_number.toString());
                 Intent intent = new Intent(getApplicationContext(), BIllSplitActivity.class);
                 Intent current = getIntent();
                 intent.putParcelableArrayListExtra("BILL_SPLIT",current.getParcelableArrayListExtra("BILL_SPLIT"));
                 intent.putExtra("RECEIPT_NUMBER",current.getStringExtra("RECEIPT_NUMBER"));
-                Log.i("Finding string", "value of string is: " + current.getStringExtra("RECEIPT_NUMBER"));
                 intent.putStringArrayListExtra("NAMES",names);
+                intent.putExtra("NAME_TO_NUMBER", name_to_number);
                 startActivity(intent);
             }
         });

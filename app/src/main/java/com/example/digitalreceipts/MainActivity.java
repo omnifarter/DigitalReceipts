@@ -40,6 +40,7 @@ public class MainActivity extends FragmentActivity {
                 Fragment selectedfragment = null;
                 switch(menuItem.getItemId()){
                     case R.id.receipts:
+
                         selectedfragment = new receiptFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedfragment).commit();
                         break;

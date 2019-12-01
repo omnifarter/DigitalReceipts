@@ -10,6 +10,7 @@ import com.example.digitalreceipts.ReceiptItem;
 import com.example.digitalreceipts.ReceiptsRoom;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ReceiptRepository {
     private ReceiptsDAO receiptsDAO;
@@ -51,6 +52,30 @@ public class ReceiptRepository {
     public void updateItemList(List<ReceiptItem> listOfItems, int receiptNumber){
 
         new UpdateItemListAsyncTask(receiptsDAO, listOfItems, receiptNumber).execute();
+    }
+
+    public List<ReceiptsRoom> getAllReceiptsInListForm()
+    {
+        try {
+            return new GetAllReceiptsInListFormAsyncTask(receiptsDAO).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<ReceiptsRoom> getSoongsLazyList()
+    {
+        try {
+            return new GetSoongsLazyListAsyncTask(receiptsDAO).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     // this is just a getter for a private var
     public LiveData<List<ReceiptsRoom>> getAllReceipts()
@@ -150,6 +175,34 @@ public class ReceiptRepository {
         protected Void doInBackground(Integer ... integers) {
             receiptsDAO.updateItemList(listofitems, receiptNumber);
             return null;
+        }
+    }
+
+    private static class GetAllReceiptsInListFormAsyncTask extends AsyncTask<Void, Void, List<ReceiptsRoom>>
+    {
+        private ReceiptsDAO receiptsDAO;
+        private GetAllReceiptsInListFormAsyncTask (ReceiptsDAO receiptsDAO){
+
+            this.receiptsDAO = receiptsDAO;
+        }
+
+        @Override
+        protected List<ReceiptsRoom> doInBackground(Void... voids) {
+            return receiptsDAO.getAllReceiptsInListForm();
+        }
+    }
+
+    private static class GetSoongsLazyListAsyncTask extends AsyncTask<Void, Void, List<ReceiptsRoom>>
+    {
+        private ReceiptsDAO receiptsDAO;
+        private GetSoongsLazyListAsyncTask (ReceiptsDAO receiptsDAO){
+
+            this.receiptsDAO = receiptsDAO;
+        }
+
+        @Override
+        protected List<ReceiptsRoom> doInBackground(Void... voids) {
+            return receiptsDAO.getSoongsLazyList();
         }
     }
 

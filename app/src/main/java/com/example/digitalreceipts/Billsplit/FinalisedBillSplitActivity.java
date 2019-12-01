@@ -88,7 +88,7 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
                     }
 
                 receiptsManager.updateItemList(receiptItems,Integer.parseInt(receiptNumber));
-//                System.out.println(receiptsManager.getAllReceipts().toString());
+
 
             }
         });

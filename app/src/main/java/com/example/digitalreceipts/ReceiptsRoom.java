@@ -59,7 +59,7 @@ public class ReceiptsRoom implements Parcelable {
         this._expenseType = expenseType;
         this._listOfItems = listOfItems;
         this._totalCost = totalCost;
-        this._splitStatus = true;
+        this._splitStatus = false;
     }
 
 

@@ -50,4 +50,15 @@ public class ReceiptsManager extends AndroidViewModel {
         return allReceipts;
     }
 
+    /** SOONG , this is for you to use. The second one will return only splitted stuffs! */
+
+    public List<ReceiptsRoom> getAllReceiptsInListForm()
+    {
+        return receiptRepo.getAllReceiptsInListForm();
+    }
+
+    public List<ReceiptsRoom> getSoongsLazyList()
+    {
+        return receiptRepo.getSoongsLazyList();
+    }
 }

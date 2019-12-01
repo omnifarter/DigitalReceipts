@@ -36,6 +36,7 @@ public class BIllSplitActivity extends AppCompatActivity {
     int position_prev = 0;
     HashMap<String,HashMap<String,Integer>> final_map = new HashMap<String,HashMap<String, Integer>>();
     HashMap<String,HashMap<String,Double>> to_send = new HashMap<String,HashMap<String, Double>>();
+    HashMap<String,HashMap<String,Double>> to_send_2 = new HashMap<String,HashMap<String, Double>>();
     HashMap<String,String> name_to_number = new HashMap<String, String>();
     ArrayList<ReceiptItem> receiptItems;
     @Override
@@ -89,11 +90,14 @@ public class BIllSplitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 to_send=updateLedgerPerson(updateLedgerItem(final_map,receiptItems));
+                to_send_2= updateLedgerItem(final_map,receiptItems);
                 Intent next = new Intent(getApplicationContext(),FinalisedBillSplitActivity.class);
                 Bundle extras = new Bundle();
                 extras.putSerializable("FINAL_MAP",to_send);
+                extras.putSerializable("FINAL_MAP_ITEMS",to_send_2);
                 extras.putString("RECEIPT_NUMBER",receiptNumber);
                 extras.putSerializable("NAME_TO_NUMBER",name_to_number);
+                extras.putParcelableArrayList("RECEIPT_ITEMS",receiptItems);
                 next.putExtras(extras);
                 next.putStringArrayListExtra("NAMES",names);
                 startActivity(next);

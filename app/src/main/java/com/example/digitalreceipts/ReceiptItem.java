@@ -13,7 +13,7 @@ public class ReceiptItem implements Parcelable {
     private String itemName;
     private double unitCost;
     private int quantity;
-    private HashMap<String, Integer> ownershipTable = new HashMap<String, Integer>();
+    private HashMap<String, Double> ownershipTable = new HashMap<>();
 
     // for ownership update
     protected ReceiptItem(Parcel in) {
@@ -36,11 +36,11 @@ public class ReceiptItem implements Parcelable {
         }
     };
 
-    public void setOwnershipTable(HashMap<String, Integer> ownershipTable) {
+    public void setOwnershipTable(HashMap<String, Double> ownershipTable) {
         this.ownershipTable = ownershipTable;
     }
 
-    public HashMap<String, Integer> getOwnershipTable() {
+    public HashMap<String, Double> getOwnershipTable() {
         return ownershipTable;
     }
 

@@ -42,13 +42,13 @@ public class BillSplit {
     public void updateLedgerItem(ReceiptItem testRI){
         double itemTotalCost =testRI.getUnitCost();
         int itemTotalUnit =0;
-        for(Map.Entry<String,Integer> entry: testRI.getOwnershipTable().entrySet()){
-            Integer ratioQty = entry.getValue();
+        for(Map.Entry<String,Double> entry: testRI.getOwnershipTable().entrySet()){
+            Double ratioQty = entry.getValue();
             itemTotalUnit+=ratioQty;
         }
-        for(Map.Entry<String,Integer> entry: testRI.getOwnershipTable().entrySet()){
+        for(Map.Entry<String,Double> entry: testRI.getOwnershipTable().entrySet()){
             String personName = entry.getKey();
-            Integer ratioQty = entry.getValue();
+            Double ratioQty = entry.getValue();
             Double itemPay =  itemTotalCost/(double)(itemTotalUnit)*(double)(ratioQty);
             //update itemPay for each item
             System.out.println(personName+ " now has to pay" + itemPay);
@@ -61,13 +61,13 @@ public class BillSplit {
         for(ReceiptItem rc: testRI){
             double itemTotalCost =rc.getUnitCost();
             int itemTotalUnit =0;
-            for(Map.Entry<String,Integer> entry: rc.getOwnershipTable().entrySet()){
-                Integer ratioQty = entry.getValue();
+            for(Map.Entry<String,Double> entry: rc.getOwnershipTable().entrySet()){
+                Double ratioQty = entry.getValue();
                 itemTotalUnit+=ratioQty;
             }
-            for(Map.Entry<String,Integer> entry: rc.getOwnershipTable().entrySet()){
+            for(Map.Entry<String,Double> entry: rc.getOwnershipTable().entrySet()){
                 String personName = entry.getKey();
-                Integer ratioQty = entry.getValue();
+                Double ratioQty = entry.getValue();
                 Double itemPay =  itemTotalCost/(double)(itemTotalUnit)*(double)(ratioQty);
                 double personPay = ledger.get(personName)+itemPay;
                 ledger.put(personName,personPay);

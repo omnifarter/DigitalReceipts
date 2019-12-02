@@ -134,7 +134,7 @@ public class receiptFragment extends Fragment {
                             intent.putExtra("RECEIPT_NUMBER",String.valueOf(receipts.getId()));
                             startActivity(intent);
                         } else {
-
+                            requestStoragePermission();
                         }
                     }
                 });

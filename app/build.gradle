@@ -92,5 +92,7 @@ dependencies {
 
     // For animated pie chart
     implementation 'com.github.razerdp:AnimatedPieView:1.2.4'
+    // for twilio
+    implementation group: "com.twilio.sdk", name: "twilio", version: "7.42.0"
 
 }

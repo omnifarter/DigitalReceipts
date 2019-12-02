@@ -12,7 +12,7 @@ import retrofit2.http.Path;
 public interface TabScannerApi {
 
     // My APIKey. Pls don't leak.
-    @Headers("apikey: fw14ZQ57evWPAdeblgfLS4w7nTYIJNkLUFfis3N5DSOxklKxLwgJScM7msgvYX6y")
+    @Headers("apikey: Eqkr7pNM66rBYTCQKfEiV6KiDhCNNFr1pNwBHqv3KXIqigsw6WQ1I1ejPpgnkSxo")
     @GET("result/{token}")
     Call<OCRReceipt> getResults(@Path("token") String token);
 
@@ -21,7 +21,7 @@ public interface TabScannerApi {
 //    @POST("2/process")
 //    Call<OCRPost> createOCRPost(@Body OCRPost sheikhPost);
 
-    @Headers({"apikey: fw14ZQ57evWPAdeblgfLS4w7nTYIJNkLUFfis3N5DSOxklKxLwgJScM7msgvYX6y"})
+    @Headers({"apikey: Eqkr7pNM66rBYTCQKfEiV6KiDhCNNFr1pNwBHqv3KXIqigsw6WQ1I1ejPpgnkSxo"})
     @Multipart
     @POST("2/process")
     Call<OCRPost> createOCRPost(@Part MultipartBody.Part filePart);

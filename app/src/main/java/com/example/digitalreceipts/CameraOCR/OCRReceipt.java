@@ -139,7 +139,16 @@ public class OCRReceipt {
             }
 
             public String getDescClean() {
-                return descClean;
+                if (descClean.contains("-"))
+                {
+                    String[] processedDescClean = descClean.split(" - ", 2);
+                    System.out.println(processedDescClean[1]);
+                    return processedDescClean[1];
+                }
+                else
+                {
+                    return descClean;
+                }
             }
 
             public String getPrice() {

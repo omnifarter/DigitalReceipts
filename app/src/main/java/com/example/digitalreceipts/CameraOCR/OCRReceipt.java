@@ -126,7 +126,12 @@ public class OCRReceipt {
             public String lineTotal;
 
             public Integer getQty() {
-                return qty;
+                if(qty != 0)
+                {
+                    return qty;
+                }
+                return 1;
+
             }
 
             public String getDesc() {
@@ -143,6 +148,8 @@ public class OCRReceipt {
 
 
             public String getLineTotal() {
+                // REGEX handling
+                lineTotal.replaceAll("$", "");
                 return lineTotal;
             }
         }

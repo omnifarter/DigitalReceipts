@@ -1,11 +1,16 @@
 package com.example.digitalreceipts.CameraOCR;
 
+import android.content.Context;
+import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.digitalreceipts.Database.ReceiptsManager;
 import com.example.digitalreceipts.MainActivity.ReceiptItem;
 import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
+import com.example.digitalreceipts.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.simplemented.okdelay.DelayInterceptor;
@@ -32,6 +37,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class TBApi {
+    static Context context;
+    static ImageView imageView;
     private static TBApi instance;
     private TabScannerApi request;
     static TextView receiptDisplay;
@@ -41,10 +48,10 @@ public class TBApi {
     SimpleDelayProvider simpleDelayProvider = new SimpleDelayProvider(0, TimeUnit.MILLISECONDS);
 
 
-    private TBApi(TextView receiptDisplay, ReceiptsManager receiptsManager) {
-
+    private TBApi(Context context, ImageView imageView, TextView receiptDisplay, ReceiptsManager receiptsManager) {
+        this.context = context;
         this.receiptDisplay = receiptDisplay;
-
+        this.imageView = imageView;
         // Creates new database insatnce
         this.receiptsManager = receiptsManager;
 
@@ -67,9 +74,9 @@ public class TBApi {
     }
 
     //Singleton Design Pattern!
-    public static synchronized TBApi getInstance(TextView receiptDisplay, ReceiptsManager receiptsManager) {
+    public static synchronized TBApi getInstance(Context context,ImageView imageView, TextView receiptDisplay, ReceiptsManager receiptsManager) {
         if (instance == null)
-            instance = new TBApi(receiptDisplay, receiptsManager);
+            instance = new TBApi(context,imageView,receiptDisplay, receiptsManager);
 
         return instance;
     }
@@ -153,7 +160,10 @@ public class TBApi {
 
                 Log.i("hihi", "GET onResponse: " + TBApi.result);
                 receiptDisplay.setText("Receipt has been uploaded!");
+                imageView.setBackgroundResource(R.drawable.app_icon);
                 simpleDelayProvider.setDelay(5, TimeUnit.SECONDS);
+                Glide.with(context).clear(imageView);
+
             }
 
             @Override

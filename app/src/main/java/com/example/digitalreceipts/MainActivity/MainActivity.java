@@ -4,11 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.digitalreceipts.CameraOCR.CameraActivity;
 import com.example.digitalreceipts.CameraOCR.CameraFragment;
 import com.example.digitalreceipts.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

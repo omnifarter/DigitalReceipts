@@ -1,10 +1,8 @@
 package com.example.digitalreceipts.CameraOCR;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,15 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.bumptech.glide.Glide;
 import com.example.digitalreceipts.Database.ReceiptsManager;
 import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
 import com.example.digitalreceipts.R;
@@ -45,6 +45,7 @@ public class CameraFragment extends DialogFragment {
     Button retrieveAPI;
     Uri imageUri;
     TBApi tabscannerapi;
+    ImageView imageView;
 
     public CameraFragment(){}
     public static CameraFragment newInstance(String title) {
@@ -59,7 +60,8 @@ public class CameraFragment extends DialogFragment {
         receiptDisplay = rootView.findViewById(R.id.receiptDisplay);
         galleryButton = rootView.findViewById(R.id.galleryButton);
         cameraButton = rootView.findViewById(R.id.cameraButton);
-
+        imageView = rootView.findViewById(R.id.gif_loading);
+        imageView.setBackgroundResource(R.drawable.app_icon);
         receiptsManager = ViewModelProviders.of(this).get(ReceiptsManager.class);
         receiptsManager.getAllReceipts().observe(this, new Observer<List<ReceiptsRoom>>() {
             @Override
@@ -69,7 +71,7 @@ public class CameraFragment extends DialogFragment {
             }
         });
 
-        tabscannerapi = TBApi.getInstance(receiptDisplay, receiptsManager);
+        tabscannerapi = TBApi.getInstance(getContext(),imageView,receiptDisplay, receiptsManager);
 
         galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +126,9 @@ public class CameraFragment extends DialogFragment {
 
             //TODO @Crystal : Add aniamtion in the form of gif/whatever works here
             tabscannerapi.postRequest(filePart);
+            imageView.setBackgroundResource(R.color.bgcolor);
+            Glide.with(getContext()).load(R.drawable.loading_screen).into(imageView);
+            receiptDisplay.setText("Receipt is loading...");
 
         }
         else if (resultCode == RESULT_OK && requestCode == CAMERA_REQUEST) {

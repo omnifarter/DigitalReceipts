@@ -14,7 +14,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".CameraOCR.CameraActivity" />
         <activity android:name=".Billsplit.FinalisedBillSplitActivity"></activity>
         <activity android:name=".Billsplit.BIllSplitActivity" />
         <activity android:name=".Contacts.ContactsActivity" />

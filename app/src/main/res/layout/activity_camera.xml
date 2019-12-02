@@ -7,20 +7,20 @@
     android:background="@color/bgcolor"
     android:paddingTop="20dp"
     android:paddingBottom="20dp"
-    tools:context=".CameraOCR.CameraActivity">
+    tools:context=".MainActivity.MainActivity">
 
     <TextView
         android:id="@+id/receiptDisplay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="104dp"
         android:layout_marginRight="100dp"
         android:gravity="center"
         android:text="No Receipt Uploaded"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/gif_loading" />
 
     <Button
         android:id="@+id/galleryButton"
@@ -47,5 +47,14 @@
         app:layout_constraintLeft_toLeftOf="@id/receiptDisplay"
         app:layout_constraintRight_toRightOf="@id/receiptDisplay"
         app:layout_constraintTop_toBottomOf="@+id/galleryButton" />
+
+    <ImageView
+        android:id="@+id/gif_loading"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/receiptDisplay"
+        app:srcCompat="@drawable/app_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

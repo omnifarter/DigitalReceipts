@@ -21,35 +21,35 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        Fragment defaultFragment = new receiptFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, defaultFragment).commit();
 
         BottomNavigationView botnav = findViewById(R.id.bot_nav);
         botnav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment selectedfragment = null;
-                switch(menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.receipts:
-
-                        selectedfragment = new receiptFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedfragment).commit();
+                        Fragment selectedfragment = new receiptFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedfragment).commit();
                         break;
 
-
                     case R.id.Camera:
-                        selectedfragment = new CameraFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedfragment).commit();
+                        cameraDialog();
                         break;
 
                 }
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedfragment).commit();
                 return true;
             }
         });
 
     }
 
+    private void cameraDialog() {
+        CameraFragment cameraFragment =CameraFragment.newInstance("Camera Fragment");
+        cameraFragment.show(getSupportFragmentManager(),"Camera Fragment show");
+
+    }
 
 }
 

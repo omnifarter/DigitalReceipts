@@ -1,8 +1,10 @@
 package com.example.digitalreceipts.CameraOCR;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,23 +18,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
 import com.example.digitalreceipts.Database.ReceiptsManager;
 import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
 import com.example.digitalreceipts.R;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-
 import java.io.File;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class CameraFragment extends Fragment {
+public class CameraFragment extends DialogFragment {
     private static final int GALLERY_REQUEST = 2888;
     private static final int CAMERA_REQUEST = 1888;
     public ReceiptsManager receiptsManager;
@@ -45,14 +46,20 @@ public class CameraFragment extends Fragment {
     Uri imageUri;
     TBApi tabscannerapi;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public CameraFragment(){}
+    public static CameraFragment newInstance(String title) {
+        CameraFragment frag = new CameraFragment();
+        Bundle args = new Bundle();
+        args.putString("title", title);
+        frag.setArguments(args);
+        return frag;
+    }
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_camera, container, false);
         receiptDisplay = rootView.findViewById(R.id.receiptDisplay);
         galleryButton = rootView.findViewById(R.id.galleryButton);
         cameraButton = rootView.findViewById(R.id.cameraButton);
-        tabscannerapi = TBApi.getInstance(receiptDisplay, receiptsManager);
+
         receiptsManager = ViewModelProviders.of(this).get(ReceiptsManager.class);
         receiptsManager.getAllReceipts().observe(this, new Observer<List<ReceiptsRoom>>() {
             @Override
@@ -61,6 +68,8 @@ public class CameraFragment extends Fragment {
                 Toast.makeText(getContext(), "DB manipulated", Toast.LENGTH_SHORT).show();
             }
         });
+
+        tabscannerapi = TBApi.getInstance(receiptDisplay, receiptsManager);
 
         galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +134,8 @@ public class CameraFragment extends Fragment {
                     imageFile.getName(), RequestBody.create(MediaType.parse("image/*"), imageFile));
             //receiptDisplay.setImageURI(imageUri);
             tabscannerapi.postRequest(filePart);
+            receiptDisplay.setText("Receipt has been uploaded!");
+
 
         }
     }

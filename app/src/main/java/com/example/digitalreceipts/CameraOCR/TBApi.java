@@ -152,7 +152,7 @@ public class TBApi {
                         + "obj1_qty: " + obj1_qty;
 
                 Log.i("hihi", "GET onResponse: " + TBApi.result);
-                receiptDisplay.setText("No crash detected");
+                receiptDisplay.setText("Receipt has been uploaded!");
                 simpleDelayProvider.setDelay(5, TimeUnit.SECONDS);
             }
 

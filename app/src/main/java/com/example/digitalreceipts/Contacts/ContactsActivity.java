@@ -130,7 +130,6 @@ public class ContactsActivity extends AppCompatActivity {
                 }
                 else {
                     names.add(text);
-                    textView.setPressed(true);
                     Toast.makeText(getApplicationContext(), text + " has been added", Toast.LENGTH_SHORT).show();
                 }
             }

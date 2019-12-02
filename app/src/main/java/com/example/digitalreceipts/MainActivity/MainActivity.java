@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.digitalreceipts.CameraOCR.CameraActivity;
+import com.example.digitalreceipts.CameraOCR.CameraFragment;
 import com.example.digitalreceipts.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 //test push from desktop
@@ -37,8 +38,8 @@ public class MainActivity extends FragmentActivity {
 
 
                     case R.id.Camera:
-                        Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
-                        startActivity(intent);
+                        selectedfragment = new CameraFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedfragment).commit();
                         break;
 
                 }

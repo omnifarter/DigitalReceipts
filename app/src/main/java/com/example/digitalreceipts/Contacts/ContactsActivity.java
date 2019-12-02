@@ -40,6 +40,7 @@ public class ContactsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         names = new ArrayList<>();
+        names.add("Myself");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         l1 = findViewById(R.id.list_of_contacts);

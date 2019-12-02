@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.digitalreceipts.CameraOCR.CameraFragment;
+import com.example.digitalreceipts.Finance.FinanceFragment;
 import com.example.digitalreceipts.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 //test push from desktop
@@ -19,7 +20,7 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Fragment defaultFragment = new receiptFragment();
+        Fragment defaultFragment = new FinanceFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, defaultFragment).commit();
 
         BottomNavigationView botnav = findViewById(R.id.bot_nav);
@@ -34,6 +35,10 @@ public class MainActivity extends FragmentActivity {
 
                     case R.id.Camera:
                         cameraDialog();
+                        break;
+
+                    case R.id.finance:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FinanceFragment()).commit();
                         break;
 
                 }

@@ -84,23 +84,8 @@ public class CameraFragment extends DialogFragment {
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-                {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-                    Log.i("hihi","permission not granted");
-                }
-                else if(getContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                        getContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1011);
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1012);
-                }
-                else
-                {
-                    Log.i("hihi","transition");
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                }
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
         return rootView;
@@ -139,6 +124,8 @@ public class CameraFragment extends DialogFragment {
                     imageFile.getName(), RequestBody.create(MediaType.parse("image/*"), imageFile));
             //receiptDisplay.setImageURI(imageUri);
             tabscannerapi.postRequest(filePart);
+            imageView.setBackgroundResource(R.color.bgcolor);
+            Glide.with(getContext()).load(R.drawable.loading_screen).into(imageView);
             receiptDisplay.setText("Receipt has been uploaded!");
 
 

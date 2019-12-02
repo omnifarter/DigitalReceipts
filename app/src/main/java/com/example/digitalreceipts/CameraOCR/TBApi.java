@@ -161,8 +161,8 @@ public class TBApi {
                 Log.i("hihi", "GET onResponse: " + TBApi.result);
                 receiptDisplay.setText("Receipt has been uploaded!");
                 imageView.setBackgroundResource(R.drawable.app_icon);
-                simpleDelayProvider.setDelay(5, TimeUnit.SECONDS);
                 Glide.with(context).clear(imageView);
+                simpleDelayProvider.setDelay(5, TimeUnit.SECONDS);
 
             }
 

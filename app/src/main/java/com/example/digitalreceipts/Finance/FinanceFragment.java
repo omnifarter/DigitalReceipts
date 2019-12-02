@@ -123,7 +123,7 @@ public class FinanceFragment extends Fragment {
             Log.i("hihi",String.valueOf(pieAllData.get(expenseType)));
         }
 
-        config.addData(new SimplePieInfo(20,getResources().getColor(R.color.design_default_color_primary_dark),"food"));
+        config.addData(new SimplePieInfo(pieAllData.get("food"),getResources().getColor(R.color.design_default_color_primary_dark),"food"));
         config.addData(new SimplePieInfo(pieAllData.get("transport"),getResources().getColor(R.color.colorPrimaryDark),"transport"));
         config.addData(new SimplePieInfo(pieAllData.get("misc"),getResources().getColor(R.color.design_default_color_primary),"misc"));
         config.duration(1000);

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -17,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -100,15 +102,20 @@ public class receiptFragment extends Fragment {
                 LinearLayout viewGroup = getActivity().findViewById(R.id.linear_layout_receipt_details);
 
                 View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.activity_receipt_details, viewGroup);
-
                 //populating the popupView
                 TextView company_name = popupView.findViewById(R.id.company_info);
                 RecyclerView list_of_items = popupView.findViewById(R.id.recycler_view_itemslist);
-                list_of_items.setLayoutManager(new LinearLayoutManager(getContext()));
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                TextView receipt_id = popupView.findViewById(R.id.receipt_id_number);
+                list_of_items.setLayoutManager(linearLayoutManager);
+                list_of_items.addItemDecoration(new DividerItemDecorator(ContextCompat.getDrawable(getContext(),R.drawable.divider)));
                 list_of_items.setHasFixedSize(true);
                 final ItemlistAdapter adapter = new ItemlistAdapter(receipts.get_listOfItems());
                 list_of_items.setAdapter(adapter);
                 company_name.setText(receipts.get_company());
+                receipt_id.setText(Integer.toString(receipts.getId()));
+                TextView total_cost = popupView.findViewById(R.id.total_cost);
+                total_cost.setText(String.format("$%.2f",receipts.get_totalCost()));
                 add_finance = popupView.findViewById(R.id.add_finance);
                 split_bill = popupView.findViewById(R.id.split_bill);
                 add_finance.setOnClickListener(new View.OnClickListener() {
@@ -138,16 +145,16 @@ public class receiptFragment extends Fragment {
                         }
                     }
                 });
-                int width = (int) (rootView.getMeasuredWidth() * 0.8);
+                int width = (int) (rootView.getMeasuredWidth() * 0.9);
                 String width_value = "width: " + Integer.toString(width);
-                int height = (int) (rootView.getMeasuredHeight() * 0.8);
+                int height = (int) (rootView.getMeasuredHeight() * 0.9);
                 String height_value = "height: " + Integer.toString(height);
-                PopupWindow popupWindow = new PopupWindow(popupView, 0, 0, true);
+                PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
                 //define view items here
                 popupWindow.setAnimationStyle(R.style.Animation);
                 popupWindow.setWidth(width);
                 popupWindow.setHeight(height);
-                popupWindow.showAtLocation(rootView,  Gravity.CENTER, 0,0);
+                popupWindow.showAtLocation(rootView,  Gravity.CENTER, 0,-50);
                 fadeBackground(popupWindow);
             }
         });

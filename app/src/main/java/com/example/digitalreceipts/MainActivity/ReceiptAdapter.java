@@ -36,8 +36,6 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptH
         //TODO: May want to change structure of DB to store only STRING
         holder.texttotalCost.setText(String.format("$%.2f",currentReceipt.get_totalCost()));
 
-        //TODO: ADD date and time to data structure. Also need to consider minimal reloading of data
-        holder.textindex.setText(String.valueOf(currentReceipt.getId()));
 
     }
 
@@ -62,7 +60,6 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptH
         private TextView textreceiptNumber;
         private TextView textcompany;
         private TextView texttotalCost;
-        private TextView textindex;
 
 
         public ReceiptHolder(@NonNull View itemView) {
@@ -70,7 +67,6 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ReceiptH
             this.textreceiptNumber = itemView.findViewById(R.id.receipt_id);
             this.textcompany = itemView.findViewById(R.id.company_info);
             this.texttotalCost = itemView.findViewById(R.id.total_cost);
-            this.textindex = itemView.findViewById(R.id.index_number);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -5,15 +5,31 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity.receiptFragment"
     android:background="@color/bgcolor"
-    >
+    tools:context=".MainActivity.receiptFragment">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Receipts"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:textIsSelectable="false"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_receipts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="550dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
         tools:listitem="@layout/receipt_item" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

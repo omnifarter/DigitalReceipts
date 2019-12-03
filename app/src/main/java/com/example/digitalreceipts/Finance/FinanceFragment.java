@@ -180,16 +180,16 @@ public class FinanceFragment extends Fragment {
                         }
                     }
                 });
-                int width = (int) (rootView.getMeasuredWidth() * 0.8);
+                int width = (int) (rootView.getMeasuredWidth() * 0.9);
                 String width_value = "width: " + Integer.toString(width);
-                int height = (int) (rootView.getMeasuredHeight() * 0.8);
+                int height = (int) (rootView.getMeasuredHeight() * 0.9);
                 String height_value = "height: " + Integer.toString(height);
                 PopupWindow popupWindow = new PopupWindow(popupView, 0, 0, true);
                 //define view items here
                 popupWindow.setAnimationStyle(R.style.Animation);
                 popupWindow.setWidth(width);
                 popupWindow.setHeight(height);
-                popupWindow.showAtLocation(rootView,  Gravity.CENTER, 0,0);
+                popupWindow.showAtLocation(rootView,  Gravity.CENTER, 0,-50);
                 fadeBackground(popupWindow);
             }
         });

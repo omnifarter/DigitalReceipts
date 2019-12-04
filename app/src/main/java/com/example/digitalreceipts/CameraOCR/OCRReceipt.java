@@ -7,37 +7,37 @@ import java.util.List;
 
 public class OCRReceipt {
 
-    @SerializedName("message")
-    @Expose
-    public String message;
+//    @SerializedName("message")
+//    @Expose
+//    public String message;
 
     @SerializedName("result")
     @Expose
     public Result result;
 
-    @SerializedName("success")
-    @Expose
-    public Boolean success;
+//    @SerializedName("success")
+//    @Expose
+//    public Boolean success;
 
-    @SerializedName("code")
-    @Expose
-    public Integer code;
-
-    public String getMessage() {
-        return message;
-    }
+//    @SerializedName("code")
+//    @Expose
+//    public Integer code;
+//
+//    public String getMessage() {
+//        return message;
+//    }
 
     public Result getData() {
         return result;
     }
 
-    public Boolean getSuccess() {
-        return success;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
+//    public Boolean getSuccess() {
+//        return success;
+//    }
+// code always is wrong (it thinks the receipt number is item code) or null, no use anyway
+//    public Integer getCode() {
+//        return code;
+//    }
 
     public class Result {
 
@@ -53,18 +53,18 @@ public class OCRReceipt {
         @Expose
         public String total;
 
-        @SerializedName("address")
-        @Expose
-        public String address;
+//        @SerializedName("address")
+//        @Expose
+//        public String address;
 
         @SerializedName("lineItems")
         @Expose
         public List<LineItem> lineItems;
 
 
-        @SerializedName("totalConfidence")
-        @Expose
-        public Double totalConfidence;
+//        @SerializedName("totalConfidence")
+//        @Expose
+//        public Double totalConfidence;
 
         @SerializedName("expenseType")
         @Expose
@@ -82,17 +82,17 @@ public class OCRReceipt {
             return total;
         }
 
-        public String getAddress() {
-            return address;
-        }
+//        public String getAddress() {
+//            return address;
+//        }
 
         public List<LineItem> getLineItems() {
             return lineItems;
         }
 
-        public Double getTotalConfidence() {
-            return totalConfidence;
-        }
+//        public Double getTotalConfidence() {
+//            return totalConfidence;
+//        }
 
         public String getExpenseType() {
             return expenseType;
@@ -106,9 +106,10 @@ public class OCRReceipt {
             @Expose
             public Integer qty;
             // Give this priority for description
-            @SerializedName("desc")
-            @Expose
-            public String desc;
+            // no longer used, TBApi only looks for descClean
+//            @SerializedName("desc")
+//            @Expose
+//            public String desc;
 
             // Suppose to give unit price, doesnt work usually. Use linetotal!
             @SerializedName("price")
@@ -134,9 +135,9 @@ public class OCRReceipt {
 
             }
 
-            public String getDesc() {
-                return desc;
-            }
+//            public String getDesc() {
+//                return desc;
+//            }
 
             public String getDescClean() {
                 if (descClean.contains("-"))

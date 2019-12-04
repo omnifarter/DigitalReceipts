@@ -54,7 +54,6 @@ public class ItemRecycleAdapter extends RecyclerView.Adapter<ItemRecycleAdapter.
             @Override
             public void valueChanged(int value, ActionEnum action) {
                 holder.itemnumber.setText(Integer.toString(value));
-                Toast.makeText(context, name.get(position_name), Toast.LENGTH_LONG).show();
                 item_quantity.put(listofNames.get(position).getItemName(),value);
                 System.out.println(item_quantity.toString());
             }

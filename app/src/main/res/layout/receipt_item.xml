@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview_gone"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:layout_marginTop="2dp"
@@ -12,7 +13,6 @@
 
 
     <TextView
-        android:textStyle="bold"
         android:id="@+id/total_cost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +23,8 @@
         android:fontFamily="sans-serif-light"
         android:text="@string/total_cost"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/receipt_id"
@@ -37,7 +38,6 @@
         android:textSize="12sp" />
 
     <TextView
-        android:textStyle="bold"
         android:id="@+id/company_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,7 +46,8 @@
         android:maxLines="1"
         android:text="@string/company_info"
         android:textColor="@color/text_primary"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 
 </androidx.cardview.widget.CardView>

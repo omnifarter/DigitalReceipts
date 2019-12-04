@@ -77,7 +77,7 @@ public class FinanceFragment extends Fragment {
         recyclerViewReceipts.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewReceipts.setHasFixedSize(true);
 
-        final ReceiptAdapter adapter = new ReceiptAdapter();
+        final FinanceAdapter adapter = new FinanceAdapter();
         recyclerViewReceipts.setAdapter(adapter);
 
         // create the object since receiptManager extends from viewmodel
@@ -111,16 +111,21 @@ public class FinanceFragment extends Fragment {
         pieAllData.put("transport",0.0);
         pieAllData.put("misc",0.0);
         for(ReceiptsRoom pieReceiptRoom: pieReceiptRoomList){
-            double receiptCost = pieReceiptRoom.get_totalCost();
-            String expenseType;
-            String tempType = pieReceiptRoom.get_expenseType();
-            switch(tempType) {
-                case "food": expenseType = "food";
-                case "transport": expenseType = "transport";
-                default: expenseType = "misc";
+            if (pieReceiptRoom.is_splitStatus()) {
+                double receiptCost = pieReceiptRoom.get_totalCost();
+                String expenseType;
+                String tempType = pieReceiptRoom.get_expenseType();
+                switch (tempType) {
+                    case "food":
+                        expenseType = "food";
+                    case "transport":
+                        expenseType = "transport";
+                    default:
+                        expenseType = "misc";
+                }
+                pieAllData.put(expenseType, receiptCost + pieAllData.get(expenseType));
+                Log.i("hihi", String.valueOf(pieAllData.get(expenseType)));
             }
-            pieAllData.put(expenseType,receiptCost + pieAllData.get(expenseType));
-            Log.i("hihi",String.valueOf(pieAllData.get(expenseType)));
         }
 
         config.addData(new SimplePieInfo(pieAllData.get("food"),getResources().getColor(R.color.design_default_color_primary_dark),"food"));
@@ -134,7 +139,7 @@ public class FinanceFragment extends Fragment {
         animatedPieView.start();
 
         // This handles click on the cards
-        adapter.setOnItemClickListener(new ReceiptAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new FinanceAdapter.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             // Hands over only the array. Nothing else

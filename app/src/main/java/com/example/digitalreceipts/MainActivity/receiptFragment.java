@@ -123,7 +123,10 @@ public class receiptFragment extends Fragment {
                     public void onClick(View view) {
 
                         // TODO modify this to update database of values.
-                        Toast.makeText(getContext(), "receiptFragment is added", Toast.LENGTH_LONG).show();
+                        receipts.set_splitStatus(true);
+                        receiptsManager.update(receipts);
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(getContext(), "Added to finance!", Toast.LENGTH_SHORT).show();
 
                     }
                 });

@@ -13,10 +13,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/final_bill_split_person_recycle"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/person_name"
             tools:listitem="@layout/activity_final_bill_split_person_item" />

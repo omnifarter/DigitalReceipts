@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -30,6 +31,9 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -48,6 +52,7 @@ public class CameraFragment extends DialogFragment {
     TBApi tabscannerapi;
     ImageView imageView;
     Uri tempCameraUri;
+    File tempFile;
 
     public CameraFragment(){}
     public static CameraFragment newInstance(String title) {
@@ -86,15 +91,35 @@ public class CameraFragment extends DialogFragment {
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start writing temporary files for access
-
 
                 //TODO: Figure out how to store temp URI path in ext. storage
 
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Start writing files
+                if (cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    try {
+                        photoFile = URICreator.createImageFile(getContext());
+                    } catch (IOException ex) {
+                        // Error occurred while creating the File
+                        Log.i("CameraRequest", "URI creation failed");
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null)
+                    {
+                        Uri photoURI = FileProvider.getUriForFile(getContext(),
+                                "com.example.android.fileprovider",
+                                photoFile);
+                        tempCameraUri = photoURI;
+                        tempFile = photoFile;
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(cameraIntent, 1);
+                    }
                 //cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT)
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                //startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
+        }
         });
         return rootView;
     }
@@ -124,14 +149,13 @@ public class CameraFragment extends DialogFragment {
             receiptDisplay.setText("Receipt is loading...");
 
         }
-        else if (resultCode == RESULT_OK && requestCode == CAMERA_REQUEST) {
-            imageUri = data.getData();
+        else if (resultCode == RESULT_OK && requestCode == 1) {
+            //imageUri = data.getData();
             Log.i("hihi","Camera onActivity");
-            File imageFile = new File(FileUtil.getPath(imageUri, getContext()));
-            //File imageFile = new File(imageUri); // to be removed (this one before merging with @Gab)
+
 
             MultipartBody.Part filePart = MultipartBody.Part.createFormData("file",
-                    imageFile.getName(), RequestBody.create(MediaType.parse("image/*"), imageFile));
+                    tempFile.getName(), RequestBody.create(MediaType.parse("image/*"), tempFile));
             //receiptDisplay.setImageURI(imageUri);
             tabscannerapi.postRequest(filePart);
             imageView.setBackgroundResource(R.color.bgcolor);

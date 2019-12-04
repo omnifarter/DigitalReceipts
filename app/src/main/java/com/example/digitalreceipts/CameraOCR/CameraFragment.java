@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class CameraFragment extends DialogFragment {
     Uri imageUri;
     TBApi tabscannerapi;
     ImageView imageView;
+    Uri tempCameraUri;
 
     public CameraFragment(){}
     public static CameraFragment newInstance(String title) {
@@ -84,7 +86,13 @@ public class CameraFragment extends DialogFragment {
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Start writing temporary files for access
+
+
+                //TODO: Figure out how to store temp URI path in ext. storage
+
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT)
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
@@ -120,6 +128,8 @@ public class CameraFragment extends DialogFragment {
             imageUri = data.getData();
             Log.i("hihi","Camera onActivity");
             File imageFile = new File(FileUtil.getPath(imageUri, getContext()));
+            //File imageFile = new File(imageUri); // to be removed (this one before merging with @Gab)
+
             MultipartBody.Part filePart = MultipartBody.Part.createFormData("file",
                     imageFile.getName(), RequestBody.create(MediaType.parse("image/*"), imageFile));
             //receiptDisplay.setImageURI(imageUri);

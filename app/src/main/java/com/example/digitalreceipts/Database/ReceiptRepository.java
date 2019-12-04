@@ -48,9 +48,9 @@ public class ReceiptRepository {
 //        new SearchReceiptFromNumberAsyncTask(receiptsDAO).execute(receiptID);
 //    }
 
-    public void updateItemList(List<ReceiptItem> listOfItems, int receiptNumber){
+    public void updateItemList(List<ReceiptItem> listOfItems, int receiptNumber, double selfTotalCost){
 
-        new UpdateItemListAsyncTask(receiptsDAO, listOfItems, receiptNumber).execute();
+        new UpdateItemListAsyncTask(receiptsDAO, listOfItems, receiptNumber, selfTotalCost).execute();
     }
 
     public List<ReceiptsRoom> getAllReceiptsInListForm()
@@ -163,16 +163,18 @@ public class ReceiptRepository {
         List<ReceiptItem> listofitems;
         int receiptNumber;
         private ReceiptsDAO receiptsDAO;
+        double selfTotalCost;
 
-        private UpdateItemListAsyncTask(ReceiptsDAO receiptsDAO, List<ReceiptItem> listofitems, Integer receiptNumber){
+        private UpdateItemListAsyncTask(ReceiptsDAO receiptsDAO, List<ReceiptItem> listofitems, Integer receiptNumber, Double selfTotalCost){
             this.listofitems = listofitems;
             this.receiptNumber = receiptNumber;
+            this.selfTotalCost = selfTotalCost;
             this.receiptsDAO = receiptsDAO;
         }
 
         @Override
         protected Void doInBackground(Integer ... integers) {
-            receiptsDAO.updateItemList(listofitems, receiptNumber);
+            receiptsDAO.updateItemList(listofitems, receiptNumber, selfTotalCost);
             return null;
         }
     }

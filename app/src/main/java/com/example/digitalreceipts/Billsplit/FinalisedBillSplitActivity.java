@@ -73,7 +73,13 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
 
                     }
 
-                receiptsManager.updateItemList(receiptItems,Integer.parseInt(receiptNumber));
+                /** Hey gabriel, for setting the ownself amount (selfTotalCost), you can either use this method (3rd argument u pass
+                 * the cost) or u can just use receiptRoomExample.set_selfTotalCost, then proceed to run receiptManager.update(receiptRoomExample)
+                 * whichever convenient
+                 *
+                 * updateItemList(List<ReceiptItem> listOfItems, int receiptNumber, double selfTotalCost);
+                 */
+                receiptsManager.updateItemList(receiptItems,Integer.parseInt(receiptNumber),20.0);
 
 
             }

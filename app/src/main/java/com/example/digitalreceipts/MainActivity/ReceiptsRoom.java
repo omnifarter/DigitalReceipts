@@ -46,6 +46,8 @@ public class ReceiptsRoom implements Parcelable {
 
     private boolean _splitStatus;
 
+    private double _selfTotalCost;
+
 
     @TypeConverters(ReceiptTypeConverters.class)
     private List<ReceiptItem> _listOfItems;
@@ -58,6 +60,7 @@ public class ReceiptsRoom implements Parcelable {
         this._listOfItems = listOfItems;
         this._totalCost = totalCost;
         this._splitStatus = false;
+        this._selfTotalCost = 0.0;
     }
 
 
@@ -69,6 +72,7 @@ public class ReceiptsRoom implements Parcelable {
         _totalCost = in.readDouble();
         _expenseType = in.readString();
         _splitStatus = in.readBoolean();
+        _selfTotalCost = in.readDouble();
         // in.readParcelableList(_listOfItems, ClassLoader.getSystemClassLoader());
     }
 
@@ -113,6 +117,8 @@ public class ReceiptsRoom implements Parcelable {
         return _totalCost;
     }
 
+    public double get_selfTotalCost(){return _selfTotalCost;}
+
     //TODO: Test out the 3 newly added methods
 
     public String get_expenseType(){return _expenseType;}
@@ -121,9 +127,13 @@ public class ReceiptsRoom implements Parcelable {
         return _splitStatus;
     }
 
+    // The following methods are for data visualisation and splitting only.
+
     public void set_splitStatus(boolean _splitStatus) {
         this._splitStatus = _splitStatus;
     }
+
+    public void set_selfTotalCost (double selfTotalCost) {this._selfTotalCost = selfTotalCost;}
 
     @Override
     public int describeContents() {
@@ -140,6 +150,7 @@ public class ReceiptsRoom implements Parcelable {
         dest.writeDouble(_totalCost);
         dest.writeList(_listOfItems);
         dest.writeBoolean(_splitStatus);
+        dest.writeDouble(_selfTotalCost);
     }
 }
 

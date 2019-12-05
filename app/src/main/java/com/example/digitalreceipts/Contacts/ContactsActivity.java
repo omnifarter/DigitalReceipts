@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,6 +31,7 @@ public class ContactsActivity extends AppCompatActivity {
     HashMap<String,String> name_to_number = new HashMap<>();
     SimpleCursorAdapter simpleCursorAdapter;
     TextView textView;
+    TextView selected_names;
     ListView l1;
     Button next;
     SearchView search_name;
@@ -46,6 +48,9 @@ public class ContactsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contacts);
         l1 = findViewById(R.id.list_of_contacts);
         textView = findViewById(R.id.freq_contacted);
+        selected_names = findViewById(R.id.selected_names);
+        selected_names.setText(nameformatter(names));
+        selected_names.setMovementMethod(new ScrollingMovementMethod());
         search_name = findViewById(R.id.searchView);
         next = findViewById(R.id.next);
         final int[] to = {R.id.contact_name};
@@ -127,15 +132,25 @@ public class ContactsActivity extends AppCompatActivity {
                 String text = textView.getText().toString();
                 if(names.contains(text)){
                     names.remove(text);
+                    selected_names.setText(nameformatter(names));
                     Toast.makeText(getApplicationContext(), text + " has been removed", Toast.LENGTH_SHORT).show();
 
                 }
                 else {
                     names.add(text);
+                    selected_names.setText(nameformatter(names));
                     Toast.makeText(getApplicationContext(), text + " has been added", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private String nameformatter(ArrayList<String> names){
+        String result = "";
+        for(String name: names){
+            result += (name + "\n");
+        }
+        return result;
     }
 
 }

@@ -101,20 +101,20 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
                         String presentableItems ="";
                         for (HashMap.Entry<String,Double> item:person.getValue().entrySet()){
                             personOwe= personOwe+item.getValue();
-                            String itemValue = "\n"+item.getKey().toString()+": "+ String.format("$%.2f",item.getValue());
+                            String itemValue = "\n"+item.getKey().toString()+": "+ String.format("$%.2f",item.getValue()) +"\n";
                             presentableItems+=itemValue;
                         }
-                        String text= "Please pay Crystal "+ String.format("$%.2f",personOwe) +". \nDetails: "+presentableItems;
+                        String text= "Please pay Crystal "+ String.format("$%.2f",personOwe) +". \n\nDetails: "+presentableItems + "\n\nPaylah link: https://www.dbs.com.sg/personal/mobile/paylink/index.html?tranRef=mfs5kIYYlJ";
                         System.out.println(name_to_number.get(person.getKey()));
-                        if(name_to_number.get(person.getKey()).equals("83573166") && shiyingCount==0){
+                        if(name_to_number.get(person.getKey()).replaceAll(" ","").equals("83573166") && shiyingCount==0){
                             shiyingCount=shiyingCount+1;
                             test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6583573166", text);
                         }
-                        if(name_to_number.get(person.getKey()).equals("97701477") && sheikhCount==0){
+                        if(name_to_number.get(person.getKey()).replaceAll(" ","").equals("97701477") && sheikhCount==0){
                             sheikhCount=sheikhCount+1;
                             test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6597701477", text);
                         }
-                        if(name_to_number.get(person.getKey()).equals("82993256") && gabrielCount==0){
+                        if(name_to_number.get(person.getKey()).replaceAll(" ","").equals("82993256") && gabrielCount==0){
                             gabrielCount=gabrielCount+1;
                             test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6582993256", text);
                         }

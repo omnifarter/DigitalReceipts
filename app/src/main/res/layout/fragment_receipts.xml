@@ -10,11 +10,13 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:background="@android:color/white"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
         android:text="Receipts"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
         android:textStyle="bold"
         android:textColor="@color/text_primary"
         android:textIsSelectable="false"

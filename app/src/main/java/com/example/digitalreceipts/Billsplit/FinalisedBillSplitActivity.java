@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.digitalreceipts.CameraOCR.TwilioAPI;
 import com.example.digitalreceipts.Database.ReceiptsManager;
 import com.example.digitalreceipts.R;
 import com.example.digitalreceipts.MainActivity.ReceiptItem;
@@ -80,6 +81,13 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
                  * updateItemList(List<ReceiptItem> listOfItems, int receiptNumber, double selfTotalCost);
                  */
                 receiptsManager.updateItemList(receiptItems,Integer.parseInt(receiptNumber),20.0);
+
+                /** Hey shiying, for your side be sure to modify the TwilioAPI class before continuing. TwilioAPI class has everything
+                 * you need to make things work. Debugger also attached when you run
+                 */
+                TwilioAPI test = TwilioAPI.getInstance();
+                test.sendTwilioMessage("ACd18def584fd1fb72bb38f443e79166a9","+6593240558", "Hi there!");
+
 
 
             }

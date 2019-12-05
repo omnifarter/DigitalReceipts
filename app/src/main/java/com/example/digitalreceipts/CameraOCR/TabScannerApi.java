@@ -2,6 +2,9 @@ package com.example.digitalreceipts.CameraOCR;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
@@ -25,6 +28,14 @@ public interface TabScannerApi {
     @Multipart
     @POST("2/process")
     Call<OCRPost> createOCRPost(@Part MultipartBody.Part filePart);
+
+
+//    @POST("2010-04-01/Accounts/{accountsid}/Messages")
+//    Call<Void> twilioCreateMessage(@Path("accountsid") String accountSid, @Body TwilioRequestBody body);
+
+    @FormUrlEncoded
+    @POST("2010-04-01/Accounts/{accountsid}/Messages")
+    Call<Void> twilioCreateMessage(@Path("accountsid") String accountSid, @Field("To") String To, @Field("From") String from, @Field("Body") String body);
 
 
 }

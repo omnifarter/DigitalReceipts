@@ -57,6 +57,8 @@ public class FinanceFragment extends Fragment implements DialogInterface.OnDismi
     Button split_bill;
     Button add_finance;
     private ArrayList<ReceiptsRoom> fullreceiptsRooms = new ArrayList<>();
+    static HashMap<String,Integer> current_colors = new HashMap<>();
+
 
     public FinanceFragment() {
         // Required empty public constructor
@@ -145,15 +147,19 @@ public class FinanceFragment extends Fragment implements DialogInterface.OnDismi
                 }
             }
         }
-        ArrayList<Integer> current_colors = new ArrayList<>();
         RandomColors randomColors = new RandomColors();
         for(HashMap.Entry<String,Double> piedata: pieAllData.entrySet()){
             int tempcolor = randomColors.getColor();
-            //TODO: THIS IS SUPER BAD WAY OF IMPLEMENTING RANDOM COLOURS BUT OH WELL
-            while(current_colors.contains(tempcolor)){
-                tempcolor = randomColors.getColor();
+            if(current_colors.containsKey(piedata.getKey())) {
+                config.addData(new SimplePieInfo(piedata.getValue(), current_colors.get(piedata.getKey()), piedata.getKey()));
             }
-            config.addData(new SimplePieInfo(piedata.getValue(),tempcolor,piedata.getKey()));
+            else{
+                while(current_colors.containsValue(tempcolor)){
+                    tempcolor = randomColors.getColor();
+                }
+                config.addData(new SimplePieInfo(piedata.getValue(),tempcolor,piedata.getKey()));
+                current_colors.put(piedata.getKey(),tempcolor);
+            }
         }
         config.duration(1000);
         config.drawText(true);

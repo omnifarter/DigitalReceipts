@@ -1,6 +1,8 @@
 package com.example.digitalreceipts.CameraOCR;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
@@ -27,9 +30,11 @@ import com.bumptech.glide.Glide;
 import com.example.digitalreceipts.Database.ReceiptsManager;
 import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
 import com.example.digitalreceipts.R;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -43,6 +48,7 @@ public class CameraFragment extends DialogFragment {
     private static final int CAMERA_REQUEST = 1888;
     public ReceiptsManager receiptsManager;
     private static final int MY_CAMERA_PERMISSION_CODE = 6604;
+    private int STORAGE_PERMISSION_CODE = 1;
 
     TextView receiptDisplay;
     Button galleryButton;
@@ -54,7 +60,9 @@ public class CameraFragment extends DialogFragment {
     Uri tempCameraUri;
     File tempFile;
 
-    public CameraFragment(){}
+    public CameraFragment() {
+    }
+
     public static CameraFragment newInstance(String title) {
         CameraFragment frag = new CameraFragment();
         Bundle args = new Bundle();
@@ -62,7 +70,8 @@ public class CameraFragment extends DialogFragment {
         frag.setArguments(args);
         return frag;
     }
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_camera, container, false);
         receiptDisplay = rootView.findViewById(R.id.receiptDisplay);
         galleryButton = rootView.findViewById(R.id.galleryButton);
@@ -78,7 +87,7 @@ public class CameraFragment extends DialogFragment {
             }
         });
 
-        tabscannerapi = TBApi.getInstance(getContext(),imageView,receiptDisplay, receiptsManager);
+        tabscannerapi = TBApi.getInstance(getContext(), imageView, receiptDisplay, receiptsManager);
 
         galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,46 +101,49 @@ public class CameraFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                //TODO: Figure out how to store temp URI path in ext. storage
 
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                // Start writing files
-                if (cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
-                    // Create the File where the photo should go
-                    File photoFile = null;
-                    try {
-                        photoFile = URICreator.createImageFile(getContext());
-                    } catch (IOException ex) {
-                        // Error occurred while creating the File
-                        Log.i("CameraRequest", "URI creation failed");
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    //TODO: Figure out how to store temp URI path in ext. storage
+
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // Start writing files
+                    if (cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        File photoFile = null;
+                        try {
+                            photoFile = URICreator.createImageFile(getContext());
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
+                            Log.i("CameraRequest", "URI creation failed");
+                        }
+                        // Continue only if the File was successfully created
+                        if (photoFile != null) {
+                            Uri photoURI = FileProvider.getUriForFile(getContext(),
+                                    "com.example.android.fileprovider",
+                                    photoFile);
+                            tempCameraUri = photoURI;
+                            tempFile = photoFile;
+                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                            startActivityForResult(cameraIntent, 1);
+                        }
+                        //cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT)
+                        //startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     }
-                    // Continue only if the File was successfully created
-                    if (photoFile != null)
-                    {
-                        Uri photoURI = FileProvider.getUriForFile(getContext(),
-                                "com.example.android.fileprovider",
-                                photoFile);
-                        tempCameraUri = photoURI;
-                        tempFile = photoFile;
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        startActivityForResult(cameraIntent, 1);
-                    }
-                //cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT)
-                //startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                }else {
+                    requestStoragePermission();
+                }
             }
-        }
         });
         return rootView;
     }
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == GALLERY_REQUEST) {
-            Log.i("hihi","gallery onActivity");
+            Log.i("hihi", "gallery onActivity");
             imageUri = data.getData();
             File imageFile = new File(FileUtil.getPath(imageUri, getContext()));
             MultipartBody.Part filePart = MultipartBody.Part.createFormData("file",
@@ -148,10 +160,9 @@ public class CameraFragment extends DialogFragment {
             Glide.with(getContext()).load(R.drawable.loading_screen).into(imageView);
             receiptDisplay.setText("Receipt is loading...");
 
-        }
-        else if (resultCode == RESULT_OK && requestCode == 1) {
+        } else if (resultCode == RESULT_OK && requestCode == 1) {
             //imageUri = data.getData();
-            Log.i("hihi","Camera onActivity");
+            Log.i("hihi", "Camera onActivity");
 
 
             MultipartBody.Part filePart = MultipartBody.Part.createFormData("file",
@@ -163,6 +174,44 @@ public class CameraFragment extends DialogFragment {
             receiptDisplay.setText("Receipt has been uploaded!");
 
 
+        }
+    }
+
+
+    private void requestStoragePermission() {
+        if (shouldShowRequestPermissionRationale( Manifest.permission.CAMERA)) {
+            //Toast.makeText(getActivity(), "Permission box coming out", Toast.LENGTH_SHORT).show();
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Permission needed")
+                    .setMessage("Permission is needed to take photo of the receipts")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            requestPermissions( new String[]{Manifest.permission.CAMERA}, STORAGE_PERMISSION_CODE);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        } else {
+            Toast.makeText(getActivity(),"Requesting permission",Toast.LENGTH_SHORT).show();
+            requestPermissions( new String[]{Manifest.permission.CAMERA}, STORAGE_PERMISSION_CODE);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "Permission GRANTED", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

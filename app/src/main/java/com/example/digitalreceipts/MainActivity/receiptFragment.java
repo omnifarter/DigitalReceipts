@@ -188,7 +188,7 @@ public class receiptFragment extends Fragment {
             //Toast.makeText(getActivity(), "Permission box coming out", Toast.LENGTH_SHORT).show();
             new AlertDialog.Builder(getActivity())
                     .setTitle("Permission needed")
-                    .setMessage("I need because gab needs")
+                    .setMessage("Permission is needed to split bill amongst contacts")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

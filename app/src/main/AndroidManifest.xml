@@ -3,13 +3,13 @@
     package="com.example.digitalreceipts">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-feature android:name="android.hardware.camera"
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
-
-
 
     <application
         android:allowBackup="true"
@@ -18,6 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".MainActivity.HomeActivity"></activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.android.fileprovider"
@@ -25,9 +27,10 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider_paths"></meta-data>
+                android:resource="@xml/file_provider_paths" />
         </provider>
-        <activity android:name=".Billsplit.FinalisedBillSplitActivity"></activity>
+
+        <activity android:name=".Billsplit.FinalisedBillSplitActivity" />
         <activity android:name=".Billsplit.BIllSplitActivity" />
         <activity android:name=".Contacts.ContactsActivity" />
         <activity android:name=".MainActivity.MainActivity">
@@ -38,6 +41,5 @@
             </intent-filter>
         </activity>
     </application>
-
 
 </manifest>

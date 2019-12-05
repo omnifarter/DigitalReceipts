@@ -147,6 +147,7 @@ public class TBApi {
                         Double.valueOf(receiptProcessed.getData().getTotal()),
                         receiptProcessed.getData().getExpenseType());
                 receiptsManager.insert(receiptRoom);
+                System.out.println(receiptProcessed.getData().getExpenseType());
 
                 String obj1_name = itemised.get(0).getDescClean();
                 String obj1_price = itemised.get(0).getLineTotal();

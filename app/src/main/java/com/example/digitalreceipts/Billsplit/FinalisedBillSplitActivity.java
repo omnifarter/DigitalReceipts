@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.digitalreceipts.CameraOCR.TwilioAPI;
 import com.example.digitalreceipts.Database.ReceiptsManager;
+import com.example.digitalreceipts.MainActivity.MainActivity;
 import com.example.digitalreceipts.R;
 import com.example.digitalreceipts.MainActivity.ReceiptItem;
 
@@ -100,11 +101,10 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
                         String presentableItems ="";
                         for (HashMap.Entry<String,Double> item:person.getValue().entrySet()){
                             personOwe= personOwe+item.getValue();
-                            String itemValue = item.getKey().toString()+": "+ item.getValue().toString()+", ";
+                            String itemValue = "\n"+item.getKey().toString()+": "+ String.format("$%.2f",item.getValue());
                             presentableItems+=itemValue;
                         }
-                        String text= "Please pay Crystal "+ personOwe.toString()+". Details: "+presentableItems;
-                        text = text.substring(0, text.length() - 1);
+                        String text= "Please pay Crystal "+ String.format("$%.2f",personOwe) +". \nDetails: "+presentableItems;
                         System.out.println(name_to_number.get(person.getKey()));
                         if(name_to_number.get(person.getKey()).equals("83573166") && shiyingCount==0){
                             shiyingCount=shiyingCount+1;
@@ -121,7 +121,7 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
 
 
                     }
-
+                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 }
 
                 //TwilioAPI test = TwilioAPI.getInstance();

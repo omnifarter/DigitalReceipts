@@ -91,7 +91,41 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
                  * you need to make things work. Debugger also attached when you run. Make sure numberTo is verified in Twilio
                  */
                 TwilioAPI test = TwilioAPI.getInstance();
-                test.sendTwilioMessage("ACd18def584fd1fb72bb38f443e79166a9","+6593240558", "Hi there!");
+                int shiyingCount=0;
+                int sheikhCount=0;
+                int gabrielCount=0;
+                for (ReceiptItem r: receiptItems){
+                    for (HashMap.Entry<String,HashMap<String,Double>> person: final_map.entrySet()){
+                        Double personOwe =Double.parseDouble("0");
+                        String presentableItems ="";
+                        for (HashMap.Entry<String,Double> item:person.getValue().entrySet()){
+                            personOwe= personOwe+item.getValue();
+                            String itemValue = item.getKey().toString()+": "+ item.getValue().toString()+", ";
+                            presentableItems+=itemValue;
+                        }
+                        String text= "Please pay Crystal "+ personOwe.toString()+". Details: "+presentableItems;
+                        text = text.substring(0, text.length() - 1);
+                        System.out.println(name_to_number.get(person.getKey()));
+                        if(name_to_number.get(person.getKey()).equals("83573166") && shiyingCount==0){
+                            shiyingCount=shiyingCount+1;
+                            test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6583573166", text);
+                        }
+                        if(name_to_number.get(person.getKey()).equals("97701477") && sheikhCount==0){
+                            sheikhCount=sheikhCount+1;
+                            test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6597701477", text);
+                        }
+                        if(name_to_number.get(person.getKey()).equals("82993256") && gabrielCount==0){
+                            gabrielCount=gabrielCount+1;
+                            test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6582993256", text);
+                        }
+
+
+                    }
+
+                }
+
+                //TwilioAPI test = TwilioAPI.getInstance();
+                //test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6583573166", "Hi there!");
 
 
 

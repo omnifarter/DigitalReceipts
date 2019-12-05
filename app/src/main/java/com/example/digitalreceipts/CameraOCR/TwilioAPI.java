@@ -32,7 +32,7 @@ public class TwilioAPI {
              */
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(loggingInterceptor)
-                    .addInterceptor(new BasicAuthInterceptor("ACab2badbbac777a4538dad09af22b663d", "d5fe82ea000fd3126e6491ba6747fe35"))
+                    .addInterceptor(new BasicAuthInterceptor("ACab2badbbac777a4538dad09af22b663d", "8ec7662c6c034e508878368731652c3f"))
                     .build();
 
             Retrofit retrofit = new Retrofit.Builder()

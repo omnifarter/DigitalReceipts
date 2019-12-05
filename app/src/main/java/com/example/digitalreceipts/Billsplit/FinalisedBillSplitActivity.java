@@ -65,22 +65,27 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
                 /** Because our DB is async, I plan to run both DB update and Payment code here. Hence, will need a
                  * ReceiptItem object ready, with all the ownershipTable info updated.
                  */
-                    for (ReceiptItem r: receiptItems){
-                        for (HashMap.Entry<String,HashMap<String,Double>> item: final_map_items.entrySet()){
-                            if (item.getKey().equals(r.getItemName())){
+                Double selftotalcost = 0.0;
+                HashMap<String,Double> myself_items = final_map.get("Myself");
+                for(HashMap.Entry<String,Double> item: myself_items.entrySet()){
+                    selftotalcost+=item.getValue();
+                }
+
+                    for (ReceiptItem r: receiptItems) {
+                        for (HashMap.Entry<String, HashMap<String, Double>> item : final_map_items.entrySet()) {
+                            if (item.getKey().equals(r.getItemName())) {
                                 r.setOwnershipTable(item.getValue());
                             }
                         }
 
                     }
-
                 /** Hey gabriel, for setting the ownself amount (selfTotalCost), you can either use this method (3rd argument u pass
                  * the cost) or u can just use receiptRoomExample.set_selfTotalCost, then proceed to run receiptManager.update(receiptRoomExample)
                  * whichever convenient
                  *
                  * updateItemList(List<ReceiptItem> listOfItems, int receiptNumber, double selfTotalCost);
                  */
-                receiptsManager.updateItemList(receiptItems,Integer.parseInt(receiptNumber),20.0);
+                receiptsManager.updateItemList(receiptItems,Integer.parseInt(receiptNumber),selftotalcost);
 
                 /** Hey shiying, for your side be sure to modify the TwilioAPI class before continuing. TwilioAPI class has everything
                  * you need to make things work. Debugger also attached when you run. Make sure numberTo is verified in Twilio

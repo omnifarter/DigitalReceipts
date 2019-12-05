@@ -1,18 +1,13 @@
 package com.example.digitalreceipts.Finance;
 
 
-import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -20,7 +15,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +26,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.digitalreceipts.Contacts.ContactsActivity;
 import com.example.digitalreceipts.Database.ReceiptsManager;
 import com.example.digitalreceipts.MainActivity.ItemlistAdapter;
-import com.example.digitalreceipts.MainActivity.ReceiptAdapter;
+import com.example.digitalreceipts.MainActivity.MainActivity;
 import com.example.digitalreceipts.MainActivity.ReceiptItem;
 import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
 import com.example.digitalreceipts.R;
@@ -44,15 +37,19 @@ import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FinanceFragment extends Fragment {
+public class FinanceFragment extends Fragment implements DialogInterface.OnDismissListener{
     private ReceiptsManager receiptsManager;
+    PopupWindow popupWindow;
     View rootView;
     public final static String BILL_KEY = "BILL_SPLIT";
     Button split_bill;
@@ -105,39 +102,37 @@ public class FinanceFragment extends Fragment {
         AnimatedPieView animatedPieView = rootView.findViewById(R.id.animatedPieView);
         AnimatedPieViewConfig config = new AnimatedPieViewConfig();
         List<ReceiptsRoom> pieReceiptRoomList = receiptsManager.getAllReceiptsInListForm();
-
         Map<String,Double> pieAllData = new HashMap<String,Double>();
-        pieAllData.put("food",0.0);
-        pieAllData.put("transport",0.0);
-        pieAllData.put("misc",0.0);
         for(ReceiptsRoom pieReceiptRoom: pieReceiptRoomList){
             if (pieReceiptRoom.is_splitStatus()) {
-                double receiptCost = pieReceiptRoom.get_totalCost();
-                String expenseType;
-                String tempType = pieReceiptRoom.get_expenseType();
-                switch (tempType) {
-                    case "food":
-                        expenseType = "food";
-                    case "transport":
-                        expenseType = "transport";
-                    default:
-                        expenseType = "misc";
+                System.out.println("this is " + pieReceiptRoom.get_company()+ " expense type "+pieReceiptRoom.get_expenseType());
+                double receiptCost = pieReceiptRoom.get_selfTotalCost();
+                String expenseType = pieReceiptRoom.get_expenseType();
+
+                if(!pieAllData.containsKey(expenseType)){
+                    pieAllData.put(expenseType,receiptCost);
                 }
-                pieAllData.put(expenseType, receiptCost + pieAllData.get(expenseType));
-                Log.i("hihi", String.valueOf(pieAllData.get(expenseType)));
+                else{
+                    pieAllData.put(expenseType,receiptCost + pieAllData.get(expenseType));
+                }
             }
         }
-
-        config.addData(new SimplePieInfo(pieAllData.get("food"),getResources().getColor(R.color.design_default_color_primary_dark),"food"));
-        config.addData(new SimplePieInfo(pieAllData.get("transport"),getResources().getColor(R.color.colorPrimaryDark),"transport"));
-        config.addData(new SimplePieInfo(pieAllData.get("misc"),getResources().getColor(R.color.design_default_color_primary),"misc"));
+        ArrayList<Integer> current_colors = new ArrayList<>();
+        RandomColors randomColors = new RandomColors();
+        for(HashMap.Entry<String,Double> piedata: pieAllData.entrySet()){
+            int tempcolor = randomColors.getColor();
+            //TODO: THIS IS SUPER BAD WAY OF IMPLEMENTING RANDOM COLOURS BUT OH WELL
+            while(current_colors.contains(tempcolor)){
+                tempcolor = randomColors.getColor();
+            }
+            config.addData(new SimplePieInfo(piedata.getValue(),tempcolor,piedata.getKey()));
+        }
         config.duration(1000);
         config.drawText(true);
         config.splitAngle(2);
         config.textSize(40);
         animatedPieView.applyConfig(config);
         animatedPieView.start();
-
         // This handles click on the cards
         adapter.setOnItemClickListener(new FinanceAdapter.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -146,50 +141,32 @@ public class FinanceFragment extends Fragment {
             public void onItemClick(final ReceiptsRoom receipts) {
                 LinearLayout viewGroup = getActivity().findViewById(R.id.linear_layout_receipt_details);
 
-                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.activity_receipt_details, viewGroup);
+                View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.finance_receipt_details, viewGroup);
 
                 //populating the popupView
                 TextView company_name = popupView.findViewById(R.id.company_info);
                 RecyclerView list_of_items = popupView.findViewById(R.id.recycler_view_itemslist);
+                TextView total_cost = popupView.findViewById(R.id.total_cost);
+                Button categorise = popupView.findViewById(R.id.categorise);
+                categorise.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CategoriseDialog categoriseDialog = CategoriseDialog.newInstance(receipts,popupWindow);
+                        categoriseDialog.show(getFragmentManager(),"dialog");
+
+                    }
+                });
                 list_of_items.setLayoutManager(new LinearLayoutManager(getContext()));
                 list_of_items.setHasFixedSize(true);
                 final ItemlistAdapter adapter = new ItemlistAdapter(receipts.get_listOfItems());
                 list_of_items.setAdapter(adapter);
                 company_name.setText(receipts.get_company());
-                add_finance = popupView.findViewById(R.id.add_finance);
-                split_bill = popupView.findViewById(R.id.split_bill);
-                add_finance.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        // TODO modify this to update database of values.
-                        Toast.makeText(getContext(), "receiptFragment is added", Toast.LENGTH_LONG).show();
-
-                    }
-                });
-                split_bill.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-                            System.out.println(receiptsManager.getAllReceiptsInListForm());
-                            System.out.println(receiptsManager.getSoongsLazyList());
-
-                            Toast.makeText(getContext(), "bill spitting", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(getActivity(), ContactsActivity.class);
-                            intent.putParcelableArrayListExtra(BILL_KEY, (ArrayList<ReceiptItem>)receipts.get_listOfItems());
-                            intent.putExtra("RECEIPT_NUMBER",String.valueOf(receipts.getId()));
-                            startActivity(intent);
-                        } else {
-
-                        }
-                    }
-                });
+                total_cost.setText(String.format("$%.2f",receipts.get_totalCost()));
                 int width = (int) (rootView.getMeasuredWidth() * 0.9);
                 String width_value = "width: " + Integer.toString(width);
                 int height = (int) (rootView.getMeasuredHeight() * 0.9);
                 String height_value = "height: " + Integer.toString(height);
-                PopupWindow popupWindow = new PopupWindow(popupView, 0, 0, true);
+                popupWindow = new PopupWindow(popupView, 0, 0, true);
                 //define view items here
                 popupWindow.setAnimationStyle(R.style.Animation);
                 popupWindow.setWidth(width);
@@ -227,6 +204,39 @@ public class FinanceFragment extends Fragment {
         p.dimAmount = 0.3f;
         wm.updateViewLayout(container, p);
 
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialogInterface) {
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container,new FinanceFragment()).commit();
+    }
+
+    class RandomColors {
+        private Stack<Integer> recycle, colors;
+
+        public RandomColors() {
+            colors = new Stack<>();
+            recycle =new Stack<>();
+            recycle.addAll(Arrays.asList(
+                    0xfff44336,0xffe91e63,0xff9c27b0,0xff673ab7,
+                    0xff3f51b5,0xff2196f3,0xff03a9f4,0xff00bcd4,
+                    0xff009688,0xff4caf50,0xff8bc34a,0xffcddc39,
+                    0xffffeb3b,0xffffc107,0xffff9800,0xffff5722,
+                    0xff795548,0xff9e9e9e,0xff607d8b,0xff333333
+                    )
+            );
+        }
+
+        public int getColor() {
+            if (colors.size()==0) {
+                while(!recycle.isEmpty())
+                    colors.push(recycle.pop());
+                Collections.shuffle(colors);
+            }
+            Integer c= colors.pop();
+            recycle.push(c);
+            return c;
+        }
     }
 
 }

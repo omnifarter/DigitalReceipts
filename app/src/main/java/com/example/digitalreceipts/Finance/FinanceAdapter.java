@@ -33,10 +33,9 @@ public class FinanceAdapter extends RecyclerView.Adapter<FinanceAdapter.ReceiptH
 
         ReceiptsRoom currentReceipt = receipts.get(position);
         if(currentReceipt.is_splitStatus()) {
-            holder.textreceiptNumber.setText(currentReceipt.get_receiptNumber());
+            holder.textreceiptNumber.setText(currentReceipt.get_expenseType());
             holder.textcompany.setText(currentReceipt.get_company());
-            //TODO: GET SPLITTED COST
-            holder.texttotalCost.setText(String.format("$%.2f", currentReceipt.get_totalCost()));
+            holder.texttotalCost.setText(String.format("$%.2f", currentReceipt.get_selfTotalCost()));
         }
         else{
             holder.rootView.setLayoutParams(holder.params);

@@ -124,6 +124,7 @@ public class receiptFragment extends Fragment {
 
                         // TODO modify this to update database of values.
                         receipts.set_splitStatus(true);
+                        receipts.set_selfTotalCost(receipts.get_totalCost());
                         receiptsManager.update(receipts);
                         adapter.notifyDataSetChanged();
                         Toast.makeText(getContext(), "Added to finance!", Toast.LENGTH_SHORT).show();

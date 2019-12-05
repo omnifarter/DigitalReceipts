@@ -135,6 +135,8 @@ public class ReceiptsRoom implements Parcelable {
 
     public void set_selfTotalCost (double selfTotalCost) {this._selfTotalCost = selfTotalCost;}
 
+    public void set_expenseType(String _expenseType) {this._expenseType = _expenseType;}
+
     @Override
     public int describeContents() {
         return 0;

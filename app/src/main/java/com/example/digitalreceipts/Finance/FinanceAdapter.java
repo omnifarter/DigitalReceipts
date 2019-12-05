@@ -47,10 +47,12 @@ public class FinanceAdapter extends RecyclerView.Adapter<FinanceAdapter.ReceiptH
         return receipts.size();
     }
 
+    public List<ReceiptsRoom> getReceipts() {
+        return receipts;
+    }
+
     public void setReceipts(List<ReceiptsRoom> receipts) {
         this.receipts = receipts;
-
-        // TODO: Will be changed to a recyclable method
         notifyDataSetChanged();
     }
     // for the damn list

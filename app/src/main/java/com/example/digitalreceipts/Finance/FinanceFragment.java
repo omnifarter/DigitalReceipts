@@ -34,6 +34,8 @@ import com.example.digitalreceipts.MainActivity.ReceiptsRoom;
 import com.example.digitalreceipts.R;
 import com.razerdp.widget.animatedpieview.AnimatedPieView;
 import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig;
+import com.razerdp.widget.animatedpieview.callback.OnPieSelectListener;
+import com.razerdp.widget.animatedpieview.data.IPieInfo;
 import com.razerdp.widget.animatedpieview.data.SimplePieInfo;
 
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ public class FinanceFragment extends Fragment implements DialogInterface.OnDismi
     public final static String BILL_KEY = "BILL_SPLIT";
     Button split_bill;
     Button add_finance;
-
+    private ArrayList<ReceiptsRoom> fullreceiptsRooms = new ArrayList<>();
 
     public FinanceFragment() {
         // Required empty public constructor
@@ -79,60 +81,8 @@ public class FinanceFragment extends Fragment implements DialogInterface.OnDismi
 
         // create the object since receiptManager extends from viewmodel
         receiptsManager = ViewModelProviders.of(this).get(ReceiptsManager.class); //check changes
-        receiptsManager.getAllReceipts().observe(this, new Observer<List<ReceiptsRoom>>() {
-            @Override
-            public void onChanged(List<ReceiptsRoom> receiptsRooms) {
-                // for recycleview when we want to display data. currently only showing data
-                if (receiptsRooms.isEmpty()) {
-                    ReceiptItem burger1 = new ReceiptItem("Macdoonalds burger", 3.00, 1);
-                    ReceiptItem burger2 = new ReceiptItem("Macdoonalds burger upsize", 4.50, 1);
-                    ReceiptItem burger3 = new ReceiptItem("Macdoonalds burger extra large", 6.00, 1);
-
-                    ArrayList<ReceiptItem> rubbish = new ArrayList<>();
-                    rubbish.add(burger1);
-                    rubbish.add(burger2);
-                    rubbish.add(burger3);
-                    receiptsManager.insert(new ReceiptsRoom("nonsense", " more nonsense", "ridiculous company", rubbish, 13.50, "food"));
-                }
-                adapter.setReceipts(receiptsRooms);
-            }
-        });
-
-        // For animatedPieView
-        AnimatedPieView animatedPieView = rootView.findViewById(R.id.animatedPieView);
-        AnimatedPieViewConfig config = new AnimatedPieViewConfig();
-        List<ReceiptsRoom> pieReceiptRoomList = receiptsManager.getAllReceiptsInListForm();
-        Map<String,Double> pieAllData = new HashMap<String,Double>();
-        for(ReceiptsRoom pieReceiptRoom: pieReceiptRoomList){
-            if (pieReceiptRoom.is_splitStatus()) {
-                System.out.println("this is " + pieReceiptRoom.get_company()+ " expense type "+pieReceiptRoom.get_expenseType());
-                double receiptCost = pieReceiptRoom.get_selfTotalCost();
-                String expenseType = pieReceiptRoom.get_expenseType();
-
-                if(!pieAllData.containsKey(expenseType)){
-                    pieAllData.put(expenseType,receiptCost);
-                }
-                else{
-                    pieAllData.put(expenseType,receiptCost + pieAllData.get(expenseType));
-                }
-            }
-        }
-        ArrayList<Integer> current_colors = new ArrayList<>();
-        RandomColors randomColors = new RandomColors();
-        for(HashMap.Entry<String,Double> piedata: pieAllData.entrySet()){
-            int tempcolor = randomColors.getColor();
-            //TODO: THIS IS SUPER BAD WAY OF IMPLEMENTING RANDOM COLOURS BUT OH WELL
-            while(current_colors.contains(tempcolor)){
-                tempcolor = randomColors.getColor();
-            }
-            config.addData(new SimplePieInfo(piedata.getValue(),tempcolor,piedata.getKey()));
-        }
-        config.duration(1000);
-        config.drawText(true);
-        config.splitAngle(2);
-        config.textSize(40);
-        animatedPieView.applyConfig(config);
-        animatedPieView.start();
+        fullreceiptsRooms = (ArrayList)receiptsManager.getSoongsLazyList();
+        adapter.setReceipts(fullreceiptsRooms);
         // This handles click on the cards
         adapter.setOnItemClickListener(new FinanceAdapter.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -175,6 +125,67 @@ public class FinanceFragment extends Fragment implements DialogInterface.OnDismi
                 fadeBackground(popupWindow);
             }
         });
+
+
+        // For animatedPieView
+        AnimatedPieView animatedPieView = rootView.findViewById(R.id.animatedPieView);
+        AnimatedPieViewConfig config = new AnimatedPieViewConfig();
+        List<ReceiptsRoom> pieReceiptRoomList = receiptsManager.getAllReceiptsInListForm();
+        Map<String,Double> pieAllData = new HashMap<String,Double>();
+        for(ReceiptsRoom pieReceiptRoom: pieReceiptRoomList){
+            if (pieReceiptRoom.is_splitStatus()) {
+                double receiptCost = pieReceiptRoom.get_selfTotalCost();
+                String expenseType = pieReceiptRoom.get_expenseType();
+
+                if(!pieAllData.containsKey(expenseType)){
+                    pieAllData.put(expenseType,receiptCost);
+                }
+                else{
+                    pieAllData.put(expenseType,receiptCost + pieAllData.get(expenseType));
+                }
+            }
+        }
+        ArrayList<Integer> current_colors = new ArrayList<>();
+        RandomColors randomColors = new RandomColors();
+        for(HashMap.Entry<String,Double> piedata: pieAllData.entrySet()){
+            int tempcolor = randomColors.getColor();
+            //TODO: THIS IS SUPER BAD WAY OF IMPLEMENTING RANDOM COLOURS BUT OH WELL
+            while(current_colors.contains(tempcolor)){
+                tempcolor = randomColors.getColor();
+            }
+            config.addData(new SimplePieInfo(piedata.getValue(),tempcolor,piedata.getKey()));
+        }
+        config.duration(1000);
+        config.drawText(true);
+        config.splitAngle(2);
+        config.textSize(40);
+        config.selectListener(new OnPieSelectListener<IPieInfo>() {
+            @Override
+            public void onSelectPie(@NonNull IPieInfo pieInfo, boolean isFloatUp) {
+                if(isFloatUp) {
+                    String expense_type = pieInfo.getDesc();
+                    ArrayList<ReceiptsRoom> temp_receipts = new ArrayList<>();
+                    for (ReceiptsRoom receipts : fullreceiptsRooms) {
+                        if (receipts.get_expenseType().equals(expense_type)) {
+                            temp_receipts.add(receipts);
+                        }
+                    }
+                    adapter.setReceipts(temp_receipts);
+                }
+                else{
+                    for (int i = 0; i <fullreceiptsRooms.size() ; i++) {
+                        System.out.println("THIS IS IN FRR: " + fullreceiptsRooms.get(i).get_company());
+                    }
+                    adapter.setReceipts(fullreceiptsRooms);
+                }
+
+
+            }
+        });
+
+        animatedPieView.applyConfig(config);
+        animatedPieView.start();
+
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override

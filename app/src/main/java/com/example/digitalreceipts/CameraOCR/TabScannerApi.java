@@ -11,6 +11,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface TabScannerApi {
 
@@ -36,6 +37,10 @@ public interface TabScannerApi {
     @FormUrlEncoded
     @POST("2010-04-01/Accounts/{accountsid}/Messages")
     Call<Void> twilioCreateMessage(@Path("accountsid") String accountSid, @Field("To") String To, @Field("From") String from, @Field("Body") String body);
+
+
+    @GET("companies/find")
+    Call<ClearbitResults> getCompanyInfo(@Query("domain") String companyDomain);
 
 
 }

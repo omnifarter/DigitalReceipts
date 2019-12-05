@@ -95,7 +95,8 @@ public class OCRReceipt {
 //        }
 
         public String getExpenseType() {
-            return expenseType;
+
+                return expenseType;
         }
 
         public class LineItem {

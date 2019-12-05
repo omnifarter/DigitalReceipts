@@ -83,7 +83,7 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
                 receiptsManager.updateItemList(receiptItems,Integer.parseInt(receiptNumber),20.0);
 
                 /** Hey shiying, for your side be sure to modify the TwilioAPI class before continuing. TwilioAPI class has everything
-                 * you need to make things work. Debugger also attached when you run
+                 * you need to make things work. Debugger also attached when you run. Make sure numberTo is verified in Twilio
                  */
                 TwilioAPI test = TwilioAPI.getInstance();
                 test.sendTwilioMessage("ACd18def584fd1fb72bb38f443e79166a9","+6593240558", "Hi there!");

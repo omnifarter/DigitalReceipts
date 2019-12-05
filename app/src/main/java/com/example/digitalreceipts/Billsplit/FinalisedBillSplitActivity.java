@@ -62,7 +62,7 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(FinalisedBillSplitActivity.this, "confirmed.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FinalisedBillSplitActivity.this, "Paylah! Link has been sent out", Toast.LENGTH_SHORT).show();
                 /** Because our DB is async, I plan to run both DB update and Payment code here. Hence, will need a
                  * ReceiptItem object ready, with all the ownershipTable info updated.
                  */

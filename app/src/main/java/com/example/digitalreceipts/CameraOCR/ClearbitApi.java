@@ -14,7 +14,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /** The following segment is part of our future plans. Rest assured, it will not be used for this 1D
@@ -22,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class ClearbitApi {
-    private TabScannerApi request;
+    private Retrofit request;
     private static ClearbitApi instance;
     private ClearbitResults results;
 
@@ -42,12 +41,12 @@ public class ClearbitApi {
                 .addInterceptor(new BasicAuthInterceptor("NULL", ""))
                 .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofit2.Retrofit retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl("https://company.clearbit.com/v2/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .build();
-        request = retrofit.create(TabScannerApi.class);
+        request = retrofit.create(Retrofit.class);
     }
 
     //Singleton Design Pattern!

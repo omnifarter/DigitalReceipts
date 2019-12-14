@@ -1,7 +1,6 @@
 package com.example.digitalreceipts.CameraOCR;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +25,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
@@ -40,7 +38,7 @@ public class TBApi {
     static Context context;
     static ImageView imageView;
     private static TBApi instance;
-    private TabScannerApi request;
+    private Retrofit request;
     static TextView receiptDisplay;
     static String queryToken;
     static String result;
@@ -65,12 +63,12 @@ public class TBApi {
                 .addInterceptor(loggingInterceptor)
                 .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofit2.Retrofit retrofit = new retrofit2.Retrofit.Builder()
                 .baseUrl("https://api.tabscanner.com/api/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .build();
-        request = retrofit.create(TabScannerApi.class);
+        request = retrofit.create(Retrofit.class);
     }
 
     //Singleton Design Pattern!
@@ -138,14 +136,10 @@ public class TBApi {
                 for (OCRReceipt.Result.LineItem items : itemised)
                 {
                     // Creates new Receipt Item
-                    ReceiptItem receiptItem = new ReceiptItem(items.getDescClean(), Double.valueOf(items.getLineTotal()), items.getQty());
+                    ReceiptItem receiptItem = new ReceiptItem.ReceiptItemBuilder().setItemName(items.getDescClean()).setUnitCost(Double.valueOf(items.getLineTotal())).setQuantity(items.getQty()).createReceiptItem();
                     listOfReceiptItems.add(receiptItem);
                 }
-                ReceiptsRoom receiptRoom = new ReceiptsRoom(receiptProcessed.getData().getDate(),
-                        "NULL",receiptProcessed.getData().getEstablishment(),
-                        listOfReceiptItems,
-                        Double.valueOf(receiptProcessed.getData().getTotal()),
-                        receiptProcessed.getData().getExpenseType());
+                ReceiptsRoom receiptRoom = new ReceiptsRoom.ReceiptsRoomBuilder().setReceiptNumber(receiptProcessed.getData().getDate()).setReceiptUri("NULL").setCompany(receiptProcessed.getData().getEstablishment()).setListOfItems(listOfReceiptItems).setTotalCost(Double.valueOf(receiptProcessed.getData().getTotal())).setExpenseType(receiptProcessed.getData().getExpenseType()).createReceiptsRoom();
                 receiptsManager.insert(receiptRoom);
                 System.out.println(receiptProcessed.getData().getExpenseType());
 

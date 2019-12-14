@@ -40,8 +40,7 @@
         <activity android:name=".Billsplit.FinalisedBillSplitActivity" />
         <activity android:name=".Billsplit.BIllSplitActivity" />
         <activity android:name=".Contacts.ContactsActivity" />
-        <activity android:name=".MainActivity.MainActivity">
-        </activity>
+        <activity android:name=".MainActivity.MainActivity"/>
     </application>
 
 </manifest>

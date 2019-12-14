@@ -63,6 +63,49 @@ public class ReceiptsRoom implements Parcelable {
         this._selfTotalCost = 0.0;
     }
 
+    public static class ReceiptsRoomBuilder {
+        private String receiptNumber;
+        private String receiptUri;
+        private String company;
+        private List<ReceiptItem> listOfItems;
+        private double totalCost;
+        private String expenseType;
+
+        public ReceiptsRoomBuilder setReceiptNumber(String receiptNumber) {
+            this.receiptNumber = receiptNumber;
+            return this;
+        }
+
+        public ReceiptsRoomBuilder setReceiptUri(String receiptUri) {
+            this.receiptUri = receiptUri;
+            return this;
+        }
+
+        public ReceiptsRoomBuilder setCompany(String company) {
+            this.company = company;
+            return this;
+        }
+
+        public ReceiptsRoomBuilder setListOfItems(List<ReceiptItem> listOfItems) {
+            this.listOfItems = listOfItems;
+            return this;
+        }
+
+        public ReceiptsRoomBuilder setTotalCost(double totalCost) {
+            this.totalCost = totalCost;
+            return this;
+        }
+
+        public ReceiptsRoomBuilder setExpenseType(String expenseType) {
+            this.expenseType = expenseType;
+            return this;
+        }
+
+        public ReceiptsRoom createReceiptsRoom() {
+            return new ReceiptsRoom(receiptNumber, receiptUri, company, listOfItems, totalCost, expenseType);
+        }
+    }
+
 
     protected ReceiptsRoom(Parcel in) {
         id = in.readInt();

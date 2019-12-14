@@ -44,10 +44,35 @@ public class ReceiptItem implements Parcelable {
         return ownershipTable;
     }
 
-    public ReceiptItem(String itemName, double unitCost, int quantity) {
+    private ReceiptItem(String itemName, double unitCost, int quantity) {
         this.itemName = itemName;
         this.unitCost = unitCost;
         this.quantity = quantity;
+    }
+
+    public static class ReceiptItemBuilder {
+        private String itemName;
+        private double unitCost;
+        private int quantity;
+
+        public ReceiptItemBuilder setItemName(String itemName) {
+            this.itemName = itemName;
+            return this;
+        }
+
+        public ReceiptItemBuilder setUnitCost(double unitCost) {
+            this.unitCost = unitCost;
+            return this;
+        }
+
+        public ReceiptItemBuilder setQuantity(int quantity) {
+            this.quantity = quantity;
+            return this;
+        }
+
+        public ReceiptItem createReceiptItem() {
+            return new ReceiptItem(itemName,unitCost,quantity);
+        }
     }
 
     // these get methods serve to make our life easier when creating adapters :)

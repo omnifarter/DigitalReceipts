@@ -15,14 +15,21 @@ There are three different tabs: Finance, Camera, and Receipts.
 
 ### Finance
 This tab stores all your purchases that you have marked as your own purchase (by either adding to Finance or under the Bill Split function). It provides a quick summary of these purchases by categories using a pie chart. 
+
 <img src="./readme_images/finance.png" width="25%" height="25%">
 
 Our app attempts to categorise all receipts scanned for the nature of the purchase. However, if it is unable to do so, it will default to None. In that case, or if you wish to re-categorise any particular purchase, just click on the purchase and a summary of the purchase will appear. You can then click the Categorise button and type in your own category. 
+
 <img src="./readme_images/finance_popup.png" width="25%" height="25%">
+
+Another feature is that you can filter your purchases by a specific category by clicking on that specific category of the pie chart. 
+
+<img src="./readme_images/finance_filter.png" width="25%" height="25%">
 
 ### Camera
 This tab opens up a pop-up that prompts you to either upload a receipt from gallery or to take a picture of a receipt. It will then process the receipt uploaded. Once it has been processed, you will notice that the gif will stop. The receipt will then be digitalised and added to your Receipts tab. Do note that this process will take some time and requires an Internet connection. 
 For optimal results, the photo of the receipt has to be under good lighting and oriented upright. 
+
 <img src="./readme_images/camera_popup.png" width="25%" height="25%">
 
 ### Receipts
@@ -30,8 +37,10 @@ This tab stores all past receipts that you have processed before. You can delete
 
 <img src="./readme_images/receipts.png" width="25%" height="25%"> <img src="./readme_images/receipts_popup.png" width="25%" height="25%">
 
-You should click on 'Add to Finance' if the receipt has items that only you paid for. This will add the receipt to the Finance tab. If the receipt has items that you shared with others, you can click on 'Bill Split'. This will bring you to a list of your contacts. Select those you wish to split the receipt with and clicking next will allow you to allocate how much of each item each person will pay for. 
-[Selecting contacts and Splitting bill]
+You should click on 'Add to Finance' if the receipt has items that only you paid for. This will add the receipt to the Finance tab. If the receipt has items that you shared with others, you can click on 'Bill Split'. This will bring you to a list of your contacts. Select those you wish to split the receipt with and clicking next will allow you to allocate how much of each item each person will pay for.
+
+<img src="./readme_images/receipts_contacts.png" width="25%" height="25%"> <img src="./readme_images/receipts_billsplit.png" width="25%" height="25%"> <img src="./readme_images/receipts_billsummary.png" width="25%" height="25%">
 
 Once the receipt has been split, you can choose to send out a SMS to each of these people to request for payment for their respective items. The SMS will include a link to DBS PayLah! for convenience. 
-[PayLah SMS]
+
+<img src="./readme_images/paylah.png" width="25%" height="25%">

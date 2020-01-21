@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -18,7 +17,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,15 +78,15 @@ public class receiptFragment extends Fragment {
             public void onChanged(List<ReceiptsRoom> receiptsRooms) {
                 // for recycleview when we want to display data. currently only showing data
                 if (receiptsRooms.isEmpty()) {
-                    ReceiptItem burger1 = new ReceiptItem("Macdoonalds burger", 3.00, 1);
-                    ReceiptItem burger2 = new ReceiptItem("Macdoonalds burger upsize", 4.50, 1);
-                    ReceiptItem burger3 = new ReceiptItem("Macdoonalds burger extra large", 6.00, 1);
+                    ReceiptItem burger1 = new ReceiptItem.ReceiptItemBuilder().setItemName("Macdoonalds burger").setUnitCost(3.00).setQuantity(1).createReceiptItem();
+                    ReceiptItem burger2 = new ReceiptItem.ReceiptItemBuilder().setItemName("Macdoonalds burger upsize").setUnitCost(4.50).setQuantity(1).createReceiptItem();
+                    ReceiptItem burger3 = new ReceiptItem.ReceiptItemBuilder().setItemName("Macdoonalds burger extra large").setUnitCost(6.00).setQuantity(1).createReceiptItem();
 
                     ArrayList<ReceiptItem> rubbish = new ArrayList<>();
                     rubbish.add(burger1);
                     rubbish.add(burger2);
                     rubbish.add(burger3);
-                    receiptsManager.insert(new ReceiptsRoom("nonsense", " more nonsense", "ridiculous company", rubbish, 13.50, "food"));
+                    receiptsManager.insert(new ReceiptsRoom.ReceiptsRoomBuilder().setReceiptNumber("nonsense").setReceiptUri(" more nonsense").setCompany("ridiculous company").setListOfItems(rubbish).setTotalCost(13.50).setExpenseType("food").createReceiptsRoom());
                 }
                 adapter.setReceipts(receiptsRooms);
             }

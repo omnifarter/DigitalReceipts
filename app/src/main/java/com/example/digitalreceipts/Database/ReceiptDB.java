@@ -59,11 +59,11 @@ public abstract class ReceiptDB extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            ReceiptItem dms = new ReceiptItem("Pokka",99.90, 34);
+            ReceiptItem dms = new ReceiptItem.ReceiptItemBuilder().setItemName("Pokka").setUnitCost(99.90).setQuantity(34).createReceiptItem();
             List<ReceiptItem> test = new ArrayList<ReceiptItem>();
             test.add(dms);
             Log.i("DBAsync", "Running1");
-            receiptsDAO.insert(new ReceiptsRoom("DEF363637", "fjfi", "wfurw", test, 55.50, "testing"));
+            receiptsDAO.insert(new ReceiptsRoom.ReceiptsRoomBuilder().setReceiptNumber("DEF363637").setReceiptUri("fjfi").setCompany("wfurw").setListOfItems(test).setTotalCost(55.50).setExpenseType("testing").createReceiptsRoom());
             Log.i("DBAsync", "Inserted");
 //            ReceiptItem dms1 = new ReceiptItem("Walgred",12.02, 3);
 //            List<ReceiptItem> test1 = new ArrayList<ReceiptItem>();

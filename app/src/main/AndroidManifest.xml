@@ -43,7 +43,14 @@
         <activity android:name=".Billsplit.FinalisedBillSplitActivity" />
         <activity android:name=".Billsplit.BIllSplitActivity" />
         <activity android:name=".Contacts.ContactsActivity" />
-        <activity android:name=".MainActivity.MainActivity" />
+        <activity
+            android:name=".MainActivity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

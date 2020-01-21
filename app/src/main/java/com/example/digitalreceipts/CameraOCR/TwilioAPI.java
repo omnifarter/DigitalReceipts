@@ -27,11 +27,11 @@ public class TwilioAPI {
                     .setLevel(HttpLoggingInterceptor.Level.BODY);
 
             /** Hey Shi ying, remember to update your credentials here yeah (line 49), first argument is SID, second is pass
-             * Afterwards, you need to scroll down and change (line 74) to your "from" number given by Twilio
+             * Afterwards, you need to scroll down and change (line 59) to your "from" number given by Twilio
              */
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(loggingInterceptor)
-                    .addInterceptor(new BasicAuthInterceptor("ACab2badbbac777a4538dad09af22b663d", "8ec7662c6c034e508878368731652c3f"))
+                    .addInterceptor(new BasicAuthInterceptor("ACd18def584fd1fb72bb38f443e79166a9", "fa4d63e58d066559bab75e249f261cc7"))
                     .build();
 
             retrofit2.Retrofit retrofit = new retrofit2.Retrofit.Builder()
@@ -56,7 +56,7 @@ public class TwilioAPI {
         // POST request
         public void sendTwilioMessage(String accountSID, String numberTo, String text) {
 
-            Call<Void> call = request.twilioCreateMessage(accountSID,numberTo,"+12404282785", text);
+            Call<Void> call = request.twilioCreateMessage(accountSID,numberTo,"+19293251077", text);
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {

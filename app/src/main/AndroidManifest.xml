@@ -18,14 +18,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MainActivity.HomeActivity">
+        <activity android:name=".ui.login.SignUpActivity"></activity>
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:label="Log In">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity android:name=".MainActivity.HomeActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -40,7 +43,7 @@
         <activity android:name=".Billsplit.FinalisedBillSplitActivity" />
         <activity android:name=".Billsplit.BIllSplitActivity" />
         <activity android:name=".Contacts.ContactsActivity" />
-        <activity android:name=".MainActivity.MainActivity"/>
+        <activity android:name=".MainActivity.MainActivity" />
     </application>
 
 </manifest>

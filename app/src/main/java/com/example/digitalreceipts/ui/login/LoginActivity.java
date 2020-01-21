@@ -5,12 +5,14 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,10 +30,66 @@ import com.example.digitalreceipts.MainActivity.MainActivity;
 import com.example.digitalreceipts.R;
 import com.example.digitalreceipts.ui.login.LoginViewModel;
 import com.example.digitalreceipts.ui.login.LoginViewModelFactory;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
+    final int RC_SIGN_IN = 1;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+        MultiDex.install(this);
+
+    }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+//        updateUI(account);
+//
+//    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN ) {
+            if(resultCode == Activity.RESULT_OK) {
+                // The Task returned from this call is always completed, no need to attach
+                // a listener.
+                Log.wtf("hihi","this works");
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                handleSignInResult(task);
+            }
+            else Log.wtf("hihi","this sucks");
+        }
+
+
+
+    }
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully, show authenticated UI.
+            updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("Hello", "signInResult:failed code=" + e.getStatusCode());
+            updateUI(null);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +103,32 @@ public class LoginActivity extends AppCompatActivity {
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
         final TextView signUpText = findViewById(R.id.sign_up_text);
+        //Google signup test
+        final GoogleSignInClient mGoogleSignInClient;
+
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+
+        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+            private void signIn() {
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+
+        });
+
+
 
         signUpText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +227,14 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
+    //Google Account log in
+    private void updateUI(GoogleSignInAccount account){
+        String welcome = "Welcome, " + account.getDisplayName();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
 
+    }
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }

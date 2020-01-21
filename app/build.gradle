@@ -20,11 +20,14 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.example.digitalreceipts"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+
     }
     buildTypes {
         release {
@@ -95,7 +98,10 @@ dependencies {
     implementation 'com.github.razerdp:AnimatedPieView:1.2.4'
     // for twilio
     implementation "com.twilio:sync-android:0.8.6"
-    // for logo lookup (beta)
-    //implementation 'com.clearbit:client:0.9'
+
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
+
+
 
 }

@@ -27,7 +27,7 @@ import java.util.TimerTask;
         setContentView(R.layout.activity_home);
         Animation animation = AnimationUtils.loadAnimation(this,R.anim.fadein);
         imageView = findViewById(R.id.gif_loading);
-        Glide.with(HomeActivity.this).load(R.drawable.splash_screen).into(imageView);
+        Glide.with(HomeActivity.this).load(R.mipmap.splash_screen).into(imageView);
         imageView.startAnimation(animation);
 
         new Timer().schedule(new TimerTask() {

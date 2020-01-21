@@ -2,6 +2,7 @@ package com.example.digitalreceipts.Billsplit;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
     Button button;
     TextView textView;
     String receiptNumber;
+    String decoyNumber;
     ReceiptsManager receiptsManager;
     ArrayList<ReceiptItem> receiptItems;
 
@@ -49,6 +51,8 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
             receiptNumber =extras.getString("RECEIPT_NUMBER");
             name_to_number = (HashMap<String,String>)extras.getSerializable("NAME_TO_NUMBER");
             receiptItems = extras.getParcelableArrayList("RECEIPT_ITEMS");
+            //TODO: TO be removed once system ready
+            decoyNumber = extras.getString("MANUAL_CONTACT_NUMBER");
         }
         receiptsManager = ViewModelProviders.of(this).get(ReceiptsManager.class);
         textView = findViewById(R.id.final_bill);
@@ -108,21 +112,25 @@ public class FinalisedBillSplitActivity extends AppCompatActivity {
                         System.out.println(name_to_number.get(person.getKey()));
                         if(name_to_number.get(person.getKey()).replaceAll(" ","").equals("83573166") && shiyingCount==0){
                             shiyingCount=shiyingCount+1;
-                            test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6583573166", text);
+//                            test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6583573166", text);
                         }
                         if(name_to_number.get(person.getKey()).replaceAll(" ","").equals("97701477") && sheikhCount==0){
                             sheikhCount=sheikhCount+1;
-                            test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6597701477", text);
+//                            test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6597701477", text);
                         }
                         if(name_to_number.get(person.getKey()).replaceAll(" ","").equals("82993256") && gabrielCount==0){
                             gabrielCount=gabrielCount+1;
-                            test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6582993256", text);
+//                            test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6582993256", text);
                         }
 
 
                     }
                  startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 }
+                // TODO: to be removed once dynamic implemented
+                decoyNumber = "+65"+decoyNumber;
+                Log.d("Roofies", decoyNumber);
+                test.sendTwilioMessage("ACd18def584fd1fb72bb38f443e79166a9", decoyNumber, "This text will be made dynamic after database implementation");
 
                 //TwilioAPI test = TwilioAPI.getInstance();
                 //test.sendTwilioMessage("ACab2badbbac777a4538dad09af22b663d","+6583573166", "Hi there!");

@@ -1,15 +1,25 @@
 package com.example.digitalreceipts.Billsplit;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Layout;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.digitalreceipts.R;
@@ -81,18 +91,45 @@ public class BIllSplitActivity extends AppCompatActivity {
                     Toast.makeText(BIllSplitActivity.this, "Someone is not paying anything!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    to_send = updateLedgerPerson(updateLedgerItem(final_map, receiptItems));
-                    to_send_2 = updateLedgerItem(final_map, receiptItems);
-                    Intent next = new Intent(getApplicationContext(), FinalisedBillSplitActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putSerializable("FINAL_MAP", to_send);
-                    extras.putSerializable("FINAL_MAP_ITEMS", to_send_2);
-                    extras.putString("RECEIPT_NUMBER", receiptNumber);
-                    extras.putSerializable("NAME_TO_NUMBER", name_to_number);
-                    extras.putParcelableArrayList("RECEIPT_ITEMS", receiptItems);
-                    next.putExtras(extras);
-                    next.putStringArrayListExtra("NAMES", names);
-                    startActivity(next);
+                    // TODO: Remove dialog once the system is ready for deployment with actual SMS. verification with FB done next activity!
+
+                    Toast.makeText(BIllSplitActivity.this, "Please use CONSERVATIVELY", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BIllSplitActivity.this, R.style.AppDialogTheme);
+                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final View layout = inflater.inflate(R.layout.temp_dialog_for_bs, null );
+
+
+                            builder.setPositiveButton("Fire Off", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    View wr = getCurrentFocus();
+
+                                    EditText textdata = layout.findViewById(R.id.number_to_text);
+                                    String contactNumberDecoy = textdata.getText().toString();
+                                    Log.d("Roofies", contactNumberDecoy);
+                                    Log.d("Roofies", "entered loop");
+
+                                    to_send = updateLedgerPerson(updateLedgerItem(final_map, receiptItems));
+                                    to_send_2 = updateLedgerItem(final_map, receiptItems);
+                                    Intent next = new Intent(getApplicationContext(), FinalisedBillSplitActivity.class);
+                                    Bundle extras = new Bundle();
+                                    extras.putSerializable("FINAL_MAP", to_send);
+                                    extras.putSerializable("FINAL_MAP_ITEMS", to_send_2);
+                                    extras.putString("RECEIPT_NUMBER", receiptNumber);
+                                    extras.putString("MANUAL_CONTACT_NUMBER", contactNumberDecoy);
+                                    extras.putSerializable("NAME_TO_NUMBER", name_to_number);
+                                    extras.putParcelableArrayList("RECEIPT_ITEMS", receiptItems);
+                                    next.putExtras(extras);
+                                    next.putStringArrayListExtra("NAMES", names);
+                                    startActivity(next);
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .setView(layout)
+                            .show();
+
+
                 }
 
             }

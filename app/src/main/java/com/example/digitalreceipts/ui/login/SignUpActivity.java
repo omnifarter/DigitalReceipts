@@ -4,20 +4,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import com.example.digitalreceipts.ui.login.LoginViewModel;
-import com.example.digitalreceipts.ui.login.LoginViewModelFactory;
+
+import com.example.digitalreceipts.Database.FirestoreManager;
+import com.example.digitalreceipts.data.PasswordUtils;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.digitalreceipts.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -28,6 +33,9 @@ public class SignUpActivity extends AppCompatActivity {
         context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        FirestoreManager fsm = new FirestoreManager();
+
         logInViewModel = ViewModelProviders.of(this,new LoginViewModelFactory()).get(LoginViewModel.class);
         logInViewModel.addClass(this);
 
@@ -55,10 +63,42 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
-        logInText.setOnClickListener(new View.OnClickListener() {
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: implement creation of new user in database
+
+                String password = signUpPassword.getText().toString();
+                String salt = PasswordUtils.getSalt(8);
+                String securePassword = PasswordUtils.generateSecurePassword(password, salt);
+
+                Map<String, Object> userData = new HashMap<>();
+                userData.put("name",signUpName.getText().toString());
+                userData.put("phoneNumber",Integer.parseInt(signUpNumber.getText().toString()));
+                userData.put("password",securePassword);
+
+                fsm.registerUser(userData, new FirestoreManager.OnListener() {
+                    @Override
+                    public void onFilled(Object result) {
+                        Log.i("hihi", "successful registration");
+                        Intent intent = new Intent(context,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(Exception taskException) {
+                        Log.i("hihi", "smth is wrong");
+                    }
+                });
+            }
+        });
+
+        logInText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
                 Intent intent = new Intent(context,LoginActivity.class);
                 startActivity(intent);
                 finish();

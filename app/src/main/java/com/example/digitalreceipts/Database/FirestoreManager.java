@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -36,17 +37,74 @@ public class FirestoreManager {
          this.db = FirebaseFirestore.getInstance();
     }
 
+    public interface OnListener {
+        void onFilled(Object result);
+        void onError(Exception taskException);
+    }
+
+    /*
+    * User Info methods
+    */
     public CollectionReference getUserRef(String user) {
         return this.db.collection(user);
     }
 
-    public interface OnListener {
-        void onFilled(Map<String, Object> result);
-        void onError(Exception taskException);
+    public void getUserInfo(String user, OnListener listener) {
+        this.getUserRef(user).document("userInfo").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Map<String, Object> data = task.getResult().getData();
+                            listener.onFilled(data);
+                        } else {
+                            listener.onError(task.getException());
+                        }
+                    }
+                });
     }
 
-    public void getAllReceipts(String user, OnListener listener) {
-        this.getUserRef(user).get()
+    /* Meant */
+//    public boolean checkIfDataExists(Map<String, Object> userData) {
+//        boolean exists =
+//    }
+
+    public void registerUser(Map<String, Object> userData, OnListener listener) {
+        /* Format of userData:
+        * name: name
+        * phoneNumber: phoneNumber          // this is the user ID
+        * password: Map<String, Object> {
+        *               hash: hashed password
+        *               salt: salt
+        *           }
+        * */
+        String user = String.valueOf(userData.get("phoneNumber"));
+        this.getUserRef(user).document("userInfo").set(userData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i(TAG,"Managed to register user: " + user);
+                        listener.onFilled(1);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i(TAG, "Failed to register user. Error: " + e.getMessage());
+                        listener.onError(e);
+                    }
+                });
+    }
+
+    public void verifyUser(String user, String providedPassword) {
+        this.getUserRef(user).document();
+    }
+
+    /*
+    * Receipts methods
+    */
+    public void getAllCreatedReceipts(String user, OnListener listener) {
+        this.getUserRef(user).document("receiptsCollection")
+                .collection("createdReceipts").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -55,6 +113,7 @@ public class FirestoreManager {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 data.put(document.getId(),document.getData());
                             }
+
                             listener.onFilled(data);
                         } else {
                             listener.onError(task.getException());
@@ -62,20 +121,21 @@ public class FirestoreManager {
                     }
                 });
     }
-/*Sample code on how to use getAllReceipts*/
+/*Sample code on how to use getAllCreatedReceipts*/
 /*
-    fsm.getAllReceipts(this.userRef, new FirestoreManager.OnListener() {
+    fsm.getAllCreatedReceipts("[user id]", new FirestoreManager.OnListener() {
         @Override
-        public void onFilled(Map<String, Object> result) {
-            //do smth with result
-            Log.i("hihi",results.toString());
+        public void onFilled(Object result) {
+            // do stuff with result
+            Log.i(TAG,result.toString());
         }
 
         @Override
         public void onError(Exception taskException) {
-            Log.i("hihi",taskException);
+            Log.i(TAG, "errorerror " + taskException);
         }
-    });*/
+    });
+*/
 
     // needs to be used within getAllReceipts
     public Map<String, Object> getReceiptByID(String[] receiptNumbers, Map<String,Object> allReceipts) {

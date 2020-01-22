@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.digitalreceipts.CameraOCR.CameraFragment;
@@ -44,7 +45,17 @@ public class MainActivity extends FragmentActivity {
                         break;
 
                     case R.id.finance:
+                        fsm.getAllCreatedReceipts("[user id]", new FirestoreManager.OnListener() {
+                            @Override
+                            public void onFilled(Object result) {
+                                Log.i(TAG,result.toString());
+                            }
 
+                            @Override
+                            public void onError(Exception taskException) {
+                                Log.i(TAG, "errorerror " + taskException);
+                            }
+                        });
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FinanceFragment()).commit();
                         break;
 

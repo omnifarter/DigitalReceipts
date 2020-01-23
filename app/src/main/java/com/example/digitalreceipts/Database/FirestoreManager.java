@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.digitalreceipts.data.PasswordUtils;
+import com.example.digitalreceipts.data.model.LoggedInUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,6 +58,8 @@ public class FirestoreManager {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             Map<String, Object> data = task.getResult().getData();
+                            if(!(data instanceof Map)) data = new HashMap<String, Object>();
+                            Log.i("loginF","FirestoreManager data: " + data.toString());
                             listener.onFilled(data);
                         } else {
                             listener.onError(task.getException());
@@ -64,12 +68,17 @@ public class FirestoreManager {
                 });
     }
 
-    /* Meant */
-//    public boolean checkIfDataExists(Map<String, Object> userData) {
-//        boolean exists =
-//    }
+    /* Meant to be used with getUserInfo ; pass userData into checkIfDataExists */
+    public boolean checkIfDataExists(Map<String, Object> userData) {
+        boolean exists = false;
+        for (Map.Entry<String,Object> entry : userData.entrySet()){
+            exists = true;
+            break;
+        }
+        return exists;
+    }
 
-    public void registerUser(Map<String, Object> userData, OnListener listener) {
+    public void registerUser(LoggedInUser userData, String securePassword, String salt, OnListener listener) {
         /* Format of userData:
         * name: name
         * phoneNumber: phoneNumber          // this is the user ID
@@ -78,25 +87,59 @@ public class FirestoreManager {
         *               salt: salt
         *           }
         * */
-        String user = String.valueOf(userData.get("phoneNumber"));
-        this.getUserRef(user).document("userInfo").set(userData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.i(TAG,"Managed to register user: " + user);
-                        listener.onFilled(1);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.i(TAG, "Failed to register user. Error: " + e.getMessage());
-                        listener.onError(e);
-                    }
-                });
+        String user = String.valueOf(userData.getUserId());
+        this.getUserInfo(user, new OnListener() {
+            @Override
+            public void onFilled(Object result) {
+                if (!checkIfDataExists((Map<String, Object>) result)) {
+                    WriteBatch batch = db.batch();
+                    CollectionReference userRef = getUserRef(user);
+                    Log.i("loginF","registerUser: userRef: " + userRef.toString());
+
+                    Map<String, Object> pwMap = new HashMap<>();
+                    pwMap.put("hash",securePassword);
+                    pwMap.put("salt",salt);
+
+                    Map<String, Object> userMap = userData.getAllInfo();
+                    userMap.put("password",pwMap);
+                    Map<String, String> uselessMap = new HashMap<>();
+
+                    batch.set(userRef.document("userInfo"),userMap);
+                    batch.set(userRef.document("receiptsCollection"),uselessMap);
+//                    batch.set(userRef.document("receiptsCollection").collection("createdReceipts"))
+                    Log.i("loginF","registerUser: gonna batch.commit");
+                    batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.i(TAG,"Managed to register user: " + user);
+                            listener.onFilled(1);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.i(TAG, "Failed to register user. Error: " + e.getMessage());
+                            listener.onError(e);
+                        }
+                    });
+                } else {
+                    Log.i(TAG,"not supposed to happen");
+                }
+            }
+
+            @Override
+            public void onError(Exception taskException) {
+                Log.i(TAG, "error??? " + taskException.getMessage());
+            }
+        });
+
+
     }
 
-    public void verifyUser(String user, String providedPassword) {
-        this.getUserRef(user).document();
+    public boolean verifyUser(Map<String, Object> userData, String providedPassword) {
+        Map<String,String> passwordMap = (Map<String, String>) userData.get("password");
+        String salt = passwordMap.get("salt");
+        String hash = passwordMap.get("hash");
+        return PasswordUtils.verifyUserPassword(providedPassword,hash,salt);
     }
 
     /*

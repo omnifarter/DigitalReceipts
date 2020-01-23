@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.digitalreceipts.R;
+import com.example.digitalreceipts.data.model.LoggedInUser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,12 +74,14 @@ public class SignUpActivity extends AppCompatActivity {
                 String salt = PasswordUtils.getSalt(8);
                 String securePassword = PasswordUtils.generateSecurePassword(password, salt);
 
-                Map<String, Object> userData = new HashMap<>();
-                userData.put("name",signUpName.getText().toString());
-                userData.put("phoneNumber",Integer.parseInt(signUpNumber.getText().toString()));
-                userData.put("password",securePassword);
+//                Map<String, Object> userData = new HashMap<>();
+//                userData.put("name",signUpName.getText().toString());
+//                userData.put("phoneNumber",Integer.parseInt(signUpNumber.getText().toString()));
+//                userData.put("password",securePassword);
+                LoggedInUser user = new LoggedInUser(signUpName.getText().toString());
+                user.setUserDetails(signUpName.getText().toString(), signUpNumber.getText().toString());
 
-                fsm.registerUser(userData, new FirestoreManager.OnListener() {
+                fsm.registerUser(user, securePassword, salt, new FirestoreManager.OnListener() {
                     @Override
                     public void onFilled(Object result) {
                         Log.i("hihi", "successful registration");

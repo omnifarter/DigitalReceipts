@@ -1,5 +1,7 @@
 package com.example.digitalreceipts.data;
 
+import android.util.Log;
+
 import com.example.digitalreceipts.data.model.LoggedInUser;
 
 /**
@@ -43,12 +45,25 @@ public class LoginRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
-    public Result<LoggedInUser> login(String username, String password) {
+    public void login(String username, String password, Result.ResultListener resultListener) {
         // handle login
-        Result<LoggedInUser> result = dataSource.login(username, password);
-        if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
-        }
-        return result;
+        dataSource.login(username, password, new Result.ResultListener() {
+
+            @Override
+            public void onSuccess(Result.Success result) {
+                Log.i("loginF","LoginRepository result: " + result.toString());
+                if (result instanceof  Result.Success) {
+                    setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+                    resultListener.onSuccess(result);
+                } else {
+                    resultListener.onError(new Result.Error(new Exception("idk what's wrong tbh")));
+                }
+            }
+
+            @Override
+            public void onError(Result.Error error) {
+                resultListener.onError(error);
+            }
+        });
     }
 }

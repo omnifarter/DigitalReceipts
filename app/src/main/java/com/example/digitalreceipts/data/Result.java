@@ -8,6 +8,11 @@ public class Result<T> {
     private Result() {
     }
 
+    public interface ResultListener {
+        void onSuccess(Result.Success result);
+        void onError(Result.Error error);
+    }
+
     @Override
     public String toString() {
         if (this instanceof Result.Success) {

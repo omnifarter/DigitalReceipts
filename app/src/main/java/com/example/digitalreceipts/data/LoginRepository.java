@@ -62,6 +62,8 @@ public class LoginRepository {
 
             @Override
             public void onError(Result.Error error) {
+                Log.i("loginF","LoginRepository result: " + error.toString());
+
                 resultListener.onError(error);
             }
         });

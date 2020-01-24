@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "143426999340",
+    "firebase_url": "https://dipts-aa4da.firebaseio.com",
+    "project_id": "dipts-aa4da",
+    "storage_bucket": "dipts-aa4da.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143426999340:android:8e7bce2f66e28ed492ed89",
+        "android_client_info": {
+          "package_name": "com.example.digitalreceipts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143426999340-unio3i0m1mce27vic27n0t526gj3b856.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJPA171tpqSHjbUgrbROzpiiC73FjFI-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "143426999340-unio3i0m1mce27vic27n0t526gj3b856.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

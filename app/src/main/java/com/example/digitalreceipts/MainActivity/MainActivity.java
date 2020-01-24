@@ -4,12 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.MenuItem;
 
 import com.example.digitalreceipts.CameraOCR.CameraFragment;
-import com.example.digitalreceipts.Database.FirestoreManager;
 import com.example.digitalreceipts.Finance.FinanceFragment;
 import com.example.digitalreceipts.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -17,7 +17,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends FragmentActivity {
     private int STORAGE_PERMISSION_CODE = 1;
-    private static String TAG = "hellohihi";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +25,12 @@ public class MainActivity extends FragmentActivity {
         Fragment defaultFragment = new FinanceFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, defaultFragment).commit();
 
-        // code for instantiating Firestore and tying it down to the user (replace with userID)
-        FirestoreManager fsm = new FirestoreManager();
-
         BottomNavigationView botnav = findViewById(R.id.bot_nav);
         botnav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.receipts:
-
                         Fragment selectedfragment = new receiptFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedfragment).commit();
                         break;
@@ -45,17 +40,6 @@ public class MainActivity extends FragmentActivity {
                         break;
 
                     case R.id.finance:
-                        fsm.getAllCreatedReceipts("[user id]", new FirestoreManager.OnListener() {
-                            @Override
-                            public void onFilled(Object result) {
-                                Log.i(TAG,result.toString());
-                            }
-
-                            @Override
-                            public void onError(Exception taskException) {
-                                Log.i(TAG, "errorerror " + taskException);
-                            }
-                        });
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FinanceFragment()).commit();
                         break;
 

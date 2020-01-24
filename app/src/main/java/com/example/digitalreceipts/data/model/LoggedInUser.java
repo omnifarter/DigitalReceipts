@@ -12,11 +12,11 @@ public class LoggedInUser {
     private String phoneNumber;
     private String displayName;
 
-//    public LoggedInUser(String userId, String displayName) {
-//        this.userId = userId;
-//        this.displayName = displayName;
-//        this.phoneNumber = phoneNumber;
-//    }
+    public LoggedInUser(String userId, String displayName) {
+        this.userId = userId;
+        this.displayName = displayName;
+        this.phoneNumber = phoneNumber;
+    }
     public LoggedInUser(String userId) {
         this.userId = userId;
     }
@@ -25,6 +25,7 @@ public class LoggedInUser {
         this.displayName = displayName;
         this.phoneNumber = phoneNumber;
     }
+
 
     public String getUserId() {
         return userId;
@@ -41,4 +42,5 @@ public class LoggedInUser {
         userData.put("displayName",getDisplayName());
         return userData;
     }
+
 }

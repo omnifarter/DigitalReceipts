@@ -17,7 +17,9 @@ public class LoginDataSource {
 
         try {
             // TODO: handle loggedInUser authentication
+
             FirestoreManager fsm = new FirestoreManager();
+
             fsm.getUserInfo(username, new FirestoreManager.OnListener() {
                 @Override
                 public void onFilled(Object result) {
@@ -37,6 +39,8 @@ public class LoginDataSource {
 
                 @Override
                 public void onError(Exception taskException) {
+                    Log.i("loginF","LoginDataSource result: error");
+
                     resultListener.onError(new Result.Error(new IOException("Unable to connect to Firestore!",taskException)));
 
                 }

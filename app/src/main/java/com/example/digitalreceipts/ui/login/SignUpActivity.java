@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.digitalreceipts.Database.FirestoreManager;
 import com.example.digitalreceipts.data.PasswordUtils;
+import com.example.digitalreceipts.data.model.LoggedInUser;
+import com.example.digitalreceipts.ui.login.LoginViewModel;
+import com.example.digitalreceipts.ui.login.LoginViewModelFactory;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,10 +23,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.digitalreceipts.R;
-import com.example.digitalreceipts.data.model.LoggedInUser;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -31,12 +30,11 @@ public class SignUpActivity extends AppCompatActivity {
     private LoginViewModel logInViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirestoreManager fsm = new FirestoreManager();
+
         context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
-        FirestoreManager fsm = new FirestoreManager();
-
         logInViewModel = ViewModelProviders.of(this,new LoginViewModelFactory()).get(LoginViewModel.class);
         logInViewModel.addClass(this);
 
@@ -98,10 +96,10 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+
         logInText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(context,LoginActivity.class);
                 startActivity(intent);
                 finish();

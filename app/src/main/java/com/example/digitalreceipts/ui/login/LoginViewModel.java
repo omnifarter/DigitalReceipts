@@ -52,6 +52,8 @@ public class LoginViewModel extends ViewModel {
 
             @Override
             public void onError(Result.Error error) {
+                Log.i("loginF","LoginViewModel result: " + error.toString());
+
                 loginResult.setValue(new LoginResult(R.string.login_failed));
             }
         });

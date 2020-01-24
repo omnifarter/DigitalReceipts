@@ -13,6 +13,7 @@ public class Result<T> {
         void onError(Result.Error error);
     }
 
+
     @Override
     public String toString() {
         if (this instanceof Result.Success) {
@@ -26,7 +27,7 @@ public class Result<T> {
     }
 
     // Success sub-class
-    public final static class Success<T> extends Result { //T is LoggedInUser
+    public final static class Success<T> extends Result {
         private T data;
 
         public Success(T data) {

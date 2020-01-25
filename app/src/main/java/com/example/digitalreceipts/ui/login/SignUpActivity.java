@@ -8,8 +8,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.digitalreceipts.Database.FirestoreManager;
 import com.example.digitalreceipts.data.PasswordUtils;
 import com.example.digitalreceipts.data.model.LoggedInUser;
-import com.example.digitalreceipts.ui.login.LoginViewModel;
-import com.example.digitalreceipts.ui.login.LoginViewModelFactory;
 
 import android.content.Context;
 import android.content.Intent;
@@ -39,7 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
         logInViewModel.addClass(this);
 
         final EditText signUpName = findViewById(R.id.sign_up_name);
-        final EditText signUpNumber = findViewById(R.id.sign_up_number);
+        final EditText signUpUser = findViewById(R.id.sign_up_user);
         final EditText signUpPassword = findViewById(R.id.sign_up_password);
         final TextView logInText = findViewById(R.id.log_in_text);
         final Button signUpButton = findViewById(R.id.sign_up_button);
@@ -58,7 +56,7 @@ public class SignUpActivity extends AppCompatActivity {
                     signUpPassword.setError(getString(loginFormState.getPasswordError()));
                 }
                 if(loginFormState.getNumberError() != null){
-                    signUpNumber.setError(getString(loginFormState.getNumberError()));
+                    signUpUser.setError(getString(loginFormState.getNumberError()));
                 }
             }
         });
@@ -74,10 +72,10 @@ public class SignUpActivity extends AppCompatActivity {
 
 //                Map<String, Object> userData = new HashMap<>();
 //                userData.put("name",signUpName.getText().toString());
-//                userData.put("phoneNumber",Integer.parseInt(signUpNumber.getText().toString()));
+//                userData.put("phoneNumber",Integer.parseInt(signupUser.getText().toString()));
 //                userData.put("password",securePassword);
-                LoggedInUser user = new LoggedInUser(signUpName.getText().toString());
-                user.setUserDetails(signUpName.getText().toString(), signUpNumber.getText().toString());
+                LoggedInUser user = new LoggedInUser(signUpUser.getText().toString());
+                user.setUserDetails(signUpUser.getText().toString(), signUpName.getText().toString());
 
                 fsm.registerUser(user, securePassword, salt, new FirestoreManager.OnListener() {
                     @Override
@@ -120,12 +118,12 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                logInViewModel.loginDataChanged(signUpName.getText().toString(),signUpPassword.getText().toString(),signUpNumber.getText().toString());
+                logInViewModel.loginDataChanged(signUpName.getText().toString(),signUpPassword.getText().toString(),signUpUser.getText().toString());
             }
         };
 
         signUpName.addTextChangedListener(afterTextChangedListener);
-        signUpNumber.addTextChangedListener(afterTextChangedListener);
+        signUpUser.addTextChangedListener(afterTextChangedListener);
         signUpPassword.addTextChangedListener(afterTextChangedListener);
 
     }

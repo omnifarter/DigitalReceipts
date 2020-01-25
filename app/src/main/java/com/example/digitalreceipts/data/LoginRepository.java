@@ -54,6 +54,8 @@ public class LoginRepository {
                 Log.i("loginF","LoginRepository result: " + result.toString());
                 if (result instanceof  Result.Success) {
                     setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+                    Log.i("loginF","LoginRepository setloginuser: " + user.getDisplayName());
+
                     resultListener.onSuccess(result);
                 } else {
                     resultListener.onError(new Result.Error(new Exception("idk what's wrong tbh")));

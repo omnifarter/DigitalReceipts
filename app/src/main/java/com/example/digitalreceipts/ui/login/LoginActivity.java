@@ -50,13 +50,18 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        updateUI(account);
-//
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+            updateUI(account);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

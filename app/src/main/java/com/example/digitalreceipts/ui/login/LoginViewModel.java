@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
-import android.util.Patterns;
-import android.widget.Toast;
 
 import com.example.digitalreceipts.data.LoginRepository;
 import com.example.digitalreceipts.data.Result;
@@ -44,6 +41,7 @@ public class LoginViewModel extends ViewModel {
                 Log.i("loginF","LoginViewModel result: " + result.toString());
                 if (result instanceof Result.Success) {
                     LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
+                    Log.i("loginF","login result name: " + data.getDisplayName());
                     loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
                 } else {
                     loginResult.setValue(new LoginResult(R.string.login_failed));
@@ -63,12 +61,12 @@ public class LoginViewModel extends ViewModel {
 
     public void loginDataChanged(String username, String password, String number) {
         Log.wtf("this runs","observe");
-        if (!isUserNameValid(username) ) {
-            Log.wtf("this runs invalid user","observe");
+        if (!isNameValid(username) ) {
+            Log.wtf("this runs invalid name","observe");
             loginFormState.setValue(new LoginFormState(R.string.invalid_username, null, null));
 
-        } else if (!isNumberValid(number)&& context instanceof SignUpActivity){
-            Log.wtf("this runsinvalid number", "observe");
+        } else if (!isUserNameValid(number)&& context instanceof SignUpActivity){
+            Log.wtf("this runsinvalid username", "observe");
             loginFormState.setValue(new LoginFormState(null, null, R.string.invalid_number));
 
         } else if (!isPasswordValid(password)) {
@@ -81,17 +79,18 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
-    // A placeholder username validation check
-    private boolean isUserNameValid(String username) {
-        return (username != null && username.trim().length() >5);
+    // A placeholder name validation check
+    private boolean isNameValid(String name) {
+        return (name != null && name.trim().length() >5);
     }
     // A placeholder password validation check
     private boolean isPasswordValid(String password) {
         return password != null && password.trim().length() > 5;
     }
 
-    //A placeholder number validation check
-    private boolean isNumberValid(String number){
-        return number!=null && number.trim().length()==8;
+    //A placeholder username validation check
+    private boolean isUserNameValid(String username){
+        //TODO Le Xuan can you add a check if there is an existing username in base
+        return username!=null && username.trim().length()>5;
     }
 }

@@ -16,7 +16,8 @@ import retrofit2.http.Query;
 public interface Retrofit {
 
     // My APIKey. Pls don't leak.
-    @Headers("apikey: k8FtJLEB9adxy6nF5tCLlqh44rCEcg4iZBdlyrTTMq8IxTy1gpUwmqW55OTgEci4")
+    //@Headers("apikey: k8FtJLEB9adxy6nF5tCLlqh44rCEcg4iZBdlyrTTMq8IxTy1gpUwmqW55OTgEci4")
+    @Headers("apikey: 8OP9sWVfDv92AKmTRnMVjpZioDwUuh7WNlD1JItEJicZCRDUyVaXOihVliQG9oVZ")
     @GET("result/{token}")
     Call<OCRReceipt> getResults(@Path("token") String token);
 
@@ -25,7 +26,8 @@ public interface Retrofit {
 //    @POST("2/process")
 //    Call<OCRPost> createOCRPost(@Body OCRPost sheikhPost);
 
-    @Headers({"apikey: k8FtJLEB9adxy6nF5tCLlqh44rCEcg4iZBdlyrTTMq8IxTy1gpUwmqW55OTgEci4"})
+    //@Headers({"apikey: k8FtJLEB9adxy6nF5tCLlqh44rCEcg4iZBdlyrTTMq8IxTy1gpUwmqW55OTgEci4"})
+    @Headers("apikey: 8OP9sWVfDv92AKmTRnMVjpZioDwUuh7WNlD1JItEJicZCRDUyVaXOihVliQG9oVZ")
     @Multipart
     @POST("2/process")
     Call<OCRPost> createOCRPost(@Part MultipartBody.Part filePart);

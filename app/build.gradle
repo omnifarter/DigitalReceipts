@@ -27,8 +27,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
-
-    }
+        signingConfigs {
+            debug {
+                storeFile file("credentials/debug.keystore")
+            }
+        }
+     }
     buildTypes {
         release {
             minifyEnabled false
@@ -112,6 +116,8 @@ dependencies {
 
     // cloud firestore
     implementation "com.google.firebase:firebase-firestore:21.3.1"
+
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
 
 
 

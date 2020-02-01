@@ -92,17 +92,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_up_number" />
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_user" />
 
         <EditText
-            android:id="@+id/sign_up_number"
+            android:id="@+id/sign_up_user"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
-            android:hint="Phone Number"
+            android:hint="User Name"
             android:imeActionLabel="@string/action_sign_in_short"
             android:imeOptions="actionDone"
-            android:inputType="number"
+            android:inputType="text"
             android:selectAllOnFocus="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

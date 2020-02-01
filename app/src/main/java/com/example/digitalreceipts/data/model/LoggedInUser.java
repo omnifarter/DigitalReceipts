@@ -9,21 +9,21 @@ import java.util.Map;
 public class LoggedInUser {
     //TODO fill in relevant data fields required of User
     private String userId;
-    private String phoneNumber;
+    private String userName;
     private String displayName;
+    /** Note that UserID == User Name **/
 
-    public LoggedInUser(String userId, String displayName) {
-        this.userId = userId;
+    public LoggedInUser(String userName, String displayName) {
+        this.userName = userName;
         this.displayName = displayName;
-        this.phoneNumber = phoneNumber;
     }
     public LoggedInUser(String userId) {
         this.userId = userId;
     }
 
-    public void setUserDetails(String displayName, String phoneNumber) {
+    public void setUserDetails(String userName, String displayName) {
         this.displayName = displayName;
-        this.phoneNumber = phoneNumber;
+        this.userName = userName;
     }
 
 
@@ -33,12 +33,12 @@ public class LoggedInUser {
 
     public String getDisplayName() {return displayName; }
 
-    public String getPhoneNumber() { return phoneNumber; }
+    public String getUserName() { return userName; }
 
     public Map<String,Object> getAllInfo() {
         Map<String, Object> userData = new HashMap<>();
         userData.put("userId",getUserId());
-        userData.put("phoneNumber",getPhoneNumber());
+        userData.put("userName", getUserName());
         userData.put("displayName",getDisplayName());
         return userData;
     }

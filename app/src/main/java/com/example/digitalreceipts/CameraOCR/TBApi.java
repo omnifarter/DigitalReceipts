@@ -50,7 +50,7 @@ public class TBApi {
         this.context = context;
         this.receiptDisplay = receiptDisplay;
         this.imageView = imageView;
-        // Creates new database insatnce
+        // Creates new database instance
         this.receiptsManager = receiptsManager;
 
         // Handles all forms of initialisation for RETROFIT

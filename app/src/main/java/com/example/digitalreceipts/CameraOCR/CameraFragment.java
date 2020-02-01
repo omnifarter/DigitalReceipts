@@ -83,7 +83,6 @@ public class CameraFragment extends DialogFragment {
             @Override
             public void onChanged(List<ReceiptsRoom> receiptsRooms) {
                 // for recycleview when we want to display data. currently only showing data
-                Toast.makeText(getContext(), "DB manipulated", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -171,7 +170,7 @@ public class CameraFragment extends DialogFragment {
             tabscannerapi.postRequest(filePart);
             imageView.setBackgroundResource(R.color.bgcolor);
             Glide.with(getContext()).load(R.drawable.loading_screen).into(imageView);
-            receiptDisplay.setText("Receipt has been uploaded!");
+            receiptDisplay.setText("Receipt is loading...");
 
 
         }

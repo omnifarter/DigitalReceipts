@@ -29,8 +29,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
-
-    }
+        signingConfigs {
+            debug {
+                storeFile file("credentials/debug.keystore")
+            }
+        }
+     }
     buildTypes {
         release {
             minifyEnabled false
@@ -44,6 +48,13 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
 }
 
 dependencies {
@@ -112,6 +123,8 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore:21.3.1"
     // Add the SDK for Firebase Cloud Messaging
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
+
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
 
 
 

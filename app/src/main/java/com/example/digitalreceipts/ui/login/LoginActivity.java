@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.digitalreceipts.MainActivity.MainActivity;
 import com.example.digitalreceipts.R;
+import com.example.digitalreceipts.data.model.LoggedInUser;
 import com.example.digitalreceipts.ui.login.LoginViewModel;
 import com.example.digitalreceipts.ui.login.LoginViewModelFactory;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -84,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("hihilookhere", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -93,6 +95,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         // ...
                     }
+
+
                 });
     }
 

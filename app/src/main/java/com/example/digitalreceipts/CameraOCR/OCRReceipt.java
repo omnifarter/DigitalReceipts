@@ -141,7 +141,7 @@ public class OCRReceipt {
 //            }
 
             public String getDescClean() {
-                if (descClean.contains("-"))
+                if(false)
                 {
                     String[] processedDescClean = descClean.split(" - ", 2);
                     System.out.println(processedDescClean[1]);

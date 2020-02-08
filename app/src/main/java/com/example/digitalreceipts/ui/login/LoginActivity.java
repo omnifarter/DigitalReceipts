@@ -2,6 +2,7 @@ package com.example.digitalreceipts.ui.login;
 
 import android.app.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.digitalreceipts.MainActivity.MainActivity;
 import com.example.digitalreceipts.R;
+import com.example.digitalreceipts.data.model.LoggedInUser;
 import com.example.digitalreceipts.ui.login.LoginViewModel;
 import com.example.digitalreceipts.ui.login.LoginViewModelFactory;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,12 +38,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     final int RC_SIGN_IN = 1;
+    GoogleSignInAccount account;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -54,13 +65,39 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         try {
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            updateUI(account);
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            updateUI(currentUser);
 
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
+    }
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d("hihilookhere", "firebaseAuthWithGoogle:" + acct.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("hihilookhere", "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("hihilookhere", "signInWithCredential:failure", task.getException());
+                            updateUI(null);
+                        }
+
+                        // ...
+                    }
+
+
+                });
     }
 
     @Override
@@ -73,27 +110,21 @@ public class LoginActivity extends AppCompatActivity {
                 // a listener.
                 Log.wtf("hihi","this works");
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                handleSignInResult(task);
+                try {
+                    account = task.getResult(ApiException.class);
+                    firebaseAuthWithGoogle(account);
+
+                } catch (ApiException e) {
+                    e.printStackTrace();
+                }
+
+
             }
             else Log.wtf("hihi","this sucks");
         }
 
 
 
-    }
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
-            updateUI(account);
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w("Hello", "signInResult:failed code=" + e.getStatusCode());
-            updateUI(null);
-        }
     }
 
     @Override
@@ -110,9 +141,11 @@ public class LoginActivity extends AppCompatActivity {
         final TextView signUpText = findViewById(R.id.sign_up_text);
         //Google signup test
         final GoogleSignInClient mGoogleSignInClient;
+        mAuth = FirebaseAuth.getInstance();
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -233,7 +266,7 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
     //Google Account log in
-    private void updateUI(GoogleSignInAccount account){
+    private void updateUI(FirebaseUser account){
         String welcome = "Welcome, " + account.getDisplayName();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

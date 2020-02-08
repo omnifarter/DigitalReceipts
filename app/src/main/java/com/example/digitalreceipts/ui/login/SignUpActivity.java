@@ -1,11 +1,13 @@
 package com.example.digitalreceipts.ui.login;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.digitalreceipts.Database.FirestoreManager;
+import com.example.digitalreceipts.MainActivity.MainActivity;
 import com.example.digitalreceipts.data.PasswordUtils;
 import com.example.digitalreceipts.data.model.LoggedInUser;
 
@@ -19,8 +21,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.digitalreceipts.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -125,6 +131,18 @@ public class SignUpActivity extends AppCompatActivity {
         signUpName.addTextChangedListener(afterTextChangedListener);
         signUpUser.addTextChangedListener(afterTextChangedListener);
         signUpPassword.addTextChangedListener(afterTextChangedListener);
+
+        // Firecloud Authentication protocols for Firecloud Notifications
+        FirebaseMessaging.getInstance().subscribeToTopic("main")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("FB", "cloud channel joining fialed", task.getException());
+                        }
+
+                    }
+                });
 
     }
 }

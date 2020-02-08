@@ -7,12 +7,17 @@ import androidx.fragment.app.FragmentActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.digitalreceipts.CameraOCR.CameraFragment;
 import com.example.digitalreceipts.Finance.FinanceFragment;
 import com.example.digitalreceipts.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 //test push from desktop
 
 public class MainActivity extends FragmentActivity {
@@ -20,6 +25,9 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Retrived associated Firebase credentials from client
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Fragment defaultFragment = new FinanceFragment();

@@ -133,11 +133,25 @@ public class TBApi {
                 List<ReceiptItem> listOfReceiptItems = new ArrayList<ReceiptItem>();
 
                 // Scans across each item in ItemList
-                for (OCRReceipt.Result.LineItem items : itemised)
+//                for (OCRReceipt.Result.LineItem items : itemised)
+//                {
+//                    // Creates new Receipt Item
+//                    ReceiptItem receiptItem = new ReceiptItem.ReceiptItemBuilder().setItemName(items.getDescClean()).setUnitCost(Double.valueOf(items.getLineTotal())).setQuantity(items.getQty()).createReceiptItem();
+//                    listOfReceiptItems.add(receiptItem);
+//                }
+                for (int i=0; i<itemised.size();i++ )
                 {
                     // Creates new Receipt Item
-                    ReceiptItem receiptItem = new ReceiptItem.ReceiptItemBuilder().setItemName(items.getDescClean()).setUnitCost(Double.valueOf(items.getLineTotal())).setQuantity(items.getQty()).createReceiptItem();
-                    listOfReceiptItems.add(receiptItem);
+                    ReceiptItem receiptItem = new ReceiptItem.ReceiptItemBuilder().setItemName(itemised.get(i).getDescClean()).setUnitCost(Double.valueOf(itemised.get(i).getLineTotal())).setQuantity(itemised.get(i).getQty()).createReceiptItem();
+                    //if it is a promotion replace price from previous item
+                    if (receiptItem.getUnitCost()<0){
+                        ReceiptItem previousReceipt = listOfReceiptItems.get(listOfReceiptItems.size()-1);
+                        Double editedPrice = previousReceipt.getUnitCost() + receiptItem.getUnitCost();
+                        ReceiptItem editedReceipt = new ReceiptItem.ReceiptItemBuilder().setItemName(previousReceipt.getItemName()).setUnitCost(editedPrice).setQuantity(previousReceipt.getQuantity()).createReceiptItem();
+                        listOfReceiptItems.set(listOfReceiptItems.size()-1, editedReceipt);
+                    }else {
+                        listOfReceiptItems.add(receiptItem);
+                    }
                 }
                 ReceiptsRoom receiptRoom = new ReceiptsRoom.ReceiptsRoomBuilder().setReceiptNumber(receiptProcessed.getData().getDate()).setReceiptUri("NULL").setCompany(receiptProcessed.getData().getEstablishment()).setListOfItems(listOfReceiptItems).setTotalCost(Double.valueOf(receiptProcessed.getData().getTotal())).setExpenseType(receiptProcessed.getData().getExpenseType()).createReceiptsRoom();
                 receiptsManager.insert(receiptRoom);

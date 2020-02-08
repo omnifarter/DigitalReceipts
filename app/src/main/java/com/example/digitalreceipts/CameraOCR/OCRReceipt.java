@@ -161,6 +161,18 @@ public class OCRReceipt {
             public String getLineTotal() {
                 // REGEX handling
                 lineTotal.replaceAll("$", "");
+                // checks if price is a promotion
+//                if (lineTotal.contains("-"))
+//                {
+////                    String[] lineTotalS = lineTotal.split("-", 2);
+////                    System.out.println(lineTotalS [1]);
+////                    return lineTotalS[1];
+//                    return new String("0");
+//                }
+//                else
+//                {
+//                    return lineTotal;
+//                }
                 return lineTotal;
             }
         }
